@@ -20,7 +20,7 @@ const config = {
   baseUrl: '/',
   organizationName: 'gioxx',
   projectName: 'Nebula.KB',
-  onBrokenLinks: 'warn',
+  onBrokenLinks: 'throw',
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'it'],
