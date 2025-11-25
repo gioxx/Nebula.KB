@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunknebula=globalThis.webpackChunknebula||[]).push([[2224],{1976:(e,a,s)=>{s.r(a),s.d(a,{default:()=>n});s(6540);var h=s(1656),l=s(4848);function n(){return(0,l.jsxs)(h.A,{children:[(0,l.jsx)("h1",{children:"My React page"}),(0,l.jsx)("p",{children:"This is a React page"})]})}}}]);
