@@ -1,7 +1,7 @@
 ---
 slug: welcome
 title: Welcome
-authors: [slorber, gioxx]
+authors: [gioxx]
 tags: [facebook, hello, docusaurus]
 ---
 

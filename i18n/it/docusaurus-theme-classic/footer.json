@@ -1,0 +1,46 @@
+{
+  "link.title.Modules": {
+    "message": "Modules",
+    "description": "The title of the footer links column with title=Modules in the footer"
+  },
+  "link.title.Scripts": {
+    "message": "Scripts",
+    "description": "The title of the footer links column with title=Scripts in the footer"
+  },
+  "link.title.Stay in touch": {
+    "message": "Stay in touch",
+    "description": "The title of the footer links column with title=Stay in touch in the footer"
+  },
+  "link.title.Thanks to": {
+    "message": "Thanks to",
+    "description": "The title of the footer links column with title=Thanks to in the footer"
+  },
+  "link.item.label.Nebula.Core": {
+    "message": "Nebula.Core",
+    "description": "The label of footer link with label=Nebula.Core linking to /docs/intro"
+  },
+  "link.item.label.Nebula.Automations": {
+    "message": "Nebula.Automations",
+    "description": "The label of footer link with label=Nebula.Automations linking to /docs/nebula-automations/intro"
+  },
+  "link.item.label.Nebula.Log": {
+    "message": "Nebula.Log",
+    "description": "The label of footer link with label=Nebula.Log linking to /docs/intro"
+  },
+  "link.item.label.Nebula.Scripts": {
+    "message": "Nebula.Scripts",
+    "description": "The label of footer link with label=Nebula.Scripts linking to /docs/intro"
+  },
+  "link.item.label.Contacts": {
+    "message": "Contacts",
+    "description": "The label of footer link with label=Contacts linking to https://gfsolone.com/#seguimi"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/gioxx/"
+  },
+  "copyright": {
+    "message": "<div style=\"color:var(--ifm-color-gray-300); padding-bottom: 9px; text-align: left;\">All trademarks mentioned belong to their respective owners; third- party trademarks, product names, trade names, corporate names and companies mentioned may be trademarks of their respective owners or registered trademarks of other companies and have been used for explanatory purposes only and for the benefit of the owner, without any intention of infringing on existing copyright laws.</div>\n        \n        2025 — Lovingly developed by the usually-on-vacation brain cell of Gioxx ❤️ — Flawed by design, just like my code 🚮",
+    "description": "The footer copyright"
+  }
+}

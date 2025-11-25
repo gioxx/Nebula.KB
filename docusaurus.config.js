@@ -12,32 +12,26 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'Nebula.KB',
   tagline: 'Flawed by design, just like my code.',
-  favicon: 'img/favicon.ico',
-
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
+  favicon: 'img/Nebula_Icon_Header.svg',
   future: {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
-
-  // Set the production url of your site here
   url: 'https://kb.gioxx.org',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
-
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'gioxx', // Usually your GitHub org/user name.
-  projectName: 'Nebula.KB', // Usually your repo name.
-
+  organizationName: 'gioxx',
+  projectName: 'Nebula.KB',
   onBrokenLinks: 'throw',
-
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'it'],
+    localeConfigs: {
+      en: {
+        htmlLang: 'en-GB',
+      },
+      it: {
+        label: 'Italiano',
+      },
+    },
   },
 
   presets: [
@@ -49,24 +43,22 @@ const config = {
           sidebarPath: './sidebars.js',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          // editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        // blog: {
+        //   showReadingTime: true,
+        //   feedOptions: {
+        //     type: ['rss', 'atom'],
+        //     xslt: true,
+        //   },
+        //   // Please change this to your repo.
+        //   // Remove this to remove the "edit this page" links.
+        //   editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+        //   // Useful options to enforce blogging best practices
+        //   onInlineTags: 'warn',
+        //   onInlineAuthors: 'warn',
+        //   onUntruncatedBlogPosts: 'warn',
+        // },
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -83,22 +75,33 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'Nebula.KB',
+        title: 'Nebula:KB',
         logo: {
           alt: 'Nebula.KB Site Logo',
-          src: 'img/logo.svg',
+          src: 'img/Nebula_Icon_Header.svg',
         },
         items: [
+          // {
+          //   type: 'docSidebar',
+          //   sidebarId: 'tutorialSidebar',
+          //   position: 'left',
+          //   label: 'Docs',
+          // },
           {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
-            position: 'left',
-            label: 'Tutorial',
+            to: '/docs/nebula-automations/intro',
+            label: 'Automations',
+            position: 'left'
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          // {to: '/blog', label: 'Blog', position: 'left'},
+          {
+            to: 'https://gioxx.org',
+            label: 'Blog',
+            target: '_self',
+          },
+          { type: 'localeDropdown', position: 'right' },
           {
             href: 'https://github.com/gioxx/Nebula.KB',
-            label: 'GitHub',
+            label: 'Nebula.KB on GitHub',
             position: 'right',
           },
         ],
@@ -107,48 +110,64 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'Modules',
             items: [
               {
-                label: 'Tutorial',
+                label: 'Nebula.Core',
+                to: '/docs/intro',
+              },
+              {
+                label: 'Nebula.Automations',
+                to: '/docs/nebula-automations/intro',
+              },
+              {
+                label: 'Nebula.Log',
                 to: '/docs/intro',
               },
             ],
           },
           {
-            title: 'Community',
+            title: 'Tools',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                label: 'Nebula.Scripts',
+                to: '/docs/intro',
               },
               {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'X',
-                href: 'https://x.com/gioxx',
+                label: 'PSADT Log Viewer',
+                to: '/psadt-log-viewer',
               },
             ],
           },
           {
-            title: 'More',
+            title: 'Stay in touch',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: 'Contacts',
+                href: 'https://gfsolone.com/#seguimi',
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/gioxx/Nebula.KB',
+                href: 'https://github.com/gioxx/',
               },
             ],
           },
+          {
+            title: 'Thanks to',
+            items: [
+              {
+                html: '<small>Microsoft, for the <a href="https://commons.wikimedia.org/wiki/File:PowerShell-Avatar_128.svg">PowerShell Avatar</a>, <a href="https://tabler.io/icons">Tabler Icons</a> and <a href="https://techicons.dev/">tech icons</a> for icons and SVG files.</small>',
+              }
+            ],
+          },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Gioxx. Built with Docusaurus.`,
+        // copyright: `Copyright © ${new Date().getFullYear()} Gioxx. Built with Docusaurus.`,
+        copyright: `<div style="color:var(--ifm-color-gray-300); padding-bottom: 9px; text-align: left;">All trademarks mentioned belong to their respective owners; third- party trademarks, product names, trade names, corporate names and companies mentioned may be trademarks of their respective owners or registered trademarks of other companies and have been used for explanatory purposes only and for the benefit of the owner, without any intention of infringing on existing copyright laws.</div>
+        
+        ${new Date().getFullYear()} — Lovingly developed by the usually-on-vacation brain cell of Gioxx ❤️ — Flawed by design, just like my code 🚮`
       },
       prism: {
+        additionalLanguages: ['powershell'],
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
       },

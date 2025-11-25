@@ -1,11 +1,29 @@
-.features {
+.titleWithIcon {
   display: flex;
   align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.featureSvg {
-  height: 200px;
-  width: 200px;
+/* Icon next to the title */
+.titleIcon {
+  width: 24px;
+  height: 24px;
+  color: var(--ifm-color-primary);
+  flex-shrink: 0;
+  /* Prevent it from shrinking with long titles */
+}
+
+/* Title style tweak (optional) */
+.featureTitle {
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Optional: center-align on mobile */
+@media (max-width: 768px) {
+  .titleWithIcon {
+    justify-content: center;
+    text-align: center;
+  }
 }
