@@ -87,8 +87,8 @@ const config = {
             target: '_self',
           },
           {
-            href: 'https://github.com/gioxx/Nebula.KB',
-            label: 'Nebula.KB on GitHub',
+            href: 'https://github.com/gioxx?tab=repositories&q=Nebula',
+            className: 'header-github-link',
             position: 'right',
           },
         ],
