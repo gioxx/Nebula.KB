@@ -1,5 +1,5 @@
 ---
-id: helloworld
+id: intro
 title: Hello World
 sidebar_position: 1
 ---
