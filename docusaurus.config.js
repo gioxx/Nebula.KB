@@ -21,18 +21,6 @@ const config = {
   organizationName: 'gioxx',
   projectName: 'Nebula.KB',
   onBrokenLinks: 'throw',
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'it'],
-    localeConfigs: {
-      en: {
-        htmlLang: 'en-GB',
-      },
-      it: {
-        label: 'Italiano',
-      },
-    },
-  },
 
   presets: [
     [
@@ -98,7 +86,6 @@ const config = {
             label: 'Blog',
             target: '_self',
           },
-          { type: 'localeDropdown', position: 'right' },
           {
             href: 'https://github.com/gioxx/Nebula.KB',
             label: 'Nebula.KB on GitHub',

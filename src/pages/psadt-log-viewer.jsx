@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import Layout from '@theme/Layout';
-import Translate from '@docusaurus/Translate';
 
 /**
  * Parse a single PSADT/CMTrace-style line.
@@ -398,16 +397,8 @@ export default function PsadtLogViewerPage() {
             <main className="container margin-vert--lg">
                 <h1 className="margin-bottom--md">PSADT Log Viewer</h1>
                 <p className="margin-bottom--md">
-                    <Translate
-                        id="psadtLogViewer.intro"
-                        values={{
-                            br: <br />
-                        }}
-                    >
-                        {`This tool lets you inspect PSAppDeployToolkit / CMTrace-style log files directly in your browser.{br}
-                        Load a file or paste its content, then filter by level, component or text.`}
-                    </Translate>
-
+                    This tool lets you inspect PSAppDeployToolkit / CMTrace-style log files directly in your browser.<br />
+                    You can either load a log file or paste its content, then filter by level, component and message text.
                 </p>
 
                 {/* Upload + Parse */}
