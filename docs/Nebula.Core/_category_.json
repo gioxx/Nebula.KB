@@ -1,6 +1,6 @@
 {
   "label": "Nebula.Core",
-  "position": 2,
+  "position": 3,
   "link": {
     "type": "generated-index",
     "description": "Nebula.Core ships opinionated PowerShell helpers for Exchange Online, Microsoft 365, Microsoft Graph, and quarantine operations."
