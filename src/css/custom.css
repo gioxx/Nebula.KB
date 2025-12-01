@@ -83,6 +83,29 @@ html[data-theme='dark'] {
   border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
+.navbar-separator {
+  display: inline-block;
+  width: 1px;
+  height: 24px;
+  margin: 0 12px;
+  background-color: var(--ifm-color-emphasis-300);
+  opacity: 0.6;
+  vertical-align: middle;
+}
+
+.nebula-doc-icon {
+  border: 2px solid var(--ifm-color-primary);
+  border-radius: 12px;
+  padding: 6px;
+  background: var(--ifm-background-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform .2s ease;
+}
+
+.nebula-doc-icon:hover {
+  transform: scale(1.05);
+}
+
 /* GitHub Icon */
 .header-github-link:before {
   content: '';

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Layout from '@theme/Layout';
+import Admonition from '@theme/Admonition';
 
 /**
  * Parse a single PSADT/CMTrace-style line.
@@ -399,6 +400,13 @@ export default function PsadtLogViewerPage() {
                 <p className="margin-bottom--md">
                     This tool lets you inspect PSAppDeployToolkit / CMTrace-style log files directly in your browser.<br />
                     You can either load a log file or paste its content, then filter by level, component and message text.
+
+                </p>
+                
+                <p className="margin-bottom--md">
+                    <Admonition type="info" title="Info">
+                        The log is processed by your browser; no files are actually uploaded or saved on the server.
+                    </Admonition>
                 </p>
 
                 {/* Upload + Parse */}

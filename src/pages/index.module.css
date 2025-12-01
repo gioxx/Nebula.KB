@@ -14,7 +14,7 @@
 .heroBanner {
   background: 
     linear-gradient(180deg, rgba(11, 18, 32, 0.45), rgba(11, 18, 32, 0.65)),
-    url('/img/Nebula.jpg') center center / cover no-repeat;
+    url('/img/Nebula-Strip.jpg') center center / cover no-repeat;
   color: #fff;
   padding: 6rem 0 4rem;
 }

@@ -4,7 +4,6 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import PowerShellAvatar from '@site/static/img/PowerShell-Avatar_128.svg';
-import NebulaIcon from '@site/static/img/Nebula_Icon.svg';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
 

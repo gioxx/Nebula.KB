@@ -76,11 +76,21 @@ const config = {
           //   label: 'Docs',
           // },
           {
-            to: '/docs/nebula-automations/intro',
+            to: '/docs/Nebula.Core/intro',
+            label: 'Core',
+            position: 'left'
+          },
+          {
+            to: '/docs/Nebula.Automations/intro',
             label: 'Automations',
             position: 'left'
           },
           // {to: '/blog', label: 'Blog', position: 'left'},
+          {
+            type: 'html',
+            position: 'left',
+            value: '<span class="navbar-separator"></span>',
+          },
           {
             to: 'https://gioxx.org',
             label: 'Blog',
@@ -101,11 +111,11 @@ const config = {
             items: [
               {
                 label: 'Nebula.Core',
-                to: '/docs/intro',
+                to: '/docs/Nebula.Core/intro',
               },
               {
                 label: 'Nebula.Automations',
-                to: '/docs/nebula-automations/intro',
+                to: '/docs/Nebula.Automations/intro',
               },
               {
                 label: 'Nebula.Log',
