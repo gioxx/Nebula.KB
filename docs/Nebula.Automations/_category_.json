@@ -1,6 +1,6 @@
 {
   "label": "Nebula.Automations",
-  "position": 2,
+  "position": 4,
   "link": {
     "type": "generated-index",
     "description": "Nebula.Automations provides reusable PowerShell functions for scripting, automation and cloud integration."
