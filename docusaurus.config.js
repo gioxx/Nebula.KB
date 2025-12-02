@@ -153,7 +153,12 @@ const config = {
             title: 'Thanks to',
             items: [
               {
-                html: '<small>Microsoft, for the <a href="https://commons.wikimedia.org/wiki/File:PowerShell-Avatar_128.svg">PowerShell Avatar</a>, <a href="https://tabler.io/icons">Tabler Icons</a> and <a href="https://techicons.dev/">tech icons</a> for icons and SVG files.</small>',
+                html: [
+                  '<small>Microsoft, for the <a href="https://commons.wikimedia.org/wiki/File:PowerShell-Avatar_128.svg">PowerShell Avatar</a>, ',
+                  '<a href="https://tabler.io/icons">Tabler Icons</a> and ',
+                  '<a href="https://techicons.dev/">tech icons</a> for icons and SVG files.<br />',
+                  'A final big thank you to the guys at <strong>Catppuccin</strong> for the <a href="https://github.com/catppuccin/windows-terminal/blob/main/macchiato.json">Catpuccin Macchiato</a> theme, which inspired the basic colors used in this KB.</small>',
+                ].join('')
               }
             ],
           },

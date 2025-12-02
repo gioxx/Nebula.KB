@@ -59,6 +59,10 @@ $connected = Test-MgGraphConnection `
 if (-not $connected) { throw "Unable to connect to Microsoft Graph." }
 ```
 
+:::tip
+Every function exposes built-in help. Use `Get-Help <FunctionName> -Detailed` or `-Examples` for notes, parameters, and prerequisites.
+:::
+
 ## Requirements
 
 - PowerShell 5.1+ or PowerShell 7+

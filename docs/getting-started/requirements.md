@@ -11,6 +11,11 @@ tags:
 
 # Requirements
 
+<img
+  src="/img/Nebula-Header-Cropped.jpg"
+  alt="Nebula"
+/>
+
 ## PowerShell Version
 
 Nebula modules are compatible with Windows PowerShell 5.1 and PowerShell (Core) 7.4+.
