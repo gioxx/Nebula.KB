@@ -9,6 +9,7 @@ tags:
   - Add-MboxPermission
   - Export-MboxPermission
   - New-SharedMailbox
+  - Nebula.Core
 ---
 
 # Mailbox utilities

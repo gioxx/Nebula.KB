@@ -7,8 +7,8 @@ id: utilities
 tags:
   - Format-MessageIDsFromClipboard
   - Format-SortedEmailsFromClipboard
-  - mids
-  - fse
+  - Tools
+  - Nebula.Core
 ---
 
 # Utilities

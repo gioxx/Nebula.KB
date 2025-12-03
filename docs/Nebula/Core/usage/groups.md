@@ -7,9 +7,13 @@ id: groups
 tags:
   - Export-DistributionGroups
   - Export-DynamicDistributionGroups
+  - Distribution Groups
+  - Dynamic Distribution Groups
   - Export-M365Group
+  - Microsoft 365 Unified Groups
   - Get-RoleGroupsMembers
   - Get-UserGroups
+  - Nebula.Core
 ---
 
 # Group helpers

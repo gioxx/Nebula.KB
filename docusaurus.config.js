@@ -76,13 +76,18 @@ const config = {
           //   label: 'Docs',
           // },
           {
-            to: '/docs/Nebula.Core/intro',
+            to: '/docs/Nebula/Core/intro',
             label: 'Core',
             position: 'left'
           },
           {
-            to: '/docs/Nebula.Automations/intro',
+            to: '/docs/Nebula/Automations/intro',
             label: 'Automations',
+            position: 'left'
+          },
+          {
+            to: '/docs/Nebula/Tools/intro',
+            label: 'Tools',
             position: 'left'
           },
           // {to: '/blog', label: 'Blog', position: 'left'},
@@ -111,15 +116,20 @@ const config = {
             items: [
               {
                 label: 'Nebula.Core',
-                to: '/docs/Nebula.Core/intro',
+                to: '/docs/Nebula/Core/intro',
+                className: 'nav-core-bold',
               },
               {
                 label: 'Nebula.Automations',
-                to: '/docs/Nebula.Automations/intro',
+                to: '/docs/Nebula/Automations/intro',
               },
               {
                 label: 'Nebula.Log',
                 to: '/docs/intro',
+              },
+              {
+                label: 'Nebula.Tools',
+                to: '/docs/Nebula/Tools/intro',
               },
             ],
           },

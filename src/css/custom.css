@@ -94,6 +94,10 @@ html:not([data-theme='dark']) .footer a:active {
   color: var(--ifm-color-primary);
 }
 
+.footer__link-item.nav-core-bold {
+  font-weight: 700;
+}
+
 html[data-theme='dark'] {
   /* Mocha surfaces */
   --ifm-background-color: #1e1e2e;

@@ -9,6 +9,7 @@ tags:
   - Export-QuarantineEml
   - Get-QuarantineToRelease
   - Unlock-QuarantineFrom
+  - Nebula.Core
 ---
 
 # Quarantine toolkit

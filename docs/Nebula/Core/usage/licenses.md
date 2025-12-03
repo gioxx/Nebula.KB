@@ -8,6 +8,8 @@ tags:
   - Export-MsolAccountSku
   - Get-UserMsolAccountSku
   - Update-LicenseCatalog
+  - Nebula.Core
+  - Licenses
 ---
 
 # License reports

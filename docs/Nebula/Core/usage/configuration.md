@@ -7,6 +7,7 @@ id: configuration
 tags:
   - Get-NebulaConfig
   - Sync-NebulaConfig
+  - Nebula.Core
 ---
 
 # Configuration helpers

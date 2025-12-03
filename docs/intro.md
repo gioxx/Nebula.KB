@@ -1,44 +1,42 @@
 ---
 sidebar_position: 1
-title: 'Introduction'
-description: Get up and running with Nebula modules in minutes.
+title: 'Hello World'
+description: Hello World.
 hide_title: true
 id: intro
 tags:
   - Introduction
-  - Nebula Modules
+  - Knowledge Base
+  - Nebula.KB
 ---
 
-<img
-  src="/img/Nebula-Icon-Text.png"
-  alt="Nebula"
-  className="nebula-doc-icon"
-  style={{ float: "right", maxWidth: "140px", marginLeft: "1rem" }}
-/>
+# Hello World 👋
 
-# Introduction
+I needed a different place, other than [my blog](https://gioxx.org), where I could collect documentation of what I (try to) develop.  
+Something that could easily group ideas together and provide users with a source that is always (_I hope, I'll try, I promise!_) up to date, from which they can learn how to best use the modules, scripts, and tools that I release via GitHub, most of which (almost all) are open source and free (even for commercial use, unless otherwise specified).
 
-Nebula modules simplify some of the daily operations involved in interfacing with Microsoft 365 and products within the Microsoft Cloud ecosystem. They provide a set of well-defined functions for common tasks involving Microsoft Exchange (in the Cloud), Entra, and Intune.
+This is **Nebula.KB**, initially conceived and created to host documentation related to Nebula modules for PowerShell (you can find all the references in the sidebar, just below), immediately adapted to look to the future and the possibility of bringing other ideas unrelated to the main project here as well. It's only a matter of time, I have less and less of it and I'm trying to devote it to this "side project" (which isn't really that side), to the migration of content written in a "_less than perfect_" way in my virtual notebooks.  
+Be patient, I'll manage to publish everything, sooner or later!
 
-The purpose of this documentation is to gather information about the features and benefits of Nebula modules for PowerShell, system requirements, and support under one roof. It also includes some other utilities related to other works published in the PowerShell Gallery (scripts, utilities directly available via browser, etc.).
+At present, almost all Nebula module documentation is available (only **Nebula.Log** is missing, but it will arrive very soon). The following will arrive later:
+- [IntuneWinAppUtilGUI](https://github.com/gioxx/IntuneWinAppUtilGUI)
+- [SleeperStack](https://github.com/gioxx/SleeperStack/)
+- My WordPress plugins
+- My YOURLS plugins
 
-## Contributing
+## Why in English? 🌎
+To try to break out of the usual pattern _a little_.  
+I have always written in Italian (and I still do it on my personal blog), but sometimes I have written in English, which has allowed me to reach a different audience, broadening my horizons and seeking to embrace the exchange of ideas and the improvement of existing ones thanks to the contribution of people outside the _boot_ (as Italy is known).  
+For this reason, I have chosen to use English as the main language of the entire KB. It is easily translatable using online tools, and perhaps in the future I will consider localizing it into Italian, but currently it is not something that interests me.
 
-Nebula.Core and, in general, every Nebula module is an open source project based on the MIT license ([`LICENSE`](https://github.com/gioxx/Nebula.Core/blob/main/LICENSE)). The main project, as well as the documentation and all related tools, are available on GitHub [Nebula](https://github.com/gioxx?tab=repositories&q=Nebula).
-
-All Nebula modules are open to code contributions, including feature requests, bug reports, and pull requests.
-
-## Support
-
-All Nebula modules are offered free of charge and as open source to users who wish to use them. If you encounter any problems or have any questions, the [GitHub repositories for the individual modules](https://github.com/gioxx?tab=repositories&q=Nebula) are good places to go for help.  
-There is no preferential support channel and/or dedicated commercial support channel at this time, nor are there any plans to create one, at least for now.
-
-## Something missing?
+## Something missing? 🕵️‍♀️
 
 If you encounter problems in the documentation or have suggestions on how to improve the documentation or the project in general, please [report the issue](https://github.com/gioxx/Nebula.KB/issues/new/choose).
 
-## Credits
+## Credits 🙏
 
 I had no idea what Docusaurus was until I saw it in action, powering the PSAppDeployToolkit website, a framework that I use with great satisfaction and from which I drew much of the inspiration and basic code to set up this Knowledge Base.  
 
-Although this is a personal project, there is no denying that none of the Nebula modules would exist if I hadn't had the opportunity to work on them in the office. All the features were created because I needed them on a daily basis at work, interacting with Microsoft's cloud services. That's why I would like to publicly thank Emmelibri for their support and patience 🙏
+Although this is a personal project, there is no denying that none of the Nebula modules would exist if I hadn't had the opportunity to work on them in the office. All the features were created because I needed them on a daily basis at work, interacting with Microsoft's cloud services. That's why I would like to publicly thank Emmelibri for their support and patience.
+
+Last but certainly not least, OpenAI's contribution with ChatGPT and Codex. I stressed everything quite heavily to try to speed up the documentation writing process and to review some code, without ever losing sight of the goal and trying to avoid as many errors, hallucinations, and stupid mistakes as possible. Doing all this work alone, in my increasingly scarce free time, is truly unthinkable.

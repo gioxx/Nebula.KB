@@ -5,22 +5,28 @@ import styles from './styles.module.css';
 
 const moduleCards = [
   {
-    name: 'Nebula.Core',
+    name: 'Core',
     blurb: 'A PowerShell module that go beyond your workstations. It will make your Microsoft 365 life easier.',
     gallery: 'https://www.powershellgallery.com/packages/Nebula.Core',
     icon: require('@site/static/img/Nebula.Core.png').default
   },
   {
-    name: 'Nebula.Automations',
+    name: 'Automations',
     blurb: 'Reusable blocks for scripts and cloud integrations (Graph, mail, webhooks).',
     gallery: 'https://www.powershellgallery.com/packages/Nebula.Automations',
     icon: require('@site/static/img/Nebula.Automations.png').default
   },
   {
-    name: 'Nebula.Log',
+    name: 'Log',
     blurb: 'A lightweight and configurable logging module for PowerShell scripts.',
     gallery: 'https://www.powershellgallery.com/packages/Nebula.Log',
     icon: require('@site/static/img/Nebula.Log.png').default
+  },
+  {
+    name: 'Tools',
+    blurb: 'Everyday functions and utilities for PowerShell.',
+    gallery: 'https://www.powershellgallery.com/packages/Nebula.Tools',
+    icon: require('@site/static/img/Nebula.Tools.png').default
   }
 ];
 

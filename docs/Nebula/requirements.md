@@ -3,6 +3,7 @@ sidebar_position: 2
 title: 'Requirements'
 description: 'The requirements for running Nebula Modules.'
 hide_title: true
+id: requirements
 tags:
   - Getting Started
   - Nebula Modules

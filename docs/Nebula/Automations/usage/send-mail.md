@@ -6,6 +6,7 @@ hide_title: true
 id: send-mail
 tags:
   - Send-Mail
+  - E-mail
   - Nebula.Automations
 ---
 
