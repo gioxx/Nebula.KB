@@ -14,6 +14,12 @@ tags:
 
 For full parameter descriptions and up-to-date notes, run `Get-Help Export-MboxStatistics -Detailed`.
 
+## Syntax
+
+```powershell
+Export-MboxStatistics [-UserPrincipalName <String>] [-CsvFolder <String>] [-Round] [-BatchSize <Int>]
+```
+
 ## Export-MboxStatistics
 Export mailbox statistics (size, quotas, archive info) either to CSV (all mailboxes) or as objects (single mailbox).
 

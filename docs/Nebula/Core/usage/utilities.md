@@ -15,7 +15,22 @@ tags:
 
 For full details and examples, run `Get-Help Format-MessageIDsFromClipboard -Detailed` or `Get-Help Format-SortedEmailsFromClipboard -Detailed`.
 
-## Format-MessageIDsFromClipboard (`mids`)
+## Syntax
+
+```powershell
+Format-MessageIDsFromClipboard [-NoRelease] [-PassThru]
+```
+
+```powershell
+Format-SortedEmailsFromClipboard [-PassThru]
+```
+
+## Format-MessageIDsFromClipboard
+
+:::note
+The function name is `Format-MessageIDsFromClipboard`. The legacy alias `mids` remains available for backward compatibility.
+:::
+
 Reads MessageId values (one per line) from the clipboard, normalizes them for quarantine commands, copies a quoted/comma-separated list back to the clipboard, and can release the messages immediately.
 
 | Parameter | Description | Default |
@@ -32,7 +47,12 @@ Format-MessageIDsFromClipboard
 Format-MessageIDsFromClipboard -NoRelease -PassThru
 ```
 
-## Format-SortedEmailsFromClipboard (`fse`)
+## Format-SortedEmailsFromClipboard
+
+:::note
+The function name is `Format-SortedEmailsFromClipboard`. The legacy alias `fse` remains available for backward compatibility.
+:::
+
 Extracts e-mail addresses from clipboard text, deduplicates and sorts them, then copies a quoted/comma-separated list back to the clipboard.
 
 | Parameter | Description | Default |

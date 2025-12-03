@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 title: 'Configuration'
 description: Inspect or reload Nebula.Core configuration without re-importing the module.
 hide_title: true
@@ -10,7 +10,16 @@ tags:
   - Nebula.Core
 ---
 
-# Configuration helpers
+# Get/Sync-NebulaConfig
+
+## Syntax
+
+```powershell
+Get-NebulaConfig
+```
+```powershell
+Sync-NebulaConfig
+```
 
 ## Get-NebulaConfig
 Shows effective configuration, including machine/user config files and license catalog sources.
@@ -64,3 +73,13 @@ Reload Nebula.Core configuration in the current session (machine/user PSD1 and e
 ```powershell
 Sync-NebulaConfig
 ```
+
+## Questions and answers
+
+### Where is configuration loaded from?
+
+`Get-NebulaConfig` shows loaded PSD1 files: `C:\ProgramData\Nebula.Core\settings.psd1` (machine) and `%USERPROFILE%\.NebulaCore\settings.psd1` (user), plus any environment overrides. Use `Sync-NebulaConfig` to reload without re-importing the module.
+
+### Where is the license catalog stored?
+
+In the cache directory shown in `UserConfigRoot` (typically `%USERPROFILE%\.NebulaCore\Cache`). `Update-LicenseCatalog` refreshes it; `-ForceLicenseCatalogRefresh` redownloads during reports.

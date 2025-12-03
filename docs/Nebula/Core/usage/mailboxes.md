@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 3
 title: "Mailboxes"
 description: Manage aliases, permissions, languages, quotas, and shared mailbox setup.
 hide_title: true
@@ -12,9 +12,50 @@ tags:
   - Nebula.Core
 ---
 
-# Mailbox utilities
+# Mailbox helpers
 
 Requires an EXO session. For full and always-up-to-date details, use `Get-Help <FunctionName> -Detailed`.
+
+## Syntax
+
+```powershell
+Add-MboxAlias -SourceMailbox <String> -MailboxAlias <String>
+Remove-MboxAlias -SourceMailbox <String> -MailboxAlias <String>
+```
+
+```powershell
+Add-MboxPermission -Identity <String> -User <String> -AccessRights <String[]> [-AutoMapping]
+Remove-MboxPermission -Identity <String> -User <String> -AccessRights <String[]>
+Get-MboxPermission -Identity <String>
+Export-MboxPermission -Identity <String> [-CsvFolder <String>]
+```
+
+```powershell
+Get-MboxAlias -Identity <String>
+Export-MboxAlias -Identity <String> [-CsvFolder <String>]
+```
+
+```powershell
+Set-MboxLanguage -UserPrincipalName <String> [-Language <String>] [-TimeZone <String>]
+                 [-DateFormat <String>] [-TimeFormat <String>]
+```
+
+```powershell
+Set-MboxRulesQuota -Identity <String> -RulesQuotaInKB <Int>
+```
+
+```powershell
+New-SharedMailbox -Name <String> -Alias <String> -PrimarySmtpAddress <String> [-Members <String[]>]
+                  [-Language <String>] [-TimeZone <String>]
+```
+
+```powershell
+Set-SharedMboxCopyForSent -Identity <String> [-Enable]
+```
+
+```powershell
+Test-SharedMailboxCompliance -Identity <String>
+```
 
 ## Add-MboxAlias / Remove-MboxAlias
 Add or remove SMTP aliases on a recipient.
@@ -27,6 +68,9 @@ Add or remove SMTP aliases on a recipient.
 **Examples**
 ```powershell
 Add-MboxAlias -SourceMailbox info@contoso.com -MailboxAlias alias@contoso.com
+```
+
+```powershell
 Remove-MboxAlias -SourceMailbox info@contoso.com -MailboxAlias alias@contoso.com
 ```
 
@@ -44,8 +88,17 @@ Manage mailbox permissions and export them to CSV.
 **Examples**
 ```powershell
 Add-MboxPermission -Identity shared@contoso.com -User john@contoso.com -AccessRights FullAccess -AutoMapping:$false
+```
+
+```powershell
 Remove-MboxPermission -Identity shared@contoso.com -User john@contoso.com -AccessRights FullAccess
+```
+
+```powershell
 Export-MboxPermission -Identity shared@contoso.com -CsvFolder C:\Temp
+```
+
+```powershell
 Get-MboxPermission -Identity shared@contoso.com
 ```
 
@@ -60,6 +113,9 @@ List or export aliases for auditing.
 **Examples**
 ```powershell
 Get-MboxAlias -Identity user@contoso.com
+```
+
+```powershell
 Export-MboxAlias -Identity user@contoso.com -CsvFolder C:\Temp
 ```
 
@@ -135,8 +191,12 @@ Test-SharedMailboxCompliance -Identity shared@contoso.com
 **Examples**
 ```powershell
 Add-MboxAlias -Identity 'user@contoso.com' -Aliases 'user.sales@contoso.com','user.eu@contoso.com'
+```
 
+```powershell
 Add-MboxPermission -Identity 'shared@contoso.com' -User 'john@contoso.com' -AccessRights FullAccess -AutoMapping:$false
+```
 
+```powershell
 New-SharedMailbox -Name 'Support' -PrimarySmtpAddress 'support@contoso.com' -Members 'agent1@contoso.com','agent2@contoso.com'
 ```

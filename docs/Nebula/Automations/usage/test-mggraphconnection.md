@@ -20,6 +20,13 @@ The function name is `Test-MgGraphConnection`. The legacy alias `CheckMGGraphCon
 
 The function ensures that the `Microsoft.Graph` module is available (optionally auto-installs it), then performs a client credentials flow to obtain an access token and calls `Connect-MgGraph -AccessToken`. It returns `$true`/`$false`. Logging uses `Write-Log` when available; if `Nebula.Log` is missing, the module exposes a compatible `Write-Log`/`Log-Message` that delegates to `Write-NALog`.
 
+## Syntax
+
+```powershell
+Test-MgGraphConnection -TenantId <Guid> -ClientId <Guid> -ClientSecret <String>
+                       [-AutoInstall] [-LogLocation <String>] [-ShowInformations]
+```
+
 ## Parameters
 
 | Parameter | Description | Required | Default |
@@ -77,7 +84,21 @@ $connected = Test-MgGraphConnection `
 if (-not $connected) { throw "Unable to connect to Microsoft Graph." }
 ```
 
-## Notes
-
+:::note
 - When `Nebula.Log` is installed, its `Write-Log` handles log output; otherwise Nebula.Automations provides a compatible `Write-Log`/`Log-Message` that delegates to `Write-NALog`.
 - Secrets are masked when verbose logging is enabled.
+:::
+
+## Questions and answers
+
+### Does Test-MgGraphConnection auto-install Microsoft.Graph?
+
+Only when you specify `-AutoInstall`. Otherwise the module must already be installed.
+
+### What does Test-MgGraphConnection log?
+
+If `Nebula.Log` is available, it uses `Write-Log` and honors `-LogLocation`. Otherwise it exposes a compatible `Write-Log` (`Write-NALog`).
+
+### How are secrets masked?
+
+With `-ShowInformations` it masks secrets in logs but still prints identifiers; enable it only for troubleshooting and protect the log file.

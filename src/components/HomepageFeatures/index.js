@@ -5,16 +5,16 @@ import styles from './styles.module.css';
 
 const moduleCards = [
   {
-    name: 'Core',
-    blurb: 'A PowerShell module that go beyond your workstations. It will make your Microsoft 365 life easier.',
-    gallery: 'https://www.powershellgallery.com/packages/Nebula.Core',
-    icon: require('@site/static/img/Nebula.Core.png').default
-  },
-  {
     name: 'Automations',
     blurb: 'Reusable blocks for scripts and cloud integrations (Graph, mail, webhooks).',
     gallery: 'https://www.powershellgallery.com/packages/Nebula.Automations',
     icon: require('@site/static/img/Nebula.Automations.png').default
+  },
+  {
+    name: 'Core',
+    blurb: 'A PowerShell module that go beyond your workstations. It will make your Microsoft 365 life easier.',
+    gallery: 'https://www.powershellgallery.com/packages/Nebula.Core',
+    icon: require('@site/static/img/Nebula.Core.png').default
   },
   {
     name: 'Log',

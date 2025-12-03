@@ -1,18 +1,28 @@
 ---
-sidebar_position: 3
-title: "Find and update modules"
+sidebar_position: 1
+title: "Find/Update-Modules"
 description: Inspect and update installed modules using PSResourceGet (v3) or PowerShellGet (v2).
 hide_title: true
-id: module-updates
+id: update-modules
 tags:
   - Modules
   - Tools
   - Nebula.Tools
 ---
 
-# Find and update modules
+# Find/Update-Modules
 
 Nebula.Tools includes helpers to inspect and update installed modules using PSResourceGet (v3) or PowerShellGet (v2). Provider selection defaults to PSResourceGet and falls back to PowerShellGet when needed.
+
+## Syntax
+
+```powershell
+Find-ModulesUpdates [-Scope <String>] [-Provider <String>] [-IncludePrerelease]
+```
+
+```powershell
+Update-Modules [-Scope <String>] [-Provider <String>] [-IncludePrerelease] [-CleanupOld] [-Preview]
+```
 
 ## Find available updates
 
@@ -43,3 +53,13 @@ Notes:
 - System-scope updates require an elevated session; non-admin runs skip them with a warning.
 - `CleanupOld` removes superseded versions using the same provider.
 - All actions honor `-WhatIf` / `-Confirm` through `ShouldProcess`.
+
+## Questions and answers
+
+### Do I need admin rights to update modules?
+
+Only for system scope. `Update-Modules -Scope User` and `Find-ModulesUpdates` work without elevation; system-scope updates are skipped when not admin.
+
+### How do I clean old versions after an update?
+
+Run `Update-Modules -CleanupOld` or `Remove-OldModuleVersions -Name '<Module>' -Keep 1` for a specific module (add `-WhatIf` for a preview).

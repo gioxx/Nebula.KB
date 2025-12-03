@@ -62,6 +62,12 @@ const config = {
       colorMode: {
         respectPrefersColorScheme: true,
       },
+      docs: {
+        sidebar: {
+          autoCollapseCategories: true, // opens one category and closes the others
+          // optional: hideable: true
+        },
+      },
       navbar: {
         title: 'Nebula:KB',
         logo: {
@@ -76,13 +82,18 @@ const config = {
           //   label: 'Docs',
           // },
           {
+            to: '/docs/Nebula/Automations/intro',
+            label: 'Automations',
+            position: 'left'
+          },
+          {
             to: '/docs/Nebula/Core/intro',
             label: 'Core',
             position: 'left'
           },
           {
-            to: '/docs/Nebula/Automations/intro',
-            label: 'Automations',
+            to: '/docs/Nebula/Log/intro',
+            label: 'Log',
             position: 'left'
           },
           {
@@ -115,17 +126,17 @@ const config = {
             title: 'Modules',
             items: [
               {
-                label: 'Nebula.Core',
-                to: '/docs/Nebula/Core/intro',
-                className: 'nav-core-bold',
-              },
-              {
                 label: 'Nebula.Automations',
                 to: '/docs/Nebula/Automations/intro',
               },
               {
+                label: 'Nebula.Core',
+                to: '/docs/Nebula/Core/intro',
+                // className: 'nav-core-bold',
+              },
+              {
                 label: 'Nebula.Log',
-                to: '/docs/intro',
+                to: '/docs/Nebula/Log/intro',
               },
               {
                 label: 'Nebula.Tools',

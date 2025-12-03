@@ -1,6 +1,6 @@
 ---
-sidebar_position: 1
-title: "Connections"
+sidebar_position: 2
+title: "Connect to M365"
 description: Establish and tear down Exchange Online and Microsoft Graph sessions with one call.
 hide_title: true
 id: connect-nebula
@@ -11,22 +11,23 @@ tags:
   - Nebula.Core
 ---
 
-# Authentication to Microsoft 365
+# Connect (and disconnects) to/from Microsoft 365
 
 For full, always-up-to-date details and examples, use `Get-Help <FunctionName> -Detailed` or `-Examples`.
 
-## Connect-EOL
-Connect to Exchange Online (EXO V3), auto-importing the module and auto-detecting the current user when `-UserPrincipalName` is not supplied.
+## Syntax
 
-| Parameter | Description | Required | Default |
-| --- | --- | :---: | --- |
-| `UserPrincipalName` | UPN/e-mail for the EXO auth prompt. | No | Current user (`Find-UserConnected`) |
-| `DelegatedOrganization` | Target customer tenant (delegated admin). | No | - |
-| `PassThru` | Return the `Connect-ExchangeOnline` session object. | No | `False` |
-
-**Example**
 ```powershell
-Connect-EOL -UserPrincipalName 'admin@tenant.onmicrosoft.com'
+Connect-Nebula [-UserPrincipalName <String>] [-GraphScopes <String[]>] [-GraphTenantId <String>]
+               [-GraphDeviceCode] [-AutoInstall] [-ForceReconnect] [-SkipGraph]
+```
+
+```powershell
+Disconnect-Nebula [-ExchangeOnly] [-GraphOnly]
+```
+
+```powershell
+Connect-EOL [-UserPrincipalName <String>] [-DelegatedOrganization <String>] [-PassThru]
 ```
 
 ## Connect-Nebula
@@ -59,3 +60,27 @@ Disconnect EXO and/or Graph.
 ```powershell
 Disconnect-Nebula -GraphOnly   # keep EXO session alive
 ```
+
+## Connect-EOL
+Connect to Exchange Online (EXO V3), auto-importing the module and auto-detecting the current user when `-UserPrincipalName` is not supplied.
+
+| Parameter | Description | Required | Default |
+| --- | --- | :---: | --- |
+| `UserPrincipalName` | UPN/e-mail for the EXO auth prompt. | No | Current user (`Find-UserConnected`) |
+| `DelegatedOrganization` | Target customer tenant (delegated admin). | No | - |
+| `PassThru` | Return the `Connect-ExchangeOnline` session object. | No | `False` |
+
+**Example**
+```powershell
+Connect-EOL -UserPrincipalName 'admin@tenant.onmicrosoft.com'
+```
+
+## Questions and answers
+
+### Which services does `Connect-Nebula` connect?
+
+Exchange Online always; Microsoft Graph unless you use `-SkipGraph`. Default Graph scopes include `User.Read.All` (extend with `-GraphScopes`).
+
+### Can I operate across multiple tenants?
+
+Yes. Use `Connect-EOL -DelegatedOrganization` for delegated tenants and `Connect-Nebula -GraphTenantId` for Graph. Run `Disconnect-Nebula` before switching contexts.

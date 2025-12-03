@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 4
 title: "Groups"
 description: Export distribution/dynamic groups, M365 groups, role groups, and user memberships.
 hide_title: true
@@ -19,6 +19,32 @@ tags:
 # Group helpers
 
 Requires EXO (for DGs/role groups) and Microsoft Graph for M365 groups where applicable. For complete, up-to-date info, run `Get-Help <FunctionName> -Detailed`.
+
+## Syntax
+
+```powershell
+Export-DistributionGroups [-DistributionGroup <String[]>] [-Csv] [-CsvFolder <String>]
+```
+
+```powershell
+Export-DynamicDistributionGroups [-DynamicDistributionGroup <String[]>] [-Csv] [-CsvFolder <String>]
+```
+
+```powershell
+Get-DynamicDistributionGroupFilter -DynamicDistributionGroup <String> [-IncludeDefaults] [-AsObject]
+```
+
+```powershell
+Export-M365Group [-M365Group <String[]>] [-Csv] [-CsvFolder <String>]
+```
+
+```powershell
+Get-RoleGroupsMembers [-AsTable] [-GridView]
+```
+
+```powershell
+Get-UserGroups -UserPrincipalName <String> [-GridView]
+```
 
 ## Export-DistributionGroups
 Export distribution groups and members.

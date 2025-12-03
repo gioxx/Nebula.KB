@@ -14,11 +14,19 @@ tags:
 
 Send emails via SMTP with support for attachments, CC/BCC, and custom servers/ports.
 
+## Syntax
+
+```powershell
+Send-Mail -SMTPServer <String> -From <String> -To <String[]> -Subject <String> -Body <String>
+         [-SMTPPort <Int>] [-Cc <String[]>] [-Bcc <String[]>] [-AttachmentPath <String[]>]
+         [-PlainText] [-Credential <PSCredential>] [-UseSsl]
+```
+
 ## Parameters
 
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |
-| `SMTPServer` | Hostname or IP of the SMTP relay to use. | Yes | — |
+| `SMTPServer` | Hostname or IP of the SMTP relay to use. | Yes | - |
 | `SMTPPort` | TCP port of the SMTP relay. | No | `25` |
 | `From` | Sender email address. | Yes | - |
 | `To` | Recipient list (supports multiple values). | Yes | - |
@@ -82,8 +90,26 @@ function Send-JobAlert {
 }
 ```
 
-## Tips
-
+:::tips
 - Multiple attachments are supported; paths must exist or the function throws.
 - HTML is enabled by default. Add `-PlainText` if your relay/policy requires plain text bodies.
 - Use `-UseSsl` and `-Credential` when relaying through authenticated/TLS SMTP servers.
+:::
+
+## Questions and answers
+
+### Does Send-Mail send HTML or plain text?
+
+HTML is enabled by default via `System.Net.Mail.SmtpClient`. Add `-PlainText` to force text-only output.
+
+### Can I use TLS/authentication?
+
+Yes. Use `-UseSsl` and `-Credential` (PSCredential) for authenticated SMTP on ports like 587; ensure the relay accepts that method.
+
+### How do I handle multiple recipients?
+
+`-To`, `-Cc`, and `-Bcc` accept arrays: `-To "a@contoso.com","b@contoso.com"`.
+
+### Are attachments supported?
+
+Yes. Use `-AttachmentPath`; paths must exist or the cmdlet throws.

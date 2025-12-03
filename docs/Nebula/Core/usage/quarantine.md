@@ -1,6 +1,6 @@
 ---
-sidebar_position: 3
-title: "Quarantine toolkit"
+sidebar_position: 6
+title: "Quarantine"
 description: Search, export, release, or delete Exchange Online quarantine items.
 hide_title: true
 id: quarantine
@@ -15,6 +15,27 @@ tags:
 # Quarantine toolkit
 
 All commands require an active EXO session (`Test-EOLConnection` is called internally). For complete and current details, run `Get-Help <FunctionName> -Detailed`.
+
+## Syntax
+
+```powershell
+Export-QuarantineEml -MessageId <String> [-DestinationFolder <String>] [-OpenFile] [-ReleaseToAll] [-ReportFalsePositive]
+```
+
+```powershell
+Get-QuarantineFrom -SenderAddress <String[]> [-IncludeReleased]
+Get-QuarantineFromDomain -SenderDomain <String[]> [-IncludeReleased]
+```
+
+```powershell
+Get-QuarantineToRelease -Interval <Int> [-ChooseDayFromCalendar] [-GridView] [-Csv] [-Html]
+                       [-OutputFolder <String>] [-ReleaseSelected] [-DeleteSelected] [-ReportFalsePositive]
+```
+
+```powershell
+Unlock-QuarantineFrom -SenderAddress <String[]> [-ReportFalsePositive] [-Confirm]
+Unlock-QuarantineMessageId -MessageId <String[]> [-ReportFalsePositive] [-Confirm]
+```
 
 ## Export-QuarantineEml
 Fetch a quarantined message by MessageId, save it as EML, optionally open it, and optionally release to all recipients.
@@ -81,4 +102,16 @@ Bulk-release messages for specific senders or message IDs (to all recipients, wi
 Unlock-QuarantineFrom -SenderAddress 'sender@contoso.com' -ReportFalsePositive -Confirm:$false
 ```
 
-**Tip:** The utilities page documents `Format-MessageIDsFromClipboard` (`mids`) for quickly formatting/releasing MessageIds you copied.
+:::tip
+The utilities page documents `Format-MessageIDsFromClipboard` (`mids`) for quickly formatting/releasing MessageIds you copied.
+:::
+
+## Questions and answers
+
+### Is EXO required for quarantine functions?
+
+Yes. Quarantine cmdlets call `Test-EOLConnection` and expect an active EXO session (`Connect-EOL`/`Connect-Nebula`).
+
+### How do I handle confirmations for destructive actions?
+
+Cmdlets like `Unlock-QuarantineFrom` or `Remove-MboxPermission` support `-Confirm:$false` / `-WhatIf` via `SupportsShouldProcess`. Use them to automate or dry run.

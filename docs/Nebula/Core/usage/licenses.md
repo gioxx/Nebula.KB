@@ -1,6 +1,6 @@
 ---
-sidebar_position: 4
-title: "License reports"
+sidebar_position: 5
+title: "Licenses"
 description: Export tenant license assignments and inspect user licenses with friendly SKU names.
 hide_title: true
 id: licenses
@@ -15,6 +15,20 @@ tags:
 # License reports
 
 Backed by Microsoft Graph with a cached SKU catalog. For full details and examples, run `Get-Help <FunctionName> -Detailed`.
+
+## Syntax
+
+```powershell
+Export-MsolAccountSku [-CsvFolder <String>] [-ForceLicenseCatalogRefresh]
+```
+
+```powershell
+Get-UserMsolAccountSku -UserPrincipalName <String> [-ForceLicenseCatalogRefresh]
+```
+
+```powershell
+Update-LicenseCatalog [-Force]
+```
 
 ## Export-MsolAccountSku
 Export all users with assigned licenses to CSV, mapping SKU part numbers to friendly names.
@@ -53,3 +67,9 @@ Refresh the local license catalog cache (download SKU mappings).
 ```powershell
 Update-LicenseCatalog -Force
 ```
+
+## Questions and answers
+
+### Can I export licenses/mailboxes without Graph?
+
+No. License functions and some statistics require Microsoft Graph for complete data. Ensure `Connect-Nebula` requested the right scopes.

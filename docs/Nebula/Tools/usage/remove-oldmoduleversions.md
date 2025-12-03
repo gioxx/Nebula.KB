@@ -1,18 +1,24 @@
 ---
-sidebar_position: 4
-title: "Remove old module versions"
+sidebar_position: 2
+title: "Remove-OldModuleVersions"
 description: Remove stale module folders while keeping the most recent releases.
 hide_title: true
-id: cleanup-old-versions
+id: remove-oldmoduleversions
 tags:
   - Modules
   - Tools
   - Nebula.Tools
 ---
 
-# Remove old module versions
+# Remove-OldModuleVersions
 
 `Remove-OldModuleVersions` removes stale module folders while keeping the most recent releases.
+
+## Syntax
+
+```powershell
+Remove-OldModuleVersions -Name <String> [-Keep <Int>] [-WhatIf] [-Confirm]
+```
 
 ## Example
 
