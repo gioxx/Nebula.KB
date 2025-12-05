@@ -155,6 +155,10 @@ const config = {
                 label: 'PSADT Log Viewer',
                 to: '/psadt-log-viewer',
               },
+              {
+                label: 'Quarantine Email Analyzer',
+                to: '/quarantine-email-analyzer',
+              },
             ],
           },
           {
