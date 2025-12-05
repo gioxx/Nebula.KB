@@ -1,16 +1,16 @@
 ---
 sidebar_position: 50
-title: "Cookbook"
+title: "More examples"
 description: Practical recipes that show common ways to use Nebula.Log.
 hide_title: true
-id: cookbook
+id: more-examples
 tags:
-  - Cookbook
+  - Examples
   - Log
   - Nebula.Log
 ---
 
-# Cookbook
+# More examples
 
 Practical recipes that show common ways to use Nebula.Log.
 

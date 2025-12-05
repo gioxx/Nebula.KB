@@ -1,18 +1,18 @@
 ---
 sidebar_position: 50
-title: "Cookbook"
-description: Practical recipes for Nebula.Tools (passwords, CSV, modules, PowerShell 7).
+title: "More examples"
+description: Practical recipes that show common ways to use Nebula.Tools.
 hide_title: true
-id: cookbook
+id: more-examples
 tags:
-  - Cookbook
+  - Examples
   - Tools
   - Nebula.Tools
 ---
 
-# Cookbook
+# More examples
 
-Practical recipes for Nebula.Tools (passwords, CSV handling, module hygiene, PowerShell 7).
+Practical recipes that show common ways to use Nebula.Tools.
 
 ## Generate multiple passwords and copy them
 

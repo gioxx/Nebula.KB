@@ -457,8 +457,19 @@ export default function QuarantineEmailAnalyzer() {
             `}</style>
 
             <main className="container margin-vert--lg">
-                <h1 className="margin-bottom--sm">Quarantine Email Analyzer</h1>
-                <p>Upload or paste a quarantine CSV to quickly filter senders, recipients, and decide what to release.</p>
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '0.35rem' }}>
+                    <img
+                        src="/img/nebula-tool-badge.svg"
+                        alt="Quarantine Email Analyzer icon"
+                        style={{ width: '82px', height: '82px' }}
+                    />
+                    <div>
+                        <h1 className="margin-bottom--sm">Quarantine Email Analyzer</h1>
+                        <p style={{ marginBottom: 0 }}>
+                            Upload or paste a quarantine CSV to quickly filter senders, recipients, and decide what to release.
+                        </p>
+                    </div>
+                </div>
                 <p style={{ fontSize: '.85rem', color: 'var(--ifm-color-secondary-text)', marginTop: '-0.35rem' }}>
                     <Admonition type="danger" title="Data Privacy">
                         Everything stays in your browser; no files are uploaded or stored on the server.<br/>

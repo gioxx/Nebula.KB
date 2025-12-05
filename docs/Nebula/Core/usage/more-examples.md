@@ -1,18 +1,18 @@
 ---
-sidebar_position: 9
-title: "Cookbook"
-description: Practical recipes for Nebula.Core (connections, licenses, quarantine, mailboxes, groups).
+sidebar_position: 50
+title: "More examples"
+description: Practical recipes that show common ways to use Nebula.Core.
 hide_title: true
-id: cookbook
+id: more-examples
 tags:
-  - Cookbook
+  - Examples
   - Core
   - Nebula.Core
 ---
 
-# Cookbook
+# More examples
 
-Practical recipes for Nebula.Core (connections, licenses, quarantine, mailboxes, groups).
+Practical recipes that show common ways to use Nebula.Core.
 
 ## Connect EXO and Graph in one call
 

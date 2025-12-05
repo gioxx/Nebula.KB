@@ -396,16 +396,25 @@ export default function PsadtLogViewerPage() {
             `}</style>
 
             <main className="container margin-vert--lg">
-                <h1 className="margin-bottom--md">PSADT Log Viewer</h1>
-                <p className="margin-bottom--md">
-                    This tool lets you inspect PSAppDeployToolkit / CMTrace-style log files directly in your browser.<br />
-                    You can either load a log file or paste its content, then filter by level, component and message text.
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <img
+                        src="/img/psadt-log-search.svg"
+                        alt="PSADT log search icon"
+                        style={{ width: '82px', height: '82px' }}
+                    />
+                    <div>
+                        <h1 className="margin-bottom--sm">PSADT Log Viewer</h1>
+                        <p className="margin-bottom--md" style={{ marginBottom: 0 }}>
+                            This tool lets you inspect PSAppDeployToolkit / CMTrace-style log files directly in your browser.<br />
+                            You can either load a log file or paste its content, then filter by level, component and message text.
+                        </p>
+                    </div>
+                </div>
 
-                </p>
-                
-                <p className="margin-bottom--md">
-                    <Admonition type="info" title="Info">
-                        The log is processed by your browser; no files are actually uploaded or saved on the server.
+                <p className="margin-bottom--md" style={{ fontSize: '.85rem', color: 'var(--ifm-color-secondary-text)', marginTop: '-0.35rem' }}>
+                    <Admonition type="danger" title="Data Privacy">
+                        Everything stays in your browser; no files are uploaded or stored on the server.<br/>
+                        All analysis is performed by your browser.
                     </Admonition>
                 </p>
 

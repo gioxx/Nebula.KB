@@ -1,7 +1,7 @@
 ---
 sidebar_position: 8
 title: "Utilities"
-description: Clipboard helpers for quarantine MessageIds and e-mail address lists.
+description: Clipboard helpers for quarantine identities and e-mail address lists.
 hide_title: true
 id: utilities
 tags:
@@ -15,32 +15,28 @@ tags:
 
 For full details and examples, run `Get-Help Format-MessageIDsFromClipboard -Detailed` or `Get-Help Format-SortedEmailsFromClipboard -Detailed`.
 
-## Syntax
-
-```powershell
-Format-MessageIDsFromClipboard [-NoRelease] [-PassThru]
-```
-
-```powershell
-Format-SortedEmailsFromClipboard [-PassThru]
-```
-
 ## Format-MessageIDsFromClipboard
 
 :::note
 The function name is `Format-MessageIDsFromClipboard`. The legacy alias `mids` remains available for backward compatibility.
 :::
 
-Reads MessageId values (one per line) from the clipboard, normalizes them for quarantine commands, copies a quoted/comma-separated list back to the clipboard, and can release the messages immediately.
+Reads quarantine identities (one per line) from the clipboard, deduplicates them, copies a quoted/comma-separated list back to the clipboard, and can release the messages immediately using `Unlock-QuarantineMessageId -Identity`.
+
+**Syntax**
+
+```powershell
+Format-MessageIDsFromClipboard [-NoRelease] [-PassThru]
+```
 
 | Parameter | Description | Default |
 | --- | --- | --- |
-| `NoRelease` | Skip automatic release of the MessageIds. | `False` |
+| `NoRelease` | Skip automatic release of the identities. | `False` |
 | `PassThru` | Emit the formatted string to the pipeline. | `False` |
 
 **Example**
 ```powershell
-# Format and release immediately
+# Format and release immediately (by Identity)
 Format-MessageIDsFromClipboard
 
 # Format only, keep the list in the clipboard and show it
@@ -54,6 +50,12 @@ The function name is `Format-SortedEmailsFromClipboard`. The legacy alias `fse` 
 :::
 
 Extracts e-mail addresses from clipboard text, deduplicates and sorts them, then copies a quoted/comma-separated list back to the clipboard.
+
+**Syntax**
+
+```powershell
+Format-SortedEmailsFromClipboard [-PassThru]
+```
 
 | Parameter | Description | Default |
 | --- | --- | --- |

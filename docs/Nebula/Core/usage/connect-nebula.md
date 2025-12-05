@@ -15,23 +15,15 @@ tags:
 
 For full, always-up-to-date details and examples, use `Get-Help <FunctionName> -Detailed` or `-Examples`.
 
-## Syntax
+## Connect-Nebula
+One-shot helper that ensures EXO is connected, then (optionally) connects Microsoft Graph.
+
+**Syntax**
 
 ```powershell
 Connect-Nebula [-UserPrincipalName <String>] [-GraphScopes <String[]>] [-GraphTenantId <String>]
                [-GraphDeviceCode] [-AutoInstall] [-ForceReconnect] [-SkipGraph]
 ```
-
-```powershell
-Disconnect-Nebula [-ExchangeOnly] [-GraphOnly]
-```
-
-```powershell
-Connect-EOL [-UserPrincipalName <String>] [-DelegatedOrganization <String>] [-PassThru]
-```
-
-## Connect-Nebula
-One-shot helper that ensures EXO is connected, then (optionally) connects Microsoft Graph.
 
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |
@@ -51,6 +43,12 @@ Connect-Nebula -GraphScopes 'User.Read.All','Directory.Read.All' -AutoInstall
 ## Disconnect-Nebula
 Disconnect EXO and/or Graph.
 
+**Syntax**
+
+```powershell
+Disconnect-Nebula [-ExchangeOnly] [-GraphOnly]
+```
+
 | Parameter | Description | Default |
 | --- | --- | --- |
 | `ExchangeOnly` | Disconnect only EXO. | `False` |
@@ -63,6 +61,12 @@ Disconnect-Nebula -GraphOnly   # keep EXO session alive
 
 ## Connect-EOL
 Connect to Exchange Online (EXO V3), auto-importing the module and auto-detecting the current user when `-UserPrincipalName` is not supplied.
+
+**Syntax**
+
+```powershell
+Connect-EOL [-UserPrincipalName <String>] [-DelegatedOrganization <String>] [-PassThru]
+```
 
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |

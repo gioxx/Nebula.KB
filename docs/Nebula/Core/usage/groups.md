@@ -20,34 +20,14 @@ tags:
 
 Requires EXO (for DGs/role groups) and Microsoft Graph for M365 groups where applicable. For complete, up-to-date info, run `Get-Help <FunctionName> -Detailed`.
 
-## Syntax
+## Export-DistributionGroups
+Export distribution groups and members.
+
+**Syntax**
 
 ```powershell
 Export-DistributionGroups [-DistributionGroup <String[]>] [-Csv] [-CsvFolder <String>]
 ```
-
-```powershell
-Export-DynamicDistributionGroups [-DynamicDistributionGroup <String[]>] [-Csv] [-CsvFolder <String>]
-```
-
-```powershell
-Get-DynamicDistributionGroupFilter -DynamicDistributionGroup <String> [-IncludeDefaults] [-AsObject]
-```
-
-```powershell
-Export-M365Group [-M365Group <String[]>] [-Csv] [-CsvFolder <String>]
-```
-
-```powershell
-Get-RoleGroupsMembers [-AsTable] [-GridView]
-```
-
-```powershell
-Get-UserGroups -UserPrincipalName <String> [-GridView]
-```
-
-## Export-DistributionGroups
-Export distribution groups and members.
 
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |
@@ -63,6 +43,12 @@ Export-DistributionGroups -DistributionGroup "IT Team" -CsvFolder 'C:\Temp\DGs'
 ## Export-DynamicDistributionGroups
 Export dynamic DGs and evaluated members.
 
+**Syntax**
+
+```powershell
+Export-DynamicDistributionGroups [-DynamicDistributionGroup <String[]>] [-Csv] [-CsvFolder <String>]
+```
+
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |
 | `DynamicDistributionGroup` | Dynamic DG identity. Pipeline accepted. | No | All dynamic DGs |
@@ -75,7 +61,13 @@ Export-DynamicDistributionGroups -CsvFolder 'C:\Temp\DynDGs'
 ```
 
 ## Get-DynamicDistributionGroupFilter
-Show the simplified filter of a dynamic DG.
+Show the simplified filter of a dynamic distribution group.
+
+**Syntax**
+
+```powershell
+Get-DynamicDistributionGroupFilter -DynamicDistributionGroup <String> [-IncludeDefaults] [-AsObject]
+```
 
 | Parameter | Description | Required |
 | --- | --- | :---: |
@@ -91,6 +83,12 @@ Get-DynamicDistributionGroupFilter -DynamicDistributionGroup "All Mailboxes"
 ## Export-M365Group
 Export Microsoft 365 groups (members/owners).
 
+**Syntax**
+
+```powershell
+Export-M365Group [-M365Group <String[]>] [-Csv] [-CsvFolder <String>]
+```
+
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |
 | `M365Group` | Group identity (name/alias/SMTP). Pipeline accepted. | No | All M365 groups |
@@ -105,6 +103,12 @@ Export-M365Group -M365Group "Project A" -CsvFolder 'C:\Temp\M365'
 ## Get-RoleGroupsMembers
 List Exchange Online role groups and members.
 
+**Syntax**
+
+```powershell
+Get-RoleGroupsMembers [-AsTable] [-GridView]
+```
+
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |
 | `AsTable` | Show formatted table output. | No | `False` (objects) |
@@ -118,16 +122,18 @@ Get-RoleGroupsMembers -AsTable
 ## Get-UserGroups
 Show the groups (DGs/M365) a user/contact/group belongs to.
 
+**Syntax**
+
+```powershell
+Get-UserGroups -UserPrincipalName <String> [-GridView]
+```
+
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |
 | `UserPrincipalName` | User/contact/group identity. | Yes | - |
 | `GridView` | Show details in Out-GridView. | No | `False` |
 
-**Examples**
+**Example**
 ```powershell
-Export-DistributionGroups -CSVFolder 'C:\Temp\DGs'
-
-Export-DynamicDistributionGroups -CSVFolder 'C:\Temp\DynDGs'
-
 Get-UserGroups -UserPrincipalName 'user@contoso.com'
 ```

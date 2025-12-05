@@ -16,29 +16,14 @@ tags:
 
 All commands require an active EXO session (`Test-EOLConnection` is called internally). For complete and current details, run `Get-Help <FunctionName> -Detailed`.
 
-## Syntax
+## Export-QuarantineEml
+Fetch a quarantined message by MessageId, save it as EML, optionally open it, and optionally release to all recipients.
+
+**Syntax**
 
 ```powershell
 Export-QuarantineEml -MessageId <String> [-DestinationFolder <String>] [-OpenFile] [-ReleaseToAll] [-ReportFalsePositive]
 ```
-
-```powershell
-Get-QuarantineFrom -SenderAddress <String[]> [-IncludeReleased]
-Get-QuarantineFromDomain -SenderDomain <String[]> [-IncludeReleased]
-```
-
-```powershell
-Get-QuarantineToRelease -Interval <Int> [-ChooseDayFromCalendar] [-GridView] [-Csv] [-Html]
-                       [-OutputFolder <String>] [-ReleaseSelected] [-DeleteSelected] [-ReportFalsePositive]
-```
-
-```powershell
-Unlock-QuarantineFrom -SenderAddress <String[]> [-ReportFalsePositive] [-Confirm]
-Unlock-QuarantineMessageId -MessageId <String[]> [-ReportFalsePositive] [-Confirm]
-```
-
-## Export-QuarantineEml
-Fetch a quarantined message by MessageId, save it as EML, optionally open it, and optionally release to all recipients.
 
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |
@@ -58,6 +43,13 @@ Export-QuarantineEml -MessageId '20230617142935.F5B74194B266E458@contoso.com' `
 ## Get-QuarantineFrom / Get-QuarantineFromDomain
 List quarantined messages by sender or sender domain.
 
+**Syntax**
+
+```powershell
+Get-QuarantineFrom -SenderAddress <String[]> [-IncludeReleased]
+Get-QuarantineFromDomain -SenderDomain <String[]> [-IncludeReleased]
+```
+
 | Parameter | Description | Required | Applies to |
 | --- | --- | :---: | --- |
 | `SenderAddress` | Sender address(es). Pipeline accepted. | Yes | Get-QuarantineFrom |
@@ -72,6 +64,13 @@ Get-QuarantineFromDomain -SenderDomain 'contoso.com'
 
 ## Get-QuarantineToRelease
 Pull quarantine items for a date range, optionally pick items via Out-GridView, export CSV/HTML, and release or delete in bulk.
+
+**Syntax**
+
+```powershell
+Get-QuarantineToRelease -Interval <Int> [-ChooseDayFromCalendar] [-GridView] [-Csv] [-Html]
+                       [-OutputFolder <String>] [-ReleaseSelected] [-DeleteSelected] [-ReportFalsePositive]
+```
 
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |
@@ -89,12 +88,20 @@ Get-QuarantineToRelease -Interval 7 -GridView -ReleaseSelected -ReportFalsePosit
 ```
 
 ## Unlock-QuarantineFrom / Unlock-QuarantineMessageId
-Bulk-release messages for specific senders or message IDs (to all recipients, with optional false-positive report). Confirmation is controlled by `SupportsShouldProcess`; use `-Confirm:$false` when you want to suppress prompts.
+Bulk-release messages for specific senders or message IDs/identities (to all recipients, with optional false-positive report). Confirmation is controlled by `SupportsShouldProcess`; use `-Confirm:$false` when you want to suppress prompts.
+
+**Syntax**
+
+```powershell
+Unlock-QuarantineFrom -SenderAddress <String[]> [-ReportFalsePositive] [-Confirm]
+Unlock-QuarantineMessageId [-MessageId <String[]>] [-Identity <String[]>] [-ReportFalsePositive] [-Confirm]
+```
 
 | Parameter | Description | Required | Applies to |
 | --- | --- | :---: | --- |
 | `SenderAddress` | Sender address(es). Pipeline accepted. | Yes | Unlock-QuarantineFrom |
-| `MessageId` | MessageId values (with/without angle brackets). Pipeline accepted. | Yes | Unlock-QuarantineMessageId |
+| `MessageId` | MessageId values (with/without angle brackets). Pipeline accepted. | One of MessageId/Identity | Unlock-QuarantineMessageId |
+| `Identity` | Quarantine Identity values (e.g., GUID\GUID). Pipeline accepted. | One of MessageId/Identity | Unlock-QuarantineMessageId |
 | `ReportFalsePositive` | Also report as false positive. | No | Both
 
 **Example**
@@ -103,7 +110,7 @@ Unlock-QuarantineFrom -SenderAddress 'sender@contoso.com' -ReportFalsePositive -
 ```
 
 :::tip
-The utilities page documents `Format-MessageIDsFromClipboard` (`mids`) for quickly formatting/releasing MessageIds you copied.
+`Format-MessageIDsFromClipboard` (`mids`) now prepares quarantine identities and can trigger `Unlock-QuarantineMessageId -Identity` directly from clipboard content.
 :::
 
 ## Questions and answers

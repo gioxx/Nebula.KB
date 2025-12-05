@@ -1,18 +1,18 @@
 ---
-sidebar_position: 3
-title: "Cookbook"
-description: Practical recipes for Nebula.Automations (SMTP, Graph helper, and module behavior).
+sidebar_position: 50
+title: "More examples"
+description: Practical recipes that show common ways to use Nebula.Automations.
 hide_title: true
-id: cookbook
+id: more-examples
 tags:
-  - Cookbook
+  - Examples
   - Automations
   - Nebula.Automations
 ---
 
-# Cookbook
+# More examples
 
-Practical recipes for Nebula.Automations (SMTP, Graph helper, and module behavior).
+Practical recipes that show common ways to use Nebula.Automations.
 
 ## Send a styled HTML e-mail
 
