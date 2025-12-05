@@ -86,6 +86,9 @@ function filterRows(rows, filter) {
         if (filter.excludedDomains && filter.excludedDomains.has(r.senderDomain)) {
             return false;
         }
+        if (filter.excludedSubjects && filter.excludedSubjects.has(r.subject)) {
+            return false;
+        }
         if (filter.flagSelection && Object.keys(filter.flagSelection).length) {
             const rowFlags = [];
             const isFrequent = (filter.senderDomainCount?.[r.senderDomain] || 0) > 1;
@@ -164,6 +167,7 @@ export default function QuarantineEmailAnalyzer() {
     const [excludedRows, setExcludedRows] = useState(new Set());
     const [excludedSenders, setExcludedSenders] = useState(new Set());
     const [excludedDomains, setExcludedDomains] = useState(new Set());
+    const [excludedSubjects, setExcludedSubjects] = useState(new Set());
     const bottomScrollRef = useRef(null);
     const tableRef = useRef(null);
 
@@ -178,8 +182,9 @@ export default function QuarantineEmailAnalyzer() {
                 excludedRows,
                 excludedSenders,
                 excludedDomains,
+                excludedSubjects,
             }),
-        [rows, filterText, domainSelection, flagSelection, summary.senderDomainCount, excludedRows, excludedSenders, excludedDomains]
+        [rows, filterText, domainSelection, flagSelection, summary.senderDomainCount, excludedRows, excludedSenders, excludedDomains, excludedSubjects]
     );
     const sortedDomains = useMemo(() => {
         const counts = summary.senderDomainCount || {};
@@ -367,6 +372,7 @@ export default function QuarantineEmailAnalyzer() {
         setExcludedRows(new Set());
         setExcludedSenders(new Set());
         setExcludedDomains(new Set());
+        setExcludedSubjects(new Set());
     }
 
     function excludeRow(id) {
@@ -391,6 +397,15 @@ export default function QuarantineEmailAnalyzer() {
         setExcludedDomains((prev) => {
             const next = new Set(prev);
             next.add(domain);
+            return next;
+        });
+    }
+
+    function excludeSubject(subject) {
+        if (!subject) return;
+        setExcludedSubjects((prev) => {
+            const next = new Set(prev);
+            next.add(subject);
             return next;
         });
     }
@@ -737,6 +752,16 @@ export default function QuarantineEmailAnalyzer() {
                                                         {expandedCells[`${r.id}-subject`] ? 'Collapse' : 'Expand'}
                                                     </button>
                                                 )}
+                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginTop: '0.2rem' }}>
+                                                    <button
+                                                        type="button"
+                                                        className="button button--link button--sm"
+                                                        style={{ padding: 0 }}
+                                                        onClick={() => excludeSubject(r.subject)}
+                                                    >
+                                                        Exclude Subject
+                                                    </button>
+                                                </div>
                                                 <div style={{ marginTop: '0.25rem' }}>
                                                     {summary.senderDomainCount[r.senderDomain] > 1 && (
                                                         <span className="qea-flag qea-flag-info">Frequent</span>
