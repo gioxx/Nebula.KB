@@ -6,8 +6,8 @@ hide_title: true
 id: statistics
 tags:
   - Export-MboxStatistics
-  - Statistics
   - Nebula.Core
+  - Statistics
 ---
 
 # Statistics

@@ -5,9 +5,9 @@ description: Practical recipes that show common ways to use Nebula.Tools.
 hide_title: true
 id: more-examples
 tags:
+  - Nebula.Tools
   - Examples
   - Tools
-  - Nebula.Tools
 ---
 
 # More examples

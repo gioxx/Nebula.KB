@@ -5,9 +5,9 @@ description: Practical recipes that show common ways to use Nebula.Log.
 hide_title: true
 id: more-examples
 tags:
+  - Nebula.Log
   - Examples
   - Log
-  - Nebula.Log
 ---
 
 # More examples

@@ -5,10 +5,11 @@ description: Run the official Microsoft helper script to install or upgrade Powe
 hide_title: true
 id: update-ps7
 tags:
+  - Update-PS7
+  - Nebula.Tools
   - PowerShell
   - PowerShell 7
   - Tools
-  - Nebula.Tools
 ---
 
 # Update-PS7

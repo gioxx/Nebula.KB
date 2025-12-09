@@ -5,11 +5,12 @@ description: Export tenant license assignments and inspect user licenses with fr
 hide_title: true
 id: licenses
 tags:
+  - Add-UserMsolAccountSku
   - Export-MsolAccountSku
-  - Add-MsolAccountSku
   - Get-TenantMsolAccountSku
   - Get-UserMsolAccountSku
-  - Move-MsolAccountSku
+  - Move-UserMsolAccountSku
+  - Remove-UserMsolAccountSku
   - Update-LicenseCatalog
   - Nebula.Core
   - Licenses
@@ -18,6 +19,42 @@ tags:
 # License reports
 
 Backed by Microsoft Graph with a cached SKU catalog. For full details and examples, run `Get-Help <FunctionName> -Detailed`.
+
+## Add-UserMsolAccountSku
+Assign licenses by friendly name (resolved via catalog), SKU part number, or SKU ID to a user.
+
+**Syntax**
+
+```powershell
+Add-UserMsolAccountSku -UserPrincipalName <String> -License <String[]> [-ForceLicenseCatalogRefresh]
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `UserPrincipalName` | Target user UPN or object ID. | Yes |
+| `License` | Friendly name, SKU part number, or SKU ID. Accepts multiple values. | Yes |
+| `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No |
+
+**Examples**
+```powershell
+Add-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -License 'Microsoft 365 E3'
+```
+
+```powershell
+Add-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -License 'ENTERPRISEPACK','VISIOCLIENT'
+```
+
+```powershell
+Add-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -License '18181a46-0d4e-45cd-891e-60aabd171b4e'
+```
+
+:::note
+If the target user has no `UsageLocation`, Nebula.Core sets it automatically using the `UsageLocation` key from your configuration (default `US`, override via `%USERPROFILE%\.NebulaCore\settings.psd1`). If updating the usage location fails, license assignment stops.
+:::
+
+:::warning
+If the tenant does not have units available for the requested license, the assignment is avoided and a warning message is displayed.
+:::
 
 ## Export-MsolAccountSku
 Export all users with assigned licenses to CSV, mapping SKU part numbers to friendly names.
@@ -77,13 +114,32 @@ Get-TenantMsolAccountSku [-ForceLicenseCatalogRefresh] [-AsTable] [-GridView]
 Get-TenantMsolAccountSku -AsTable
 ```
 
-## Add-MsolAccountSku
-Assign licenses by friendly name (resolved via catalog), SKU part number, or SKU ID to a user.
+## Move-UserMsolAccountSku
+Move all licenses (with disabled plans preserved) from one user to another.
 
 **Syntax**
 
 ```powershell
-Add-MsolAccountSku -UserPrincipalName <String> -License <String[]> [-ForceLicenseCatalogRefresh]
+Move-UserMsolAccountSku -SourceUserPrincipalName <String> -DestinationUserPrincipalName <String>
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `SourceUserPrincipalName` | Source user UPN or object ID. | Yes |
+| `DestinationUserPrincipalName` | Destination user UPN or object ID. | Yes |
+
+**Example**
+```powershell
+Move-UserMsolAccountSku -SourceUserPrincipalName 'user1@contoso.com' -DestinationUserPrincipalName 'user2@contoso.com'
+```
+
+## Remove-UserMsolAccountSku
+Remove licenses from a user by friendly name (resolved via catalog), SKU part number, or SKU ID.
+
+**Syntax**
+
+```powershell
+Remove-UserMsolAccountSku -UserPrincipalName <String> -License <String[]> [-ForceLicenseCatalogRefresh]
 ```
 
 | Parameter | Description | Required |
@@ -94,36 +150,15 @@ Add-MsolAccountSku -UserPrincipalName <String> -License <String[]> [-ForceLicens
 
 **Examples**
 ```powershell
-Add-MsolAccountSku -UserPrincipalName 'user@contoso.com' -License 'Microsoft 365 E3'
-Add-MsolAccountSku -UserPrincipalName 'user@contoso.com' -License 'ENTERPRISEPACK','VISIOCLIENT'
-Add-MsolAccountSku -UserPrincipalName 'user@contoso.com' -License '18181a46-0d4e-45cd-891e-60aabd171b4e'
+Remove-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -License 'Microsoft 365 E3'
 ```
 
-:::note
-If the target user has no `UsageLocation`, Nebula.Core sets it automatically using the `UsageLocation` key from your configuration (default `US`, override via `%USERPROFILE%\.NebulaCore\settings.psd1`). If updating the usage location fails, license assignment stops.
-:::
-
-:::warning
-If the tenant does not have units available for the requested license, the assignment is avoided and a warning message is displayed.
-:::
-
-## Move-MsolAccountSku
-Move all licenses (with disabled plans preserved) from one user to another.
-
-**Syntax**
-
 ```powershell
-Move-MsolAccountSku -SourceUserPrincipalName <String> -DestinationUserPrincipalName <String>
+Remove-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -License 'ENTERPRISEPACK','VISIOCLIENT'
 ```
 
-| Parameter | Description | Required |
-| --- | --- | :---: |
-| `SourceUserPrincipalName` | Source user UPN or object ID. | Yes |
-| `DestinationUserPrincipalName` | Destination user UPN or object ID. | Yes |
-
-**Example**
 ```powershell
-Move-MsolAccountSku -SourceUserPrincipalName 'user1@contoso.com' -DestinationUserPrincipalName 'user2@contoso.com'
+Remove-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -License '18181a46-0d4e-45cd-891e-60aabd171b4e'
 ```
 
 ## Update-LicenseCatalog

@@ -5,9 +5,9 @@ description: Practical recipes that show common ways to use Nebula.Automations.
 hide_title: true
 id: more-examples
 tags:
+  - Nebula.Automations
   - Examples
   - Automations
-  - Nebula.Automations
 ---
 
 # More examples

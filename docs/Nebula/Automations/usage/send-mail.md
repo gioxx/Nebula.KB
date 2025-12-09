@@ -90,7 +90,7 @@ function Send-JobAlert {
 }
 ```
 
-:::tips
+:::tip
 - Multiple attachments are supported; paths must exist or the function throws.
 - HTML is enabled by default. Add `-PlainText` if your relay/policy requires plain text bodies.
 - Use `-UseSsl` and `-Credential` when relaying through authenticated/TLS SMTP servers.

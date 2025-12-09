@@ -40,25 +40,6 @@ Connect-Nebula [-UserPrincipalName <String>] [-GraphScopes <String[]>] [-GraphTe
 Connect-Nebula -GraphScopes 'User.Read.All','Directory.Read.All' -AutoInstall
 ```
 
-## Disconnect-Nebula
-Disconnect EXO and/or Graph.
-
-**Syntax**
-
-```powershell
-Disconnect-Nebula [-ExchangeOnly] [-GraphOnly]
-```
-
-| Parameter | Description | Default |
-| --- | --- | --- |
-| `ExchangeOnly` | Disconnect only EXO. | `False` |
-| `GraphOnly` | Disconnect only Graph. | `False` |
-
-**Example**
-```powershell
-Disconnect-Nebula -GraphOnly   # keep EXO session alive
-```
-
 ## Connect-EOL
 Connect to Exchange Online (EXO V3), auto-importing the module and auto-detecting the current user when `-UserPrincipalName` is not supplied.
 
@@ -77,6 +58,25 @@ Connect-EOL [-UserPrincipalName <String>] [-DelegatedOrganization <String>] [-Pa
 **Example**
 ```powershell
 Connect-EOL -UserPrincipalName 'admin@tenant.onmicrosoft.com'
+```
+
+## Disconnect-Nebula
+Disconnect EXO and/or Graph.
+
+**Syntax**
+
+```powershell
+Disconnect-Nebula [-ExchangeOnly] [-GraphOnly]
+```
+
+| Parameter | Description | Default |
+| --- | --- | --- |
+| `ExchangeOnly` | Disconnect only EXO. | `False` |
+| `GraphOnly` | Disconnect only Graph. | `False` |
+
+**Example**
+```powershell
+Disconnect-Nebula -GraphOnly   # keep EXO session alive
 ```
 
 ## Questions and answers

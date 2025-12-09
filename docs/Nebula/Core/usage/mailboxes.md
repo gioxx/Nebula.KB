@@ -7,9 +7,18 @@ id: mailboxes
 tags:
   - Add-MboxAlias
   - Add-MboxPermission
+  - Export-MboxAlias
   - Export-MboxPermission
-  - New-SharedMailbox
+  - Get-MboxAlias
+  - Get-MboxPermission
   - Get-UserLastSeen
+  - New-SharedMailbox
+  - Remove-MboxAlias
+  - Remove-MboxPermission
+  - Set-MboxLanguage
+  - Set-MboxRulesQuota
+  - Set-SharedMboxCopyForSent
+  - Test-SharedMailboxCompliance
   - Nebula.Core
 ---
 
@@ -24,6 +33,9 @@ Add or remove SMTP aliases on a recipient.
 
 ```powershell
 Add-MboxAlias -SourceMailbox <String> -MailboxAlias <String>
+```
+
+```powershell
 Remove-MboxAlias -SourceMailbox <String> -MailboxAlias <String>
 ```
 
@@ -52,8 +64,17 @@ Manage mailbox permissions and export them to CSV.
 
 ```powershell
 Add-MboxPermission -Identity <String> -User <String> -AccessRights <String[]> [-AutoMapping]
+```
+
+```powershell
 Remove-MboxPermission -Identity <String> -User <String> -AccessRights <String[]>
+```
+
+```powershell
 Get-MboxPermission -Identity <String>
+```
+
+```powershell
 Export-MboxPermission -Identity <String> [-CsvFolder <String>]
 ```
 
@@ -89,6 +110,9 @@ List or export aliases for auditing.
 
 ```powershell
 Get-MboxAlias -Identity <String>
+```
+
+```powershell
 Export-MboxAlias -Identity <String> [-CsvFolder <String>]
 ```
 
@@ -104,6 +128,51 @@ Get-MboxAlias -Identity 'user@contoso.com'
 
 ```powershell
 Export-MboxAlias -Identity 'user@contoso.com' -CsvFolder 'C:\Temp'
+```
+
+## Get-UserLastSeen
+Return the most recent activity for a mailbox combining Exchange LastUserActionTime and (when available) Entra ID sign-in logs.
+
+**Syntax**
+
+```powershell
+Get-UserLastSeen -User <String>
+```
+
+| Parameter | Description |
+| --- | --- |
+| `User` (`Identity`, `UserPrincipalName`) | Target mailbox identity. Pipeline accepted. |
+
+**Example**
+```powershell
+Get-UserLastSeen -User 'alice@contoso.com'
+```
+
+Notes:
+- Requires Exchange Online connection. Graph sign-in logs are included when `AuditLog.Read.All` + `Directory.Read.All` scopes are available.
+- Output includes `LastUserActionTime`, `LastInteractiveSignIn`, `LastSeen`, and the `Source` used.
+
+## New-SharedMailbox
+Create a shared mailbox.
+
+**Syntax**
+
+```powershell
+New-SharedMailbox -Name <String> -Alias <String> -PrimarySmtpAddress <String> [-Members <String[]>]
+                  [-Language <String>] [-TimeZone <String>]
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `Name` | Display name. | Yes |
+| `Alias` | Mail alias. | Yes |
+| `PrimarySmtpAddress` | Primary SMTP. | Yes |
+| `Members` | Members to grant FullAccess/SendAs. | No |
+| `Language` / `TimeZone` | Optional localization. | No |
+
+**Example**
+```powershell
+New-SharedMailbox -Name "Support" -Alias 'support' -PrimarySmtpAddress 'support@contoso.com' -Members 'agent1@contoso.com','agent2@contoso.com'
 ```
 
 ## Set-MboxLanguage
@@ -147,29 +216,6 @@ Set-MboxRulesQuota -Identity <String> -RulesQuotaInKB <Int>
 Set-MboxRulesQuota -Identity 'user@contoso.com' -RulesQuotaInKB 128
 ```
 
-## New-SharedMailbox
-Create a shared mailbox.
-
-**Syntax**
-
-```powershell
-New-SharedMailbox -Name <String> -Alias <String> -PrimarySmtpAddress <String> [-Members <String[]>]
-                  [-Language <String>] [-TimeZone <String>]
-```
-
-| Parameter | Description | Required |
-| --- | --- | :---: |
-| `Name` | Display name. | Yes |
-| `Alias` | Mail alias. | Yes |
-| `PrimarySmtpAddress` | Primary SMTP. | Yes |
-| `Members` | Members to grant FullAccess/SendAs. | No |
-| `Language` / `TimeZone` | Optional localization. | No |
-
-**Example**
-```powershell
-New-SharedMailbox -Name "Support" -Alias 'support' -PrimarySmtpAddress 'support@contoso.com' -Members 'agent1@contoso.com','agent2@contoso.com'
-```
-
 ## Set-SharedMboxCopyForSent
 Toggle saving sent items for delegated send-as/send-on-behalf.
 
@@ -206,25 +252,3 @@ Test-SharedMailboxCompliance -Identity <String>
 ```powershell
 Test-SharedMailboxCompliance -Identity 'shared@contoso.com'
 ```
-
-## Get-UserLastSeen
-Return the most recent activity for a mailbox combining Exchange LastUserActionTime and (when available) Entra ID sign-in logs.
-
-**Syntax**
-
-```powershell
-Get-UserLastSeen -User <String>
-```
-
-| Parameter | Description |
-| --- | --- |
-| `User` (`Identity`, `UserPrincipalName`) | Target mailbox identity. Pipeline accepted. |
-
-**Example**
-```powershell
-Get-UserLastSeen -User 'alice@contoso.com'
-```
-
-Notes:
-- Requires Exchange Online connection. Graph sign-in logs are included when `AuditLog.Read.All` + `Directory.Read.All` scopes are available.
-- Output includes `LastUserActionTime`, `LastInteractiveSignIn`, `LastSeen`, and the `Source` used.
