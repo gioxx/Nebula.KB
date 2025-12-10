@@ -6,6 +6,7 @@ hide_title: true
 id: licenses
 tags:
   - Add-UserMsolAccountSku
+  - Copy-UserMsolAccountSku
   - Export-MsolAccountSku
   - Get-TenantMsolAccountSku
   - Get-UserMsolAccountSku
@@ -55,6 +56,25 @@ If the target user has no `UsageLocation`, Nebula.Core sets it automatically usi
 :::warning
 If the tenant does not have units available for the requested license, the assignment is avoided and a warning message is displayed.
 :::
+
+## Copy-UserMsolAccountSku
+Copy all licenses (with disabled plans preserved) from one user to another without removing them from the source.
+
+**Syntax**
+
+```powershell
+Copy-UserMsolAccountSku -SourceUserPrincipalName <String> -DestinationUserPrincipalName <String>
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `SourceUserPrincipalName` | Source user UPN or object ID. | Yes |
+| `DestinationUserPrincipalName` | Destination user UPN or object ID. | Yes |
+
+**Example**
+```powershell
+Copy-UserMsolAccountSku -SourceUserPrincipalName 'user1@contoso.com' -DestinationUserPrincipalName 'user2@contoso.com'
+```
 
 ## Export-MsolAccountSku
 Export all users with assigned licenses to CSV, mapping SKU part numbers to friendly names.
