@@ -13,6 +13,8 @@ tags:
   - Get-DynamicDistributionGroupFilter
   - Get-RoleGroupsMembers
   - Get-UserGroups
+  - Remove-EntraGroupDevice
+  - Remove-EntraGroupUser
   - Nebula.Core
   - Distribution Groups
   - Dynamic Distribution Groups
@@ -195,4 +197,60 @@ Get-UserGroups -UserPrincipalName <String> [-GridView]
 **Example**
 ```powershell
 Get-UserGroups -UserPrincipalName 'user@contoso.com'
+```
+
+## Remove-EntraGroupDevice
+Remove one or more devices from an Entra group (Graph scopes: `Group.ReadWrite.All`, `Directory.Read.All`).
+
+**Syntax**
+
+```powershell
+Remove-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] -DeviceIdentifier <String[]> [-TreatInputAsId] [-PassThru]
+```
+
+| Parameter | Description | Required | Default |
+| --- | --- | :---: | --- |
+| `GroupName` | Target group display name. | Yes* | - |
+| `GroupId` | Target group object ID (use instead of `GroupName`). | Yes* | - |
+| `DeviceIdentifier` | Device display name or object ID. Pipeline accepted. | Yes | - |
+| `TreatInputAsId` | Treat every `DeviceIdentifier` as an object ID (skip name lookup). | No | `False` |
+| `PassThru` | Emit a status object per device. | No | `False` |
+
+\*Use either `GroupName` or `GroupId`.
+
+**Examples**
+```powershell
+"PC1","PC2" | Remove-EntraGroupDevice -GroupName "Zero Trust Devices"
+```
+
+```powershell
+Remove-EntraGroupDevice -GroupId "00000000-0000-0000-0000-000000000000" -DeviceIdentifier "PC1" -PassThru
+```
+
+## Remove-EntraGroupUser
+Remove one or more users from an Entra group (Graph scopes: `Group.ReadWrite.All`, `Directory.Read.All`).
+
+**Syntax**
+
+```powershell
+Remove-EntraGroupUser [-GroupName <String>] [-GroupId <String>] -UserIdentifier <String[]> [-TreatInputAsId] [-PassThru]
+```
+
+| Parameter | Description | Required | Default |
+| --- | --- | :---: | --- |
+| `GroupName` | Target group display name. | Yes* | - |
+| `GroupId` | Target group object ID (use instead of `GroupName`). | Yes* | - |
+| `UserIdentifier` | UPN/display name/object ID. Pipeline accepted. | Yes | - |
+| `TreatInputAsId` | Treat every `UserIdentifier` as an object ID (skip name lookup). | No | `False` |
+| `PassThru` | Emit a status object per user. | No | `False` |
+
+\*Use either `GroupName` or `GroupId`.
+
+**Examples**
+```powershell
+"user1@contoso.com","user2@contoso.com" | Remove-EntraGroupUser -GroupName "Project Team"
+```
+
+```powershell
+Remove-EntraGroupUser -GroupId "00000000-0000-0000-0000-000000000000" -UserIdentifier "user1@contoso.com" -PassThru
 ```
