@@ -454,15 +454,22 @@ export default function QuarantineEmailAnalyzer() {
                 .qea-selectLink { cursor: pointer; color: var(--ifm-color-primary); font-size: 0.82rem; }
                 .qea-selectLink:hover { text-decoration: underline; }
                 .qea-identityInput { width: 100%; min-width: 0; font-size: 0.78rem; padding: 0.15rem 0.25rem; border: 1px solid var(--ifm-toc-border-color); border-radius: var(--ifm-global-radius); background: var(--ifm-background-surface-color); }
+                .qea-titleIcon { display: inline-flex; align-items: center; justify-content: center; color: var(--ifm-color-primary); }
             `}</style>
 
             <main className="container margin-vert--lg">
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '0.35rem' }}>
-                    <img
-                        src="/img/nebula-tool-badge.svg"
-                        alt="Quarantine Email Analyzer icon"
-                        style={{ width: '82px', height: '82px' }}
-                    />
+                    <span className="qea-titleIcon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 64, height: 64 }}>
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M4 8v-2a2 2 0 0 1 2 -2h2" />
+                            <path d="M4 16v2a2 2 0 0 0 2 2h2" />
+                            <path d="M16 4h2a2 2 0 0 1 2 2v2" />
+                            <path d="M16 20h2a2 2 0 0 0 2 -2v-2" />
+                            <path d="M8 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                            <path d="M16 16l-2.5 -2.5" />
+                        </svg>
+                    </span>
                     <div>
                         <h1 className="margin-bottom--sm">Quarantine Email Analyzer</h1>
                         <p style={{ marginBottom: 0 }}>
@@ -470,7 +477,7 @@ export default function QuarantineEmailAnalyzer() {
                         </p>
                     </div>
                 </div>
-                <p style={{ fontSize: '.85rem', color: 'var(--ifm-color-secondary-text)', marginTop: '-0.35rem' }}>
+                <p style={{ fontSize: '.85rem', color: 'var(--ifm-color-secondary-text)', marginTop: '1rem' }}>
                     <Admonition type="danger" title="Data Privacy">
                         Everything stays in your browser; no files are uploaded or stored on the server.<br/>
                         All analysis is performed by your browser.
@@ -489,7 +496,7 @@ export default function QuarantineEmailAnalyzer() {
                 </div>
 
                 <textarea
-                    style={{ width: '100%', minHeight: 180 }}
+                    style={{ width: '100%', minHeight: 180, marginTop: '1rem' }}
                     placeholder='Paste CSV here... delimiter is auto-detected (comma or semicolon).'
                     value={rawText}
                     onChange={(e) => setRawText(e.target.value)}
