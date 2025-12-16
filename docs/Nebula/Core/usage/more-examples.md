@@ -5,9 +5,9 @@ description: Practical recipes that show common ways to use Nebula.Core.
 hide_title: true
 id: more-examples
 tags:
+  - Nebula.Core
   - Examples
   - Core
-  - Nebula.Core
 ---
 
 # More examples

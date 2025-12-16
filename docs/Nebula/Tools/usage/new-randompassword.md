@@ -5,9 +5,10 @@ description: Create strong or simplified passwords and can copy results to the c
 hide_title: true
 id: new-randompassword
 tags:
+  - New-RandomPassword
+  - Nebula.Tools
   - Passwords
   - Tools
-  - Nebula.Tools
 ---
 
 # New-RandomPassword

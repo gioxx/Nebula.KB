@@ -5,8 +5,9 @@ description: Validates that the activity log is reachable and writable. Can opti
 hide_title: true
 id: test-activitylog
 tags:
-  - Log
+  - Test-ActivityLog
   - Nebula.Log
+  - Log
 ---
 
 # Test-ActivityLog

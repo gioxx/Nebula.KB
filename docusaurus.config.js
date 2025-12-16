@@ -145,32 +145,28 @@ const config = {
             ],
           },
           {
-            title: 'Tools',
+            title: 'Extras',
             items: [
               {
                 label: 'Nebula.Scripts',
                 to: '/docs/intro',
+              },
+            ],
+          },
+          {
+            title: 'Tools',
+            items: [
+              {
+                label: 'E-mail Header Analyzer',
+                to: '/message-header-analyzer',
               },
               {
                 label: 'PSADT Log Viewer',
                 to: '/psadt-log-viewer',
               },
               {
-                label: 'Quarantine Email Analyzer',
+                label: 'Quarantine E-mail Analyzer',
                 to: '/quarantine-email-analyzer',
-              },
-            ],
-          },
-          {
-            title: 'Stay in touch',
-            items: [
-              {
-                label: 'Contacts',
-                href: 'https://gfsolone.com/#seguimi',
-              },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/gioxx/',
               },
             ],
           },
@@ -191,7 +187,7 @@ const config = {
         // copyright: `Copyright © ${new Date().getFullYear()} Gioxx. Built with Docusaurus.`,
         copyright: `<div style="color:var(--ifm-color-gray-300); padding-bottom: 9px; text-align: left;">All trademarks mentioned belong to their respective owners; third- party trademarks, product names, trade names, corporate names and companies mentioned may be trademarks of their respective owners or registered trademarks of other companies and have been used for explanatory purposes only and for the benefit of the owner, without any intention of infringing on existing copyright laws.</div>
         
-        ${new Date().getFullYear()} — Lovingly developed by the usually-on-vacation brain cell of Gioxx ❤️ — Flawed by design, just like my code 🚮`
+        ${new Date().getFullYear()} — Lovingly developed by the usually-on-vacation brain cell of <a href="https://gfsolone.com/#seguimi" target="_blank" rel="noopener noreferrer">Gioxx</a> ❤️ — Flawed by design, just like my code 🚮`
       },
       prism: {
         additionalLanguages: ['powershell'],

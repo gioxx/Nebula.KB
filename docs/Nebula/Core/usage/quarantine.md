@@ -5,11 +5,14 @@ description: Search, export, release, or delete Exchange Online quarantine items
 hide_title: true
 id: quarantine
 tags:
-  - Quarantine
   - Export-QuarantineEml
+  - Get-QuarantineFrom
+  - Get-QuarantineFromDomain
   - Get-QuarantineToRelease
   - Unlock-QuarantineFrom
+  - Unlock-QuarantineMessageId
   - Nebula.Core
+  - Quarantine
 ---
 
 # Quarantine toolkit
@@ -47,6 +50,9 @@ List quarantined messages by sender or sender domain.
 
 ```powershell
 Get-QuarantineFrom -SenderAddress <String[]> [-IncludeReleased]
+```
+
+```powershell
 Get-QuarantineFromDomain -SenderDomain <String[]> [-IncludeReleased]
 ```
 
@@ -59,6 +65,9 @@ Get-QuarantineFromDomain -SenderDomain <String[]> [-IncludeReleased]
 **Examples**
 ```powershell
 Get-QuarantineFrom -SenderAddress 'bad@contoso.com' -IncludeReleased
+```
+
+```powershell
 Get-QuarantineFromDomain -SenderDomain 'contoso.com'
 ```
 
@@ -94,6 +103,9 @@ Bulk-release messages for specific senders or message IDs/identities (to all rec
 
 ```powershell
 Unlock-QuarantineFrom -SenderAddress <String[]> [-ReportFalsePositive] [-Confirm]
+```
+
+```powershell
 Unlock-QuarantineMessageId [-MessageId <String[]>] [-Identity <String[]>] [-ReportFalsePositive] [-Confirm]
 ```
 

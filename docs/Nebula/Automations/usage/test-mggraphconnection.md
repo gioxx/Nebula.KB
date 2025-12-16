@@ -6,8 +6,8 @@ hide_title: true
 id: test-mggraphconnection
 tags:
   - Test-MgGraphConnection
-  - Microsoft Graph
   - Nebula.Automations
+  - Microsoft Graph
 ---
 
 # Test-MgGraphConnection

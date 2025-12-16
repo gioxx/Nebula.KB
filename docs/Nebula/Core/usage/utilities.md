@@ -7,8 +7,8 @@ id: utilities
 tags:
   - Format-MessageIDsFromClipboard
   - Format-SortedEmailsFromClipboard
-  - Tools
   - Nebula.Core
+  - Tools
 ---
 
 # Utilities
@@ -38,7 +38,9 @@ Format-MessageIDsFromClipboard [-NoRelease] [-PassThru]
 ```powershell
 # Format and release immediately (by Identity)
 Format-MessageIDsFromClipboard
+```
 
+```powershell
 # Format only, keep the list in the clipboard and show it
 Format-MessageIDsFromClipboard -NoRelease -PassThru
 ```

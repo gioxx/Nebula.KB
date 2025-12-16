@@ -5,9 +5,10 @@ description: Remove stale module folders while keeping the most recent releases.
 hide_title: true
 id: remove-oldmoduleversions
 tags:
+  - Remove-OldModuleVersions
+  - Nebula.Tools
   - Modules
   - Tools
-  - Nebula.Tools
 ---
 
 # Remove-OldModuleVersions

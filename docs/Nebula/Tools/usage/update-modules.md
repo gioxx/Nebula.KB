@@ -5,9 +5,11 @@ description: Inspect and update installed modules using PSResourceGet (v3) or Po
 hide_title: true
 id: update-modules
 tags:
+  - Find-Modules
+  - Update-Modules
+  - Nebula.Tools
   - Modules
   - Tools
-  - Nebula.Tools
 ---
 
 # Find/Update-Modules

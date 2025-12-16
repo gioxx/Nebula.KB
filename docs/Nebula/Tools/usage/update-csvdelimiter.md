@@ -5,9 +5,10 @@ description: Switch CSV files between comma and semicolon separators while prese
 hide_title: true
 id: update-csvdelimiter
 tags:
+  - Update-CSVDelimiter
+  - Nebula.Tools
   - CSV
   - Tools
-  - Nebula.Tools
 ---
 
 # Update-CSVDelimiter

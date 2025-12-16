@@ -5,8 +5,9 @@ description: Main entry point for writing console and file logs with levels, rot
 hide_title: true
 id: write-log
 tags:
-  - Log
+  - Write-Log
   - Nebula.Log
+  - Log
 ---
 
 # Write-Log
