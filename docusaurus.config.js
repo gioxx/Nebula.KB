@@ -13,9 +13,6 @@ const config = {
   title: 'Nebula.KB',
   tagline: 'Flawed by design, just like my code.',
   favicon: 'img/Nebula_Icon_Header.svg',
-  metadata: [
-    { name: 'algolia-site-verification', content: '2152E93E071549EB' },
-  ],
   future: {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
@@ -24,6 +21,12 @@ const config = {
   organizationName: 'gioxx',
   projectName: 'Nebula.KB',
   onBrokenLinks: 'throw',
+
+  customFields: {
+    meta: {
+      "algolia-site-verification": '2152E93E071549EB',
+    },
+  },
 
   presets: [
     [
