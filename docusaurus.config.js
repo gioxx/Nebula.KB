@@ -67,7 +67,7 @@ const config = {
         apiKey: "9cdc3189c46d7f591cf816a06872ad14",
         indexName: "NebulaCrawler",
         contextualSearch: true,
-        searchPagePath: "search",
+        searchPagePath: 'search',
         insights: false,
       },
       docs: {
@@ -119,6 +119,10 @@ const config = {
             to: 'https://gioxx.org',
             label: 'Blog',
             target: '_self',
+          },
+          {
+            type: 'search',
+            position: 'right',
           },
           {
             href: 'https://github.com/gioxx?tab=repositories&q=Nebula',
