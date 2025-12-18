@@ -6,8 +6,6 @@
 
 import {themes as prismThemes} from 'prism-react-renderer';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Nebula.KB',
@@ -29,9 +27,6 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          // editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         // blog: {
         //   showReadingTime: true,
@@ -39,9 +34,6 @@ const config = {
         //     type: ['rss', 'atom'],
         //     xslt: true,
         //   },
-        //   // Please change this to your repo.
-        //   // Remove this to remove the "edit this page" links.
-        //   editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         //   // Useful options to enforce blogging best practices
         //   onInlineTags: 'warn',
         //   onInlineAuthors: 'warn',
@@ -57,7 +49,6 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       colorMode: {
         respectPrefersColorScheme: true,
@@ -83,12 +74,6 @@ const config = {
           src: 'img/Nebula_Icon_Header.svg',
         },
         items: [
-          // {
-          //   type: 'docSidebar',
-          //   sidebarId: 'tutorialSidebar',
-          //   position: 'left',
-          //   label: 'Docs',
-          // },
           {
             to: '/docs/Nebula/Automations/intro',
             label: 'Automations',
