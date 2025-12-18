@@ -62,6 +62,14 @@ const config = {
       colorMode: {
         respectPrefersColorScheme: true,
       },
+      algolia: {
+        appId: "Y45EWJOF6X",
+        apiKey: "9cdc3189c46d7f591cf816a06872ad14",
+        indexName: "NebulaCrawler",
+        contextualSearch: true,
+        searchPagePath: "search",
+        insights: false,
+      },
       docs: {
         sidebar: {
           autoCollapseCategories: true, // opens one category and closes the others
