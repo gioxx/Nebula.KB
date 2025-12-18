@@ -101,12 +101,13 @@ Show licenses assigned to a single user with friendly names.
 **Syntax**
 
 ```powershell
-Get-UserMsolAccountSku -UserPrincipalName <String> [-ForceLicenseCatalogRefresh]
+Get-UserMsolAccountSku -UserPrincipalName <String> [-Clipboard] [-ForceLicenseCatalogRefresh]
 ```
 
 | Parameter | Description | Required |
 | --- | --- | :---: |
 | `UserPrincipalName` | Target UPN or object ID. | Yes |
+| `Clipboard` | Copy the resolved license names (fallback: `SkuPartNumber`) to the clipboard as `"License1","License2"`. | No |
 | `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No |
 
 **Example**
@@ -116,6 +117,10 @@ Get-UserMsolAccountSku -UserPrincipalName 'user@contoso.com'
 
 ```powershell
 'user1@contoso.com','user2@contoso.com' | Get-UserMsolAccountSku
+```
+
+```powershell
+Get-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -Clipboard
 ```
 
 ## Get-TenantMsolAccountSku
