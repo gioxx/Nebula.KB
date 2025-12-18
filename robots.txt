@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+​
+# Algolia-Crawler-Verif: 2152E93E071549EB
+​
+Sitemap: https://kb.gioxx.org/sitemap.xml

@@ -22,12 +22,6 @@ const config = {
   projectName: 'Nebula.KB',
   onBrokenLinks: 'throw',
 
-  customFields: {
-    meta: {
-      "algolia-site-verification": '2152E93E071549EB',
-    },
-  },
-
   presets: [
     [
       'classic',
