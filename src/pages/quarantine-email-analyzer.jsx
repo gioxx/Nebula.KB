@@ -168,6 +168,7 @@ export default function QuarantineEmailAnalyzer() {
     const [excludedSenders, setExcludedSenders] = useState(new Set());
     const [excludedDomains, setExcludedDomains] = useState(new Set());
     const [excludedSubjects, setExcludedSubjects] = useState(new Set());
+    const [showScrollTop, setShowScrollTop] = useState(false);
     const bottomScrollRef = useRef(null);
     const tableRef = useRef(null);
 
@@ -259,6 +260,15 @@ export default function QuarantineEmailAnalyzer() {
         return () => window.removeEventListener('resize', updateWidth);
     }, []);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowScrollTop(window.scrollY > 200);
+        };
+        handleScroll();
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     function handleFileSelect(e) {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -327,10 +337,10 @@ export default function QuarantineEmailAnalyzer() {
         setExpandedCells((prev) => ({ ...prev, [key]: !prev[key] }));
     }
 
-    async function copyToClipboard(text) {
+    async function copyToClipboard(text, successMessage = 'Copied to clipboard.') {
         try {
             await navigator.clipboard.writeText(text);
-            setCopyStatus('Copied to clipboard.');
+            setCopyStatus(successMessage);
             setTimeout(() => setCopyStatus(''), 2000);
         } catch (err) {
             setCopyStatus('Copy failed. Your browser may block clipboard access.');
@@ -350,7 +360,13 @@ export default function QuarantineEmailAnalyzer() {
             setTimeout(() => setCopyStatus(''), 2000);
             return;
         }
-        copyToClipboard(ids.join('\n'));
+        const count = ids.length;
+        const label = count === 1 ? 'ID' : 'IDs';
+        copyToClipboard(ids.join('\n'), `Copied ${count} ${label} to clipboard.`);
+    }
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function resetView() {
@@ -814,6 +830,24 @@ export default function QuarantineEmailAnalyzer() {
                             </table>
                         </div>
                     </>
+                )}
+                {showScrollTop && (
+                    <button
+                        type="button"
+                        className="button button--primary button--sm"
+                        onClick={scrollToTop}
+                        style={{
+                            position: 'fixed',
+                            bottom: '1.5rem',
+                            right: '1.5rem',
+                            borderRadius: '999px',
+                            boxShadow: '0 6px 18px rgba(0,0,0,0.18)',
+                            zIndex: 40,
+                        }}
+                        aria-label="Back to top"
+                    >
+                        Back to top
+                    </button>
                 )}
             </main>
         </Layout>

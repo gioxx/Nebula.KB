@@ -101,17 +101,26 @@ Show licenses assigned to a single user with friendly names.
 **Syntax**
 
 ```powershell
-Get-UserMsolAccountSku -UserPrincipalName <String> [-ForceLicenseCatalogRefresh]
+Get-UserMsolAccountSku -UserPrincipalName <String> [-Clipboard] [-ForceLicenseCatalogRefresh]
 ```
 
 | Parameter | Description | Required |
 | --- | --- | :---: |
 | `UserPrincipalName` | Target UPN or object ID. | Yes |
+| `Clipboard` | Copy the resolved license names (fallback: `SkuPartNumber`) to the clipboard as `"License1","License2"`. | No |
 | `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No |
 
 **Example**
 ```powershell
 Get-UserMsolAccountSku -UserPrincipalName 'user@contoso.com'
+```
+
+```powershell
+'user1@contoso.com','user2@contoso.com' | Get-UserMsolAccountSku
+```
+
+```powershell
+Get-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -Clipboard
 ```
 
 ## Get-TenantMsolAccountSku
@@ -168,6 +177,16 @@ Remove-UserMsolAccountSku -UserPrincipalName <String> -License <String[]> [-Forc
 | `License` | Friendly name, SKU part number, or SKU ID. Accepts multiple values. | Yes |
 | `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No |
 
+```powershell
+Remove-UserMsolAccountSku -UserPrincipalName <String> -All [-ForceLicenseCatalogRefresh]
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `UserPrincipalName` | Target user UPN or object ID. | Yes |
+| `All` | Remove all assigned licenses. | Yes |
+| `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No |
+
 **Examples**
 ```powershell
 Remove-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -License 'Microsoft 365 E3'
@@ -179,6 +198,10 @@ Remove-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -License 'ENTERP
 
 ```powershell
 Remove-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -License '18181a46-0d4e-45cd-891e-60aabd171b4e'
+```
+
+```powershell
+Remove-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -All
 ```
 
 ## Update-LicenseCatalog

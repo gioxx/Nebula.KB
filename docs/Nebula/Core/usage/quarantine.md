@@ -122,7 +122,7 @@ Unlock-QuarantineFrom -SenderAddress 'sender@contoso.com' -ReportFalsePositive -
 ```
 
 :::tip
-`Format-MessageIDsFromClipboard` (`mids`) now prepares quarantine identities and can trigger `Unlock-QuarantineMessageId -Identity` directly from clipboard content.
+`Unlock-QuarantineMessageId` is also available as `qrel` (alias).
 :::
 
 ## Questions and answers
