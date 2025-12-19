@@ -33,6 +33,19 @@ function extractDomain(address) {
     return match ? match[1].toLowerCase() : '';
 }
 
+const COMMON_CONSUMER_DOMAINS = [
+    'gmail.com',
+    'outlook.com',
+    'outlook.it',
+    'hotmail.com',
+    'live.com',
+    'yahoo.com',
+    'yahoo.it',
+    'icloud.com',
+    'proton.me',
+];
+const COMMON_CONSUMER_DOMAIN_SET = new Set(COMMON_CONSUMER_DOMAINS);
+
 function detectDelimiter(text) {
     const firstLine = (text || '').split(/\r?\n/).find((l) => l.trim()) || '';
     const commaCount = (firstLine.match(/,/g) || []).length;
@@ -471,6 +484,7 @@ export default function QuarantineEmailAnalyzer() {
                 .qea-selectLink:hover { text-decoration: underline; }
                 .qea-identityInput { width: 100%; min-width: 0; font-size: 0.78rem; padding: 0.15rem 0.25rem; border: 1px solid var(--ifm-toc-border-color); border-radius: var(--ifm-global-radius); background: var(--ifm-background-surface-color); }
                 .qea-titleIcon { display: inline-flex; align-items: center; justify-content: center; color: var(--ifm-color-primary); }
+                .qea-rowCommonDomain td { background: rgba(255, 181, 64, 0.12); }
             `}</style>
 
             <main className="container margin-vert--lg">
@@ -663,6 +677,9 @@ export default function QuarantineEmailAnalyzer() {
                             Showing {filtered.length} of {rows.length} rows.
                         </p>
                         <p style={{ fontSize: '.85rem', color: 'var(--ifm-color-secondary-text)', marginTop: '-0.35rem' }}>
+                            Righe con domini consumer comuni (es. gmail.com, outlook.com) sono evidenziate per valutare rapidamente l&apos;uso di &quot;Exclude Domain&quot;.
+                        </p>
+                        <p style={{ fontSize: '.85rem', color: 'var(--ifm-color-secondary-text)', marginTop: '-0.35rem' }}>
                             <Admonition type="tip">
                                 Click column headers to sort (A-Z / Z-A / none).<br/>
                                 If you deselect the flag "Frequent", rows marked as Frequent are always hidden even if they have other flags.
@@ -707,7 +724,7 @@ export default function QuarantineEmailAnalyzer() {
                                 </thead>
                                 <tbody>
                                     {sortedFiltered.map((r, idx) => (
-                                        <tr key={r.id}>
+                                        <tr key={r.id} className={COMMON_CONSUMER_DOMAIN_SET.has(r.senderDomain) ? 'qea-rowCommonDomain' : undefined}>
                                             <td>
                                                 <div className={`${expandedCells[`${r.id}-sender`] ? 'qea-cell qea-cellExpanded' : 'qea-cell'}`}>
                                                     {r.sender}
