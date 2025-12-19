@@ -327,10 +327,10 @@ export default function QuarantineEmailAnalyzer() {
         setExpandedCells((prev) => ({ ...prev, [key]: !prev[key] }));
     }
 
-    async function copyToClipboard(text) {
+    async function copyToClipboard(text, successMessage = 'Copied to clipboard.') {
         try {
             await navigator.clipboard.writeText(text);
-            setCopyStatus('Copied to clipboard.');
+            setCopyStatus(successMessage);
             setTimeout(() => setCopyStatus(''), 2000);
         } catch (err) {
             setCopyStatus('Copy failed. Your browser may block clipboard access.');
@@ -350,7 +350,9 @@ export default function QuarantineEmailAnalyzer() {
             setTimeout(() => setCopyStatus(''), 2000);
             return;
         }
-        copyToClipboard(ids.join('\n'));
+        const count = ids.length;
+        const label = count === 1 ? 'ID' : 'IDs';
+        copyToClipboard(ids.join('\n'), `Copied ${count} ${label} to clipboard.`);
     }
 
     function resetView() {
