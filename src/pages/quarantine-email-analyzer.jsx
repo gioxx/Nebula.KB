@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Layout from '@theme/Layout';
 import Admonition from '@theme/Admonition';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 function splitCsvLine(line, delimiter) {
     const out = [];
@@ -35,14 +36,16 @@ function extractDomain(address) {
 
 const COMMON_CONSUMER_DOMAINS = [
     'gmail.com',
+    'hotmail.com',
+    'icloud.com',
+    'live.com',
+    'me.com',
+    'msn.com',
     'outlook.com',
     'outlook.it',
-    'hotmail.com',
-    'live.com',
+    'proton.me',
     'yahoo.com',
     'yahoo.it',
-    'icloud.com',
-    'proton.me',
 ];
 const COMMON_CONSUMER_DOMAIN_SET = new Set(COMMON_CONSUMER_DOMAINS);
 
@@ -182,8 +185,13 @@ export default function QuarantineEmailAnalyzer() {
     const [excludedDomains, setExcludedDomains] = useState(new Set());
     const [excludedSubjects, setExcludedSubjects] = useState(new Set());
     const [showScrollTop, setShowScrollTop] = useState(false);
+    const [knownDomainList, setKnownDomainList] = useState([]);
+    const [knownDomainStatus, setKnownDomainStatus] = useState('');
+    const [highlightKnownDomains, setHighlightKnownDomains] = useState(false);
+    const [loadingKnownDomains, setLoadingKnownDomains] = useState(false);
     const bottomScrollRef = useRef(null);
     const tableRef = useRef(null);
+    const knownListUrl = useBaseUrl('/known-spam-domains.json');
 
     const summary = useMemo(() => summarize(rows), [rows]);
     const filtered = useMemo(
@@ -225,6 +233,7 @@ export default function QuarantineEmailAnalyzer() {
         sortedTypes.forEach((t) => flags.push(t));
         return flags;
     }, [summary, sortedTypes]);
+    const knownDomainSet = useMemo(() => new Set((knownDomainList || []).filter(Boolean)), [knownDomainList]);
     const sortedFiltered = useMemo(() => {
         if (!sortConfig.column || !sortConfig.direction) return filtered;
         const dir = sortConfig.direction === 'asc' ? 1 : -1;
@@ -402,6 +411,7 @@ export default function QuarantineEmailAnalyzer() {
         setExcludedSenders(new Set());
         setExcludedDomains(new Set());
         setExcludedSubjects(new Set());
+        setHighlightKnownDomains(false);
     }
 
     function excludeRow(id) {
@@ -461,6 +471,35 @@ export default function QuarantineEmailAnalyzer() {
         return '';
     }
 
+    async function handleToggleKnownDomains() {
+        if (highlightKnownDomains) {
+            setHighlightKnownDomains(false);
+            return;
+        }
+        if (knownDomainList.length === 0 && !loadingKnownDomains) {
+            setKnownDomainStatus('');
+            setLoadingKnownDomains(true);
+            try {
+                const resp = await fetch(knownListUrl);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const data = await resp.json();
+                const list = Array.isArray(data) ? data : data?.domains || [];
+                const normalized = list
+                    .map((d) => String(d || '').trim().toLowerCase())
+                    .filter(Boolean);
+                setKnownDomainList(normalized);
+                setHighlightKnownDomains(true);
+                setKnownDomainStatus(`Caricati ${normalized.length} domini dalla lista nota.`);
+            } catch (err) {
+                setKnownDomainStatus('Impossibile caricare la lista domini nota.');
+            } finally {
+                setLoadingKnownDomains(false);
+            }
+        } else {
+            setHighlightKnownDomains(true);
+        }
+    }
+
     return (
         <Layout title="Quarantine Email Analyzer" description="Analyze quarantine email CSV files in the browser">
             <style>{`
@@ -485,6 +524,7 @@ export default function QuarantineEmailAnalyzer() {
                 .qea-identityInput { width: 100%; min-width: 0; font-size: 0.78rem; padding: 0.15rem 0.25rem; border: 1px solid var(--ifm-toc-border-color); border-radius: var(--ifm-global-radius); background: var(--ifm-background-surface-color); }
                 .qea-titleIcon { display: inline-flex; align-items: center; justify-content: center; color: var(--ifm-color-primary); }
                 .qea-rowCommonDomain td { background: rgba(255, 181, 64, 0.12); }
+                .qea-rowKnownDomain td { background: rgba(255, 76, 76, 0.12); }
             `}</style>
 
             <main className="container margin-vert--lg">
@@ -680,6 +720,9 @@ export default function QuarantineEmailAnalyzer() {
                             Righe con domini consumer comuni (es. gmail.com, outlook.com) sono evidenziate per valutare rapidamente l&apos;uso di &quot;Exclude Domain&quot;.
                         </p>
                         <p style={{ fontSize: '.85rem', color: 'var(--ifm-color-secondary-text)', marginTop: '-0.35rem' }}>
+                            Lista domini nota (file statico aggiornato da GitHub Action): {knownDomainList.length ? `${knownDomainList.length} domini caricati.` : 'non ancora caricata.'}
+                        </p>
+                        <p style={{ fontSize: '.85rem', color: 'var(--ifm-color-secondary-text)', marginTop: '-0.35rem' }}>
                             <Admonition type="tip">
                                 Click column headers to sort (A-Z / Z-A / none).<br/>
                                 If you deselect the flag "Frequent", rows marked as Frequent are always hidden even if they have other flags.
@@ -701,7 +744,16 @@ export default function QuarantineEmailAnalyzer() {
                             >
                                 Reset view
                             </button>
+                            <button
+                                type="button"
+                                className="button button--secondary button--sm"
+                                onClick={handleToggleKnownDomains}
+                                disabled={loadingKnownDomains}
+                            >
+                                {highlightKnownDomains ? 'Nascondi domini noti' : loadingKnownDomains ? 'Caricamento lista...' : 'Evidenzia domini noti'}
+                            </button>
                             {copyStatus && <span style={{ fontSize: '.85rem', color: 'var(--ifm-color-secondary-text)' }}>{copyStatus}</span>}
+                            {knownDomainStatus && <span style={{ fontSize: '.85rem', color: 'var(--ifm-color-secondary-text)' }}>{knownDomainStatus}</span>}
                         </div>
 
                         <div className="qea-tableWrapper" ref={bottomScrollRef}>
@@ -723,8 +775,12 @@ export default function QuarantineEmailAnalyzer() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {sortedFiltered.map((r, idx) => (
-                                        <tr key={r.id} className={COMMON_CONSUMER_DOMAIN_SET.has(r.senderDomain) ? 'qea-rowCommonDomain' : undefined}>
+                                    {sortedFiltered.map((r) => {
+                                        const rowClasses = [];
+                                        if (COMMON_CONSUMER_DOMAIN_SET.has(r.senderDomain)) rowClasses.push('qea-rowCommonDomain');
+                                        if (highlightKnownDomains && knownDomainSet.has(r.senderDomain)) rowClasses.push('qea-rowKnownDomain');
+                                        return (
+                                        <tr key={r.id} className={rowClasses.length ? rowClasses.join(' ') : undefined}>
                                             <td>
                                                 <div className={`${expandedCells[`${r.id}-sender`] ? 'qea-cell qea-cellExpanded' : 'qea-cell'}`}>
                                                     {r.sender}
@@ -814,6 +870,9 @@ export default function QuarantineEmailAnalyzer() {
                                                     </button>
                                                 </div>
                                                 <div style={{ marginTop: '0.25rem' }}>
+                                                    {highlightKnownDomains && knownDomainSet.has(r.senderDomain) && (
+                                                        <span className="qea-flag qea-flag-warn">Known list</span>
+                                                    )}
                                                     {summary.senderDomainCount[r.senderDomain] > 1 && (
                                                         <span className="qea-flag qea-flag-info">Frequent</span>
                                                     )}
