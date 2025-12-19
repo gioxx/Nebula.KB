@@ -446,7 +446,7 @@ export default function QuarantineEmailAnalyzer() {
                 .qea-cellExpanded { white-space: pre-wrap; overflow: visible; }
                 .qea-flag { display: inline-block; padding: 0.05rem 0.35rem; border-radius: 0.4rem; font-size: 0.7rem; margin-right: 0.2rem; }
                 .qea-flag-warn { background: var(--ifm-color-danger-contrast-background); color: var(--ifm-color-danger); }
-                .qea-flag-info { background: var(--ifm-color-secondary-contrast-background); color: var(--ifm-color-secondary); }
+                .qea-flag-info { background: var(--ifm-color-primary-contrast-background); color: var(--ifm-color-primary); border: 1px solid var(--ifm-color-primary); }
                 .qea-domainList { max-height: 180px; overflow-y: auto; border: 1px solid var(--ifm-toc-border-color); border-radius: var(--ifm-global-radius); padding: 0.35rem 0.5rem; font-size: 0.85rem; background: var(--ifm-background-surface-color); }
                 .qea-domainList label { display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem; }
                 .qea-small { font-size: 0.78rem; color: var(--ifm-color-secondary-text); }
