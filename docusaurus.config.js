@@ -8,7 +8,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Nebula',
+  title: 'Nebula: A family of PowerShell modules that go beyond your workstation',
   tagline: 'Flawed by design, just like my code.',
   favicon: 'img/Nebula_Icon_Header.svg',
   future: {
