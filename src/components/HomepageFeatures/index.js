@@ -81,7 +81,7 @@ const FeatureList = [
     ),
     description: (
       <>
-        MIT-licensed and on GitHub: Nebula.Automations, Nebula.Core, Nebula.Log (and also Nebula.Scripts) ready to fork, PR, and evolve with your runbooks.
+        MIT-licensed and on GitHub: Nebula.Automations, Nebula.Core, Nebula.Log, Nebula.Tools (and also Nebula.Scripts) ready to fork, PR, and evolve with your runbooks.
       </>
     ),
   },

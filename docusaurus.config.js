@@ -8,7 +8,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Nebula.KB',
+  title: 'Nebula',
   tagline: 'Flawed by design, just like my code.',
   favicon: 'img/Nebula_Icon_Header.svg',
   future: {
@@ -17,7 +17,7 @@ const config = {
   url: 'https://kb.gioxx.org',
   baseUrl: '/',
   organizationName: 'gioxx',
-  projectName: 'Nebula.KB',
+  projectName: 'Nebula',
   onBrokenLinks: 'throw',
 
   presets: [
@@ -68,9 +68,9 @@ const config = {
         },
       },
       navbar: {
-        title: 'Nebula:KB',
+        title: 'Nebula',
         logo: {
-          alt: 'Nebula.KB Site Logo',
+          alt: 'Nebula KB Site Logo',
           src: 'img/Nebula_Icon_Header.svg',
         },
         items: [
@@ -175,7 +175,7 @@ const config = {
                   '<small>Microsoft, for the <a href="https://commons.wikimedia.org/wiki/File:PowerShell-Avatar_128.svg">PowerShell Avatar</a>, ',
                   '<a href="https://tabler.io/icons">Tabler Icons</a> and ',
                   '<a href="https://techicons.dev/">tech icons</a> for icons and SVG files.<br />',
-                  'A final big thank you to the guys at <strong>Catppuccin</strong> for the <a href="https://github.com/catppuccin/windows-terminal/blob/main/macchiato.json">Catpuccin Macchiato</a> theme, which inspired the basic colors used in this KB.</small>',
+                  'A final big thank you to the guys at <strong>Catppuccin</strong> for the <a href="https://github.com/catppuccin/windows-terminal/blob/main/macchiato.json">Catpuccin Macchiato</a> theme, which inspired the basic colors used in this website.</small>',
                 ].join('')
               }
             ],
