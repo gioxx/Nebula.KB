@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
                        xmlns:moz="http://www.mozilla.org/2006/browser/search/">
-  <ShortName>Nebula</ShortName>
-  <Description>Search Nebula</Description>
+  <ShortName>Nebula: A family of PowerShell modules that go beyond your workstation</ShortName>
+  <Description>Search Nebula: A family of PowerShell modules that go beyond your workstation</Description>
   <InputEncoding>UTF-8</InputEncoding>
   <Image width="16" height="16" type="image/x-icon">https://kb.gioxx.org/img/Nebula_Icon_Header.svg</Image>
   <Url type="text/html" method="get" template="https://kb.gioxx.org/search?q={searchTerms}"/>

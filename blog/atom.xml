@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://kb.gioxx.org/blog</id>
-    <title>Nebula Blog</title>
+    <title>Nebula: A family of PowerShell modules that go beyond your workstation Blog</title>
     <updated>2021-08-26T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://kb.gioxx.org/blog"/>
-    <subtitle>Nebula Blog</subtitle>
+    <subtitle>Nebula: A family of PowerShell modules that go beyond your workstation Blog</subtitle>
     <icon>https://kb.gioxx.org/img/Nebula_Icon_Header.svg</icon>
     <entry>
         <title type="html"><![CDATA[Welcome]]></title>
