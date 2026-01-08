@@ -20,17 +20,18 @@ tags:
 All commands require an active EXO session (`Test-EOLConnection` is called internally). For complete and current details, run `Get-Help <FunctionName> -Detailed`.
 
 ## Export-QuarantineEml
-Fetch a quarantined message by MessageId, save it as EML, optionally open it, and optionally release to all recipients.
+Fetch quarantined message(s) by MessageId **or** Identity, save as EML, optionally open, and optionally release to all recipients.
 
 **Syntax**
 
 ```powershell
-Export-QuarantineEml -MessageId <String> [-DestinationFolder <String>] [-OpenFile] [-ReleaseToAll] [-ReportFalsePositive]
+Export-QuarantineEml [-MessageId <String[]>] [-Identity <String[]>] [-DestinationFolder <String>] [-OpenFile] [-ReleaseToAll] [-ReportFalsePositive]
 ```
 
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |
-| `MessageId` | MessageId with/without angle brackets. | Yes | - |
+| `MessageId` | MessageId with/without angle brackets. | One of MessageId/Identity | - |
+| `Identity` | Quarantine Identity (e.g., GUID\GUID). | One of MessageId/Identity | - |
 | `DestinationFolder` | Folder for the EML file. | No | Current directory |
 | `OpenFile` | Open the file after saving. | No | `False` |
 | `ReleaseToAll` | Release to all recipients after export. | No | `False` |
@@ -41,6 +42,12 @@ Export-QuarantineEml -MessageId <String> [-DestinationFolder <String>] [-OpenFil
 Export-QuarantineEml -MessageId '20230617142935.F5B74194B266E458@contoso.com' `
   -DestinationFolder C:\Temp\Quarantine `
   -OpenFile -ReleaseToAll -ReportFalsePositive
+```
+
+```powershell
+# Export using an Identity (e.g., copied from Get-QuarantineMessage)
+Export-QuarantineEml -Identity 'f3a3dda8-3f78-46c9-332b-08de38f41262\a94e1c02-1d07-7d44-fd2b-482688059fbb' `
+  -DestinationFolder C:\Temp\Quarantine
 ```
 
 ## Get-QuarantineFrom / Get-QuarantineFromDomain
