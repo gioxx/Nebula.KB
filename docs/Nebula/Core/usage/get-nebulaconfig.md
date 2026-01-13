@@ -10,7 +10,7 @@ tags:
   - Nebula.Core
 ---
 
-# Get/Sync-NebulaConfig
+# Configuration helpers
 
 ## Get-NebulaConfig
 Shows effective configuration, including machine/user config files and license catalog sources.

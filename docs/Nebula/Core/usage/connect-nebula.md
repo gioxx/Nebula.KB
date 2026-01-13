@@ -8,12 +8,33 @@ tags:
   - Connect-Nebula
   - Connect-EOL
   - Disconnect-Nebula
+  - Leave-Nebula
   - Nebula.Core
 ---
 
 # Connect (and disconnects) to/from Microsoft 365
 
 For full, always-up-to-date details and examples, use `Get-Help <FunctionName> -Detailed` or `-Examples`.
+
+## Connect-EOL
+Connect to Exchange Online (EXO V3), auto-importing the module and auto-detecting the current user when `-UserPrincipalName` is not supplied.
+
+**Syntax**
+
+```powershell
+Connect-EOL [-UserPrincipalName <String>] [-DelegatedOrganization <String>] [-PassThru]
+```
+
+| Parameter | Description | Required | Default |
+| --- | --- | :---: | --- |
+| `UserPrincipalName` | UPN/e-mail for the EXO auth prompt. | No | Current user (`Find-UserConnected`) |
+| `DelegatedOrganization` | Target customer tenant (delegated admin). | No | - |
+| `PassThru` | Return the `Connect-ExchangeOnline` session object. | No | `False` |
+
+**Example**
+```powershell
+Connect-EOL -UserPrincipalName 'admin@tenant.onmicrosoft.com'
+```
 
 ## Connect-Nebula
 One-shot helper that ensures EXO is connected, then (optionally) connects Microsoft Graph.
@@ -40,26 +61,6 @@ Connect-Nebula [-UserPrincipalName <String>] [-GraphScopes <String[]>] [-GraphTe
 Connect-Nebula -GraphScopes 'User.Read.All','Directory.Read.All' -AutoInstall
 ```
 
-## Connect-EOL
-Connect to Exchange Online (EXO V3), auto-importing the module and auto-detecting the current user when `-UserPrincipalName` is not supplied.
-
-**Syntax**
-
-```powershell
-Connect-EOL [-UserPrincipalName <String>] [-DelegatedOrganization <String>] [-PassThru]
-```
-
-| Parameter | Description | Required | Default |
-| --- | --- | :---: | --- |
-| `UserPrincipalName` | UPN/e-mail for the EXO auth prompt. | No | Current user (`Find-UserConnected`) |
-| `DelegatedOrganization` | Target customer tenant (delegated admin). | No | - |
-| `PassThru` | Return the `Connect-ExchangeOnline` session object. | No | `False` |
-
-**Example**
-```powershell
-Connect-EOL -UserPrincipalName 'admin@tenant.onmicrosoft.com'
-```
-
 ## Disconnect-Nebula
 Disconnect EXO and/or Graph.
 
@@ -78,6 +79,10 @@ Disconnect-Nebula [-ExchangeOnly] [-GraphOnly]
 ```powershell
 Disconnect-Nebula -GraphOnly   # keep EXO session alive
 ```
+
+:::note
+`Leave-Nebula` is an alias for `Disconnect-Nebula`.
+:::
 
 ## Questions and answers
 

@@ -73,6 +73,35 @@ Export-CalendarPermission -All -OutputFolder C:\Temp
 :::
 
 
+## Get-RoomDetails
+List room list members with capacity and location details.
+
+**Syntax**
+```powershell
+Get-RoomDetails [-City <String[]>] [-Csv] [-OutputFolder <String>] [-GridView] [-PassThru]
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `City` | Filter room lists whose name/display name matches the provided text. | No |
+| `Csv` | Export results to CSV. | No |
+| `OutputFolder` | Destination for CSV; defaults to current directory. | No |
+| `GridView` | Show results in Out-GridView. | No |
+| `PassThru` | Emit room detail objects (also when exporting). | No |
+
+**Examples**
+```powershell
+Get-RoomDetails
+```
+
+```powershell
+Get-RoomDetails -City Milan -Csv -OutputFolder C:\Temp
+```
+
+```powershell
+Get-RoomDetails -GridView
+```
+
 ## Set-OoO
 Enable, schedule, or disable automatic replies on a mailbox.
 
@@ -120,32 +149,3 @@ Set-OoO -SourceMailbox user@contoso.com -Disable
 - Do not combine `-ChooseDayFromCalendar` with `-StartTime/-EndTime`.
 - Messages accept HTML; defaults are reused from the current configuration when omitted.
 :::
-
-## Get-RoomDetails
-List room list members with capacity and location details.
-
-**Syntax**
-```powershell
-Get-RoomDetails [-City <String[]>] [-Csv] [-OutputFolder <String>] [-GridView] [-PassThru]
-```
-
-| Parameter | Description | Required |
-| --- | --- | :---: |
-| `City` | Filter room lists whose name/display name matches the provided text. | No |
-| `Csv` | Export results to CSV. | No |
-| `OutputFolder` | Destination for CSV; defaults to current directory. | No |
-| `GridView` | Show results in Out-GridView. | No |
-| `PassThru` | Emit room detail objects (also when exporting). | No |
-
-**Examples**
-```powershell
-Get-RoomDetails
-```
-
-```powershell
-Get-RoomDetails -City Milan -Csv -OutputFolder C:\Temp
-```
-
-```powershell
-Get-RoomDetails -GridView
-```

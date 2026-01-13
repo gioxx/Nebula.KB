@@ -26,8 +26,8 @@ tags:
 
 Requires an EXO session. For full and always-up-to-date details, use `Get-Help <FunctionName> -Detailed`.
 
-## Add-MboxAlias / Remove-MboxAlias
-Add or remove SMTP aliases on a recipient.
+## Add-MboxAlias
+Add SMTP aliases on a recipient.
 
 **Syntax**
 
@@ -35,14 +35,10 @@ Add or remove SMTP aliases on a recipient.
 Add-MboxAlias -SourceMailbox <String> -MailboxAlias <String>
 ```
 
-```powershell
-Remove-MboxAlias -SourceMailbox <String> -MailboxAlias <String>
-```
-
 | Parameter | Description | Required |
 | --- | --- | :---: |
 | `SourceMailbox` (`Identity`) | Target mailbox/recipient. Pipeline accepted. | Yes |
-| `MailboxAlias` | Alias (SMTP address) to add/remove. | Yes |
+| `MailboxAlias` | Alias (SMTP address) to add. | Yes |
 
 **Examples**
 ```powershell
@@ -53,12 +49,8 @@ Add-MboxAlias -SourceMailbox 'info@contoso.com' -MailboxAlias 'alias@contoso.com
 Add-MboxAlias -Identity 'user@contoso.com' -Aliases 'user.sales@contoso.com','user.eu@contoso.com'
 ```
 
-```powershell
-Remove-MboxAlias -SourceMailbox 'info@contoso.com' -MailboxAlias 'alias@contoso.com'
-```
-
-## Add/Remove/Get/Export-MboxPermission
-Manage mailbox permissions and export them to CSV.
+## Add-MboxPermission
+Grant mailbox permissions.
 
 **Syntax**
 
@@ -66,51 +58,22 @@ Manage mailbox permissions and export them to CSV.
 Add-MboxPermission -Identity <String> -User <String> -AccessRights <String[]> [-AutoMapping]
 ```
 
-```powershell
-Remove-MboxPermission -Identity <String> -User <String> -AccessRights <String[]>
-```
-
-```powershell
-Get-MboxPermission -Identity <String>
-```
-
-```powershell
-Export-MboxPermission -Identity <String> [-CsvFolder <String>]
-```
-
-| Parameter | Description | Required (Add/Remove) |
+| Parameter | Description | Required |
 | --- | --- | :---: |
 | `Identity` | Target mailbox. | Yes |
-| `User` | Principal to grant/revoke. | Yes |
-| `AccessRights` | Rights (e.g., FullAccess, SendAs, SendOnBehalf). | Yes (Add) |
+| `User` | Principal to grant. | Yes |
+| `AccessRights` | Rights (e.g., FullAccess, SendAs, SendOnBehalf). | Yes |
 | `AutoMapping` | Enable/disable Outlook automapping. | No |
-| `CsvFolder` (Export) | Destination folder for CSV export. | No |
 
 **Examples**
 ```powershell
 Add-MboxPermission -Identity 'shared@contoso.com' -User 'john@contoso.com' -AccessRights FullAccess -AutoMapping:$false
 ```
 
-```powershell
-Remove-MboxPermission -Identity 'shared@contoso.com' -User 'john@contoso.com' -AccessRights FullAccess
-```
-
-```powershell
-Export-MboxPermission -Identity 'shared@contoso.com' -CsvFolder 'C:\Temp'
-```
-
-```powershell
-Get-MboxPermission -Identity 'shared@contoso.com'
-```
-
-## Get/Export-MboxAlias
-List or export aliases for auditing.
+## Export-MboxAlias
+Export aliases for auditing.
 
 **Syntax**
-
-```powershell
-Get-MboxAlias -Identity <String>
-```
 
 ```powershell
 Export-MboxAlias -Identity <String> [-CsvFolder <String>]
@@ -119,15 +82,66 @@ Export-MboxAlias -Identity <String> [-CsvFolder <String>]
 | Parameter | Description | Required |
 | --- | --- | :---: |
 | `Identity` | Target mailbox/recipient. | Yes |
-| `CsvFolder` (Export) | Destination folder for CSV export. | No |
+| `CsvFolder` | Destination folder for CSV export. | No |
+
+**Examples**
+```powershell
+Export-MboxAlias -Identity 'user@contoso.com' -CsvFolder 'C:\Temp'
+```
+
+## Export-MboxPermission
+Export mailbox permissions to CSV.
+
+**Syntax**
+
+```powershell
+Export-MboxPermission -Identity <String> [-CsvFolder <String>]
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `Identity` | Target mailbox. | Yes |
+| `CsvFolder` | Destination folder for CSV export. | No |
+
+**Examples**
+```powershell
+Export-MboxPermission -Identity 'shared@contoso.com' -CsvFolder 'C:\Temp'
+```
+
+## Get-MboxAlias
+List aliases for auditing.
+
+**Syntax**
+
+```powershell
+Get-MboxAlias -Identity <String>
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `Identity` | Target mailbox/recipient. | Yes |
 
 **Examples**
 ```powershell
 Get-MboxAlias -Identity 'user@contoso.com'
 ```
 
+## Get-MboxPermission
+List mailbox permissions.
+
+**Syntax**
+
 ```powershell
-Export-MboxAlias -Identity 'user@contoso.com' -CsvFolder 'C:\Temp'
+Get-MboxPermission -Identity <String>
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `Identity` | Target mailbox. | Yes |
+
+**Examples**
+```powershell
+Get-MboxPermission -Identity 'shared@contoso.com'
 ```
 
 ## Get-UserLastSeen
@@ -173,6 +187,45 @@ New-SharedMailbox -Name <String> -Alias <String> -PrimarySmtpAddress <String> [-
 **Example**
 ```powershell
 New-SharedMailbox -Name "Support" -Alias 'support' -PrimarySmtpAddress 'support@contoso.com' -Members 'agent1@contoso.com','agent2@contoso.com'
+```
+
+## Remove-MboxAlias
+Remove SMTP aliases from a recipient.
+
+**Syntax**
+
+```powershell
+Remove-MboxAlias -SourceMailbox <String> -MailboxAlias <String>
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `SourceMailbox` (`Identity`) | Target mailbox/recipient. Pipeline accepted. | Yes |
+| `MailboxAlias` | Alias (SMTP address) to remove. | Yes |
+
+**Examples**
+```powershell
+Remove-MboxAlias -SourceMailbox 'info@contoso.com' -MailboxAlias 'alias@contoso.com'
+```
+
+## Remove-MboxPermission
+Revoke mailbox permissions.
+
+**Syntax**
+
+```powershell
+Remove-MboxPermission -Identity <String> -User <String> -AccessRights <String[]>
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `Identity` | Target mailbox. | Yes |
+| `User` | Principal to revoke. | Yes |
+| `AccessRights` | Rights (e.g., FullAccess, SendAs, SendOnBehalf). | Yes |
+
+**Examples**
+```powershell
+Remove-MboxPermission -Identity 'shared@contoso.com' -User 'john@contoso.com' -AccessRights FullAccess
 ```
 
 ## Set-MboxLanguage

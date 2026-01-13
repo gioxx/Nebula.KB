@@ -95,6 +95,31 @@ Export-MsolAccountSku [-CsvFolder <String>] [-ForceLicenseCatalogRefresh]
 Export-MsolAccountSku -CsvFolder 'C:\Temp\Reports'
 ```
 
+## Get-TenantMsolAccountSku
+List tenant SKUs with resolved names, totals, consumed, available, and seat states (filter by name or SKU part number).
+
+**Syntax**
+
+```powershell
+Get-TenantMsolAccountSku [-ForceLicenseCatalogRefresh] [-Filter <String>] [-AsTable] [-GridView]
+```
+
+| Parameter | Description | Required | Default |
+| --- | --- | :---: | --- |
+| `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No | `False` |
+| `Filter` | Show only licenses whose name or `SkuPartNumber` contains the provided text. | No |  |
+| `AsTable` | Format output as a table. | No | `False` |
+| `GridView` | Show output in a GridView window. | No | `False` |
+
+**Example**
+```powershell
+Get-TenantMsolAccountSku -AsTable
+```
+
+```powershell
+Get-TenantMsolAccountSku -Filter "E3" -AsTable
+```
+
 ## Get-UserMsolAccountSku
 Show licenses assigned to a single user with friendly names.
 
@@ -121,31 +146,6 @@ Get-UserMsolAccountSku -UserPrincipalName 'user@contoso.com'
 
 ```powershell
 Get-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -Clipboard
-```
-
-## Get-TenantMsolAccountSku
-List tenant SKUs with resolved names, totals, consumed, available, and seat states (filter by name or SKU part number).
-
-**Syntax**
-
-```powershell
-Get-TenantMsolAccountSku [-ForceLicenseCatalogRefresh] [-Filter <String>] [-AsTable] [-GridView]
-```
-
-| Parameter | Description | Required | Default |
-| --- | --- | :---: | --- |
-| `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No | `False` |
-| `Filter` | Show only licenses whose name or `SkuPartNumber` contains the provided text. | No |  |
-| `AsTable` | Format output as a table. | No | `False` |
-| `GridView` | Show output in a GridView window. | No | `False` |
-
-**Example**
-```powershell
-Get-TenantMsolAccountSku -AsTable
-```
-
-```powershell
-Get-TenantMsolAccountSku -Filter "E3" -AsTable
 ```
 
 ## Move-UserMsolAccountSku

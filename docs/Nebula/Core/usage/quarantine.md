@@ -50,8 +50,8 @@ Export-QuarantineEml -Identity 'f3a3dda8-3f78-46c9-332b-08de38f41262\a94e1c02-1d
   -DestinationFolder C:\Temp\Quarantine
 ```
 
-## Get-QuarantineFrom / Get-QuarantineFromDomain
-List quarantined messages by sender or sender domain.
+## Get-QuarantineFrom
+List quarantined messages by sender.
 
 **Syntax**
 
@@ -59,21 +59,31 @@ List quarantined messages by sender or sender domain.
 Get-QuarantineFrom -SenderAddress <String[]> [-IncludeReleased]
 ```
 
-```powershell
-Get-QuarantineFromDomain -SenderDomain <String[]> [-IncludeReleased]
-```
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `SenderAddress` | Sender address(es). Pipeline accepted. | Yes |
+| `IncludeReleased` | Include messages already released. | No |
 
-| Parameter | Description | Required | Applies to |
-| --- | --- | :---: | --- |
-| `SenderAddress` | Sender address(es). Pipeline accepted. | Yes | Get-QuarantineFrom |
-| `SenderDomain` | Domain(s) (e.g., contoso.com). Pipeline accepted. | Yes | Get-QuarantineFromDomain |
-| `IncludeReleased` | Include messages already released. | No | Both
-
-**Examples**
+**Example**
 ```powershell
 Get-QuarantineFrom -SenderAddress 'bad@contoso.com' -IncludeReleased
 ```
 
+## Get-QuarantineFromDomain
+List quarantined messages by sender domain.
+
+**Syntax**
+
+```powershell
+Get-QuarantineFromDomain -SenderDomain <String[]> [-IncludeReleased]
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `SenderDomain` | Domain(s) (e.g., contoso.com). Pipeline accepted. | Yes |
+| `IncludeReleased` | Include messages already released. | No |
+
+**Example**
 ```powershell
 Get-QuarantineFromDomain -SenderDomain 'contoso.com'
 ```
@@ -103,8 +113,8 @@ Get-QuarantineToRelease -Interval <Int> [-ChooseDayFromCalendar] [-GridView] [-C
 Get-QuarantineToRelease -Interval 7 -GridView -ReleaseSelected -ReportFalsePositive
 ```
 
-## Unlock-QuarantineFrom / Unlock-QuarantineMessageId
-Bulk-release messages for specific senders or message IDs/identities (to all recipients, with optional false-positive report). Confirmation is controlled by `SupportsShouldProcess`; use `-Confirm:$false` when you want to suppress prompts.
+## Unlock-QuarantineFrom
+Bulk-release messages for specific senders (to all recipients, with optional false-positive report). Confirmation is controlled by `SupportsShouldProcess`; use `-Confirm:$false` when you want to suppress prompts.
 
 **Syntax**
 
@@ -112,20 +122,34 @@ Bulk-release messages for specific senders or message IDs/identities (to all rec
 Unlock-QuarantineFrom -SenderAddress <String[]> [-ReportFalsePositive] [-Confirm]
 ```
 
-```powershell
-Unlock-QuarantineMessageId [-MessageId <String[]>] [-Identity <String[]>] [-ReportFalsePositive] [-Confirm]
-```
-
-| Parameter | Description | Required | Applies to |
-| --- | --- | :---: | --- |
-| `SenderAddress` | Sender address(es). Pipeline accepted. | Yes | Unlock-QuarantineFrom |
-| `MessageId` | MessageId values (with/without angle brackets). Pipeline accepted. | One of MessageId/Identity | Unlock-QuarantineMessageId |
-| `Identity` | Quarantine Identity values (e.g., GUID\GUID). Pipeline accepted. | One of MessageId/Identity | Unlock-QuarantineMessageId |
-| `ReportFalsePositive` | Also report as false positive. | No | Both
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `SenderAddress` | Sender address(es). Pipeline accepted. | Yes |
+| `ReportFalsePositive` | Also report as false positive. | No |
 
 **Example**
 ```powershell
 Unlock-QuarantineFrom -SenderAddress 'sender@contoso.com' -ReportFalsePositive -Confirm:$false
+```
+
+## Unlock-QuarantineMessageId
+Bulk-release messages for specific message IDs or identities (to all recipients, with optional false-positive report). Confirmation is controlled by `SupportsShouldProcess`; use `-Confirm:$false` when you want to suppress prompts.
+
+**Syntax**
+
+```powershell
+Unlock-QuarantineMessageId [-MessageId <String[]>] [-Identity <String[]>] [-ReportFalsePositive] [-Confirm]
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `MessageId` | MessageId values (with/without angle brackets). Pipeline accepted. | One of MessageId/Identity |
+| `Identity` | Quarantine Identity values (e.g., GUID\GUID). Pipeline accepted. | One of MessageId/Identity |
+| `ReportFalsePositive` | Also report as false positive. | No |
+
+**Example**
+```powershell
+Unlock-QuarantineMessageId -MessageId '20230617142935.F5B74194B266E458@contoso.com' -ReportFalsePositive -Confirm:$false
 ```
 
 :::tip
