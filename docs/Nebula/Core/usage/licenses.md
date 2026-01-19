@@ -101,13 +101,14 @@ List tenant SKUs with resolved names, totals, consumed, available, and seat stat
 **Syntax**
 
 ```powershell
-Get-TenantMsolAccountSku [-ForceLicenseCatalogRefresh] [-Filter <String>] [-AsTable] [-GridView]
+Get-TenantMsolAccountSku [-ForceLicenseCatalogRefresh] [-Filter <String>] [-SampleUsers <Int32>] [-AsTable] [-GridView]
 ```
 
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |
 | `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No | `False` |
 | `Filter` | Show only licenses whose name or `SkuPartNumber` contains the provided text. | No |  |
+| `SampleUsers` | Return up to N sample users per license (requires `-Filter`). Defaults to 5 when specified. | No | `5` |
 | `AsTable` | Format output as a table. | No | `False` |
 | `GridView` | Show output in a GridView window. | No | `False` |
 
@@ -118,6 +119,10 @@ Get-TenantMsolAccountSku -AsTable
 
 ```powershell
 Get-TenantMsolAccountSku -Filter "E3" -AsTable
+```
+
+```powershell
+Get-TenantMsolAccountSku -Filter "E3" -SampleUsers
 ```
 
 ## Get-UserMsolAccountSku

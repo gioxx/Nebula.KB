@@ -10,6 +10,7 @@ tags:
   - Export-MboxAlias
   - Export-MboxPermission
   - Get-MboxAlias
+  - Get-MboxPrimarySmtpAddress
   - Get-MboxPermission
   - Get-UserLastSeen
   - New-SharedMailbox
@@ -126,6 +127,37 @@ Get-MboxAlias -Identity <String>
 Get-MboxAlias -Identity 'user@contoso.com'
 ```
 
+## Get-MboxPrimarySmtpAddress
+Return the PrimarySmtpAddress for a mailbox or recipient.
+
+**Syntax**
+
+```powershell
+Get-MboxPrimarySmtpAddress -SourceMailbox <String[]> [-Raw]
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `SourceMailbox` (`Identity`) | Target mailbox/recipient. Pipeline accepted. | Yes |
+| `Raw` | Return only the PrimarySmtpAddress values. | No |
+
+:::tip
+`Get-MboxPrimarySmtpAddress` is also available as `gpa` (alias).
+:::
+
+**Example**
+```powershell
+Get-MboxPrimarySmtpAddress -SourceMailbox 'user@contoso.com'
+```
+
+```powershell
+Get-MboxPrimarySmtpAddress -SourceMailbox 'user@contoso.com' -Raw
+```
+
+```powershell
+gpa 'user@contoso.com' -Raw
+```
+
 ## Get-MboxPermission
 List mailbox permissions.
 
@@ -214,18 +246,24 @@ Revoke mailbox permissions.
 **Syntax**
 
 ```powershell
-Remove-MboxPermission -Identity <String> -User <String> -AccessRights <String[]>
+Remove-MboxPermission -SourceMailbox <String> -UserMailbox <String[]> [-AccessRights <String>]
+Remove-MboxPermission -SourceMailbox <String> -RemoveAllAdditionalPermissions
 ```
 
 | Parameter | Description | Required |
 | --- | --- | :---: |
-| `Identity` | Target mailbox. | Yes |
-| `User` | Principal to revoke. | Yes |
-| `AccessRights` | Rights (e.g., FullAccess, SendAs, SendOnBehalf). | Yes |
+| `SourceMailbox` (`Identity`) | Target mailbox. | Yes |
+| `UserMailbox` | Principal(s) to revoke. | Yes (User mode) |
+| `AccessRights` | Rights (e.g., FullAccess, SendAs, SendOnBehalfTo). Defaults to All. | No |
+| `RemoveAllAdditionalPermissions` | Remove all non-inherited FullAccess, SendAs, and SendOnBehalfTo permissions from the source mailbox. | Yes (All mode) |
 
 **Examples**
 ```powershell
-Remove-MboxPermission -Identity 'shared@contoso.com' -User 'john@contoso.com' -AccessRights FullAccess
+Remove-MboxPermission -SourceMailbox 'shared@contoso.com' -UserMailbox 'john@contoso.com' -AccessRights FullAccess
+```
+
+```powershell
+Remove-MboxPermission -SourceMailbox 'shared@contoso.com' -RemoveAllAdditionalPermissions
 ```
 
 ## Set-MboxLanguage
