@@ -10,6 +10,7 @@ tags:
   - Export-MboxAlias
   - Export-MboxPermission
   - Get-MboxAlias
+  - Get-MboxLastMessageTrace
   - Get-MboxPrimarySmtpAddress
   - Get-MboxPermission
   - Get-UserLastSeen
@@ -156,6 +157,29 @@ Get-MboxPrimarySmtpAddress -SourceMailbox 'user@contoso.com' -Raw
 
 ```powershell
 gpa 'user@contoso.com' -Raw
+```
+
+## Get-MboxLastMessageTrace
+Return the most recent received and sent message traces for a mailbox.
+
+**Syntax**
+
+```powershell
+Get-MboxLastMessageTrace -SourceMailbox <String> [-IncludeTrace]
+```
+
+| Parameter | Description |
+| --- | --- |
+| `SourceMailbox` (`Identity`) | Target mailbox/recipient. Pipeline accepted. |
+| `IncludeTrace` | Include raw message trace objects in the output. |
+
+**Example**
+```powershell
+Get-MboxLastMessageTrace -SourceMailbox 'user@contoso.com'
+```
+
+```powershell
+Get-MboxLastMessageTrace -SourceMailbox 'user@contoso.com' -IncludeTrace
 ```
 
 ## Get-MboxPermission
