@@ -1,24 +1,26 @@
 ---
 sidebar_position: 4
 title: "Groups"
-description: Export distribution/dynamic groups, M365 groups, role groups, and user memberships.
+description: Export distribution/dynamic groups, M365 groups, role groups, and user/device memberships.
 hide_title: true
 id: groups
 tags:
   - Add-EntraGroupDevice
   - Add-EntraGroupUser
+  - Distribution Groups
+  - Dynamic Distribution Groups
   - Export-DistributionGroups
   - Export-DynamicDistributionGroups
   - Export-M365Group
   - Get-DynamicDistributionGroupFilter
+  - Get-EntraGroupDevice
+  - Get-EntraGroupUser
   - Get-RoleGroupsMembers
   - Get-UserGroups
+  - Microsoft 365 Unified Groups
+  - Nebula.Core
   - Remove-EntraGroupDevice
   - Remove-EntraGroupUser
-  - Nebula.Core
-  - Distribution Groups
-  - Dynamic Distribution Groups
-  - Microsoft 365 Unified Groups
 ---
 
 # Group helpers
@@ -159,6 +161,54 @@ Get-DynamicDistributionGroupFilter -DynamicDistributionGroup <String> [-IncludeD
 **Example**
 ```powershell
 Get-DynamicDistributionGroupFilter -DynamicDistributionGroup "All Mailboxes"
+```
+
+## Get-EntraGroupDevice
+Show the Entra groups a device belongs to (Graph scopes: `Group.Read.All`, `Directory.Read.All`).
+
+**Syntax**
+
+```powershell
+Get-EntraGroupDevice -DeviceIdentifier <String> [-TreatInputAsId] [-GridView]
+```
+
+| Parameter | Description | Required | Default |
+| --- | --- | :---: | --- |
+| `DeviceIdentifier` | Device display name or object ID. Pipeline accepted. | Yes | - |
+| `TreatInputAsId` | Treat the `DeviceIdentifier` as an object ID (skip name lookup). | No | `False` |
+| `GridView` | Show details in Out-GridView. | No | `False` |
+
+**Examples**
+```powershell
+Get-EntraGroupDevice -DeviceIdentifier "PC123"
+```
+
+```powershell
+"00000000-0000-0000-0000-000000000000" | Get-EntraGroupDevice -TreatInputAsId -GridView
+```
+
+## Get-EntraGroupUser
+Show the Entra groups a user belongs to (Graph scopes: `Group.Read.All`, `Directory.Read.All`).
+
+**Syntax**
+
+```powershell
+Get-EntraGroupUser -UserIdentifier <String> [-TreatInputAsId] [-GridView]
+```
+
+| Parameter | Description | Required | Default |
+| --- | --- | :---: | --- |
+| `UserIdentifier` | UPN/display name/object ID. Pipeline accepted. | Yes | - |
+| `TreatInputAsId` | Treat the `UserIdentifier` as an object ID (skip name lookup). | No | `False` |
+| `GridView` | Show details in Out-GridView. | No | `False` |
+
+**Examples**
+```powershell
+Get-EntraGroupUser -UserIdentifier "user@contoso.com"
+```
+
+```powershell
+"00000000-0000-0000-0000-000000000000" | Get-EntraGroupUser -TreatInputAsId -GridView
 ```
 
 ## Get-RoleGroupsMembers

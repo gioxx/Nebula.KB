@@ -11,9 +11,10 @@ tags:
   - Export-MboxPermission
   - Get-MboxAlias
   - Get-MboxLastMessageTrace
-  - Get-MboxPrimarySmtpAddress
   - Get-MboxPermission
+  - Get-MboxPrimarySmtpAddress
   - Get-UserLastSeen
+  - Nebula.Core
   - New-SharedMailbox
   - Remove-MboxAlias
   - Remove-MboxPermission
@@ -21,7 +22,6 @@ tags:
   - Set-MboxRulesQuota
   - Set-SharedMboxCopyForSent
   - Test-SharedMailboxCompliance
-  - Nebula.Core
 ---
 
 # Mailbox helpers
@@ -128,37 +128,6 @@ Get-MboxAlias -Identity <String>
 Get-MboxAlias -Identity 'user@contoso.com'
 ```
 
-## Get-MboxPrimarySmtpAddress
-Return the PrimarySmtpAddress for a mailbox or recipient.
-
-**Syntax**
-
-```powershell
-Get-MboxPrimarySmtpAddress -SourceMailbox <String[]> [-Raw]
-```
-
-| Parameter | Description | Required |
-| --- | --- | :---: |
-| `SourceMailbox` (`Identity`) | Target mailbox/recipient. Pipeline accepted. | Yes |
-| `Raw` | Return only the PrimarySmtpAddress values. | No |
-
-:::tip
-`Get-MboxPrimarySmtpAddress` is also available as `gpa` (alias).
-:::
-
-**Example**
-```powershell
-Get-MboxPrimarySmtpAddress -SourceMailbox 'user@contoso.com'
-```
-
-```powershell
-Get-MboxPrimarySmtpAddress -SourceMailbox 'user@contoso.com' -Raw
-```
-
-```powershell
-gpa 'user@contoso.com' -Raw
-```
-
 ## Get-MboxLastMessageTrace
 Return the most recent received and sent message traces for a mailbox.
 
@@ -198,6 +167,37 @@ Get-MboxPermission -Identity <String>
 **Examples**
 ```powershell
 Get-MboxPermission -Identity 'shared@contoso.com'
+```
+
+## Get-MboxPrimarySmtpAddress
+Return the PrimarySmtpAddress for a mailbox or recipient.
+
+**Syntax**
+
+```powershell
+Get-MboxPrimarySmtpAddress -SourceMailbox <String[]> [-Raw]
+```
+
+| Parameter | Description | Required |
+| --- | --- | :---: |
+| `SourceMailbox` (`Identity`) | Target mailbox/recipient. Pipeline accepted. | Yes |
+| `Raw` | Return only the PrimarySmtpAddress values. | No |
+
+:::tip
+`Get-MboxPrimarySmtpAddress` is also available as `gpa` (alias).
+:::
+
+**Example**
+```powershell
+Get-MboxPrimarySmtpAddress -SourceMailbox 'user@contoso.com'
+```
+
+```powershell
+Get-MboxPrimarySmtpAddress -SourceMailbox 'user@contoso.com' -Raw
+```
+
+```powershell
+gpa 'user@contoso.com' -Raw
 ```
 
 ## Get-UserLastSeen
