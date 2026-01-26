@@ -1,24 +1,18 @@
 ---
-sidebar_position: 50
+sidebar_position: 5
 title: "More examples"
 description: Practical recipes that show common ways to use Nebula.Tools.
 hide_title: true
 id: more-examples
 tags:
-  - Nebula.Tools
   - Examples
+  - Nebula.Tools
   - Tools
 ---
 
 # More examples
 
 Practical recipes that show common ways to use Nebula.Tools.
-
-## Generate multiple passwords and copy them
-
-```powershell
-New-RandomPassword -Count 5 -PasswordLength 16 -Clipboard
-```
 
 ## Convert CSV delimiters in bulk
 
@@ -37,10 +31,22 @@ Find-ModulesUpdates -Scope User -Provider Auto |
   Format-Table Name, InstalledVersion, LatestVersion, Scope
 ```
 
-## Update modules and clean superseded versions
+## Export AD expirations to CSV
 
 ```powershell
-Update-Modules -Scope User -Provider Auto -CleanupOld
+Find-ADAccountExpirations -TargetDate "2027-01-01" -ExportCsv -ExportPath 'C:\Reports'
+```
+
+## Generate multiple passwords and copy them
+
+```powershell
+New-RandomPassword -Count 5 -PasswordLength 16 -Clipboard
+```
+
+## Keep PowerShell 7 current
+
+```powershell
+Update-PS7   # launches the official MSI-based installer
 ```
 
 ## Remove old versions for one module
@@ -49,8 +55,8 @@ Update-Modules -Scope User -Provider Auto -CleanupOld
 Remove-OldModuleVersions -Name 'Az' -Keep 1 -WhatIf
 ```
 
-## Keep PowerShell 7 current
+## Update modules and clean superseded versions
 
 ```powershell
-Update-PS7   # launches the official MSI-based installer
+Update-Modules -Scope User -Provider Auto -CleanupOld
 ```

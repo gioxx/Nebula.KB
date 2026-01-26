@@ -22,10 +22,11 @@ tags:
 
 ## What's included
 
-- Keep PowerShell 7 up to date with a single command (`Update-PS7`).
-- Generate strong passwords quickly, with clipboard support when you need to paste them elsewhere.
-- Rewrite CSV delimiters in bulk while preserving encoding.
 - Audit, update, and clean up PowerShell modules using either PSResourceGet or PowerShellGet.
+- Find AD accounts with expiration dates and optionally extend them.
+- Generate strong passwords quickly, with clipboard support when you need to paste them elsewhere.
+- Keep PowerShell 7 up to date with a single command (`Update-PS7`).
+- Rewrite CSV delimiters in bulk while preserving encoding.
 
 :::tip
 Every function exposes built-in help. Use `Get-Help <FunctionName> -Detailed` or `-Examples` for notes, parameters, and prerequisites.
