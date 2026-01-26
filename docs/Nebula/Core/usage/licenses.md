@@ -96,7 +96,7 @@ Export-MsolAccountSku -CsvFolder 'C:\Temp\Reports'
 ```
 
 ## Get-TenantMsolAccountSku
-List tenant SKUs with resolved names, totals, consumed, available (net of suspended), and seat states (filter by name or SKU part number).
+List tenant SKUs with resolved names, totals, consumed, available (enabled minus consumed), and seat states (filter by name or SKU part number).
 
 **Syntax**
 
@@ -126,15 +126,11 @@ Get-TenantMsolAccountSku -Filter "E3" -SampleUsers
 ```
 
 :::note
-`Available` is calculated net of suspended seats: `(TotalCount - Suspended) - Consumed`. The `Total` column shows a friendly breakdown (Enabled/Suspended), while `TotalCount` remains the numeric total for scripting.
+`Available` is calculated as `Enabled - Consumed` (never below zero). The `Total` column shows a friendly breakdown (Enabled/Suspended), while `TotalCount` remains the numeric total for scripting.
 :::
 
 :::tip
-Need renewal/expiration or billing profile details? Open the Microsoft 365 Admin Center subscriptions page:
-
-```
-https://admin.cloud.microsoft/?#/subscriptions
-```
+Need renewal/expiration or billing profile details? Open the Microsoft 365 Admin Center subscriptions page: https://admin.cloud.microsoft/?#/subscriptions
 :::
 
 ## Get-UserMsolAccountSku
