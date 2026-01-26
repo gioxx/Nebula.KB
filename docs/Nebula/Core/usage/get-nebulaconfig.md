@@ -41,6 +41,8 @@ Key                   Value
 ---                   -----
 CSV_DefaultLimiter    ;
 CSV_Encoding          ISO-8859-15
+CheckUpdatesOnConnect True
+CheckUpdatesIntervalHours 24
 DateTimeString_CSV    yyyyMMdd
 DateTimeString_Full   dd/MM/yyyy HH:mm:ss
 LicenseCacheDays      7
@@ -79,6 +81,8 @@ Below is an example of a `settings.psd1` file that you can save in your user fol
 @{
     CSV_DefaultLimiter  = ";"
     CSV_Encoding        = 'ISO-8859-15'
+    CheckUpdatesOnConnect = $false
+    CheckUpdatesIntervalHours = 24
     DateTimeString_Full = 'dd/MM/yyyy HH:mm:ss'
     UsageLocation       = 'IT'
 }

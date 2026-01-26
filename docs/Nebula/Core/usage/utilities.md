@@ -7,6 +7,7 @@ id: utilities
 tags:
   - Format-MessageIDsFromClipboard
   - Format-SortedEmailsFromClipboard
+  - Get-NebulaModuleUpdates
   - Nebula.Core
   - Tools
 ---
@@ -71,3 +72,21 @@ Format-SortedEmailsFromClipboard [-PassThru]
 ```powershell
 Format-SortedEmailsFromClipboard -PassThru
 ```
+
+## Get-NebulaModuleUpdates
+
+Checks PowerShell Gallery for updates of installed `Nebula.*` modules and reports only the modules that have newer versions available.
+
+**Syntax**
+
+```powershell
+Get-NebulaModuleUpdates
+```
+
+This command always forces a fresh check. The automatic check in `Connect-Nebula` can be disabled with
+`CheckUpdatesOnConnect = $false`, and throttled via `CheckUpdatesIntervalHours` (default `24`) in `settings.psd1`.
+After edits, run `Sync-NebulaConfig`.
+
+:::note
+The same details above are also published in the Nebula.Core [configuration](./configuration) section.
+:::
