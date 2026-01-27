@@ -1,9 +1,9 @@
 ---
-sidebar_position: 1
-title: 'Introduction'
+sidebar_position: 2
+title: 'Nebula: Introduction'
 description: Get up and running with Nebula modules in minutes.
 hide_title: true
-id: intro
+id: nebula
 tags:
   - Introduction
   - Nebula Modules

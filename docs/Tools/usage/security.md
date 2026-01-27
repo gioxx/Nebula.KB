@@ -56,4 +56,5 @@ New-RandomPassword -Simple -Count 3 -Clipboard
 - `-Clipboard` writes the generated passwords to the Windows clipboard.
 - `-Count` lets you produce multiple passwords in one call.
 - `-Simple` reduces special characters for systems with stricter input rules.
+- If the clipboard is not available, the cmdlet warns and still outputs the passwords.
 :::

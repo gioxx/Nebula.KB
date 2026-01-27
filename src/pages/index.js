@@ -23,7 +23,7 @@ function HomepageHeader() {
             </p>
 
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link className="button button--secondary button--lg" to="/docs/intro">
+              <Link className="button button--secondary button--lg" to="/Nebula/nebula">
                 Get started
               </Link>
               <Link className="button button--primary button--lg" to="https://github.com/gioxx?tab=repositories&q=Nebula">

@@ -63,6 +63,7 @@ Update-PS7
 - Downloads `aka.ms/install-powershell.ps1` and executes it with `-UseMSI`.
 - Ideal for keeping managed endpoints on the latest stable PowerShell release.
 - The installer UI appears; run from an elevated session for system-wide upgrades.
+- On Windows PowerShell 5.1, the function enforces TLS 1.2 before downloading.
 :::
 
 ## Questions and answers

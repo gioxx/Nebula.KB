@@ -5,6 +5,7 @@
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import {themes as prismThemes} from 'prism-react-renderer';
+import path from 'node:path';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -27,6 +28,7 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
+          routeBasePath: 'Nebula',
         },
         // blog: {
         //   showReadingTime: true,
@@ -43,6 +45,27 @@ const config = {
           customCss: './src/css/custom.css',
         },
       }),
+    ],
+  ],
+
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'scripts',
+        path: path.resolve('./Scripts'),
+        routeBasePath: 'Scripts',
+        sidebarPath: path.resolve('./sidebarsScripts.js'),
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'projects',
+        path: path.resolve('./Projects'),
+        routeBasePath: 'Projects',
+        sidebarPath: path.resolve('./sidebarsProjects.js'),
+      },
     ],
   ],
 
@@ -75,22 +98,32 @@ const config = {
         },
         items: [
           {
-            to: '/docs/Nebula/Automations/intro',
+            to: '/Nebula/intro',
+            label: 'About',
+            position: 'left'
+          },
+          {
+            type: 'html',
+            position: 'left',
+            value: '<span class="navbar-separator"></span>',
+          },
+          {
+            to: '/Nebula/Automations/intro',
             label: 'Automations',
             position: 'left'
           },
           {
-            to: '/docs/Nebula/Core/intro',
+            to: '/Nebula/Core/intro',
             label: 'Core',
             position: 'left'
           },
           {
-            to: '/docs/Nebula/Log/intro',
+            to: '/Nebula/Log/intro',
             label: 'Log',
             position: 'left'
           },
           {
-            to: '/docs/Nebula/Tools/intro',
+            to: '/Nebula/Tools/intro',
             label: 'Tools',
             position: 'left'
           },
@@ -123,21 +156,25 @@ const config = {
             title: 'Modules',
             items: [
               {
+                label: 'Introduction',
+                to: '/Nebula/nebula',
+              },
+              {
                 label: 'Nebula.Automations',
-                to: '/docs/Nebula/Automations/intro',
+                to: '/Nebula/Automations/intro',
               },
               {
                 label: 'Nebula.Core',
-                to: '/docs/Nebula/Core/intro',
+                to: '/Nebula/Core/intro',
                 // className: 'nav-core-bold',
               },
               {
                 label: 'Nebula.Log',
-                to: '/docs/Nebula/Log/intro',
+                to: '/Nebula/Log/intro',
               },
               {
                 label: 'Nebula.Tools',
-                to: '/docs/Nebula/Tools/intro',
+                to: '/Nebula/Tools/intro',
               },
             ],
           },
@@ -146,7 +183,11 @@ const config = {
             items: [
               {
                 label: 'Nebula.Scripts',
-                to: '/docs/intro',
+                to: '/Scripts/intro',
+              },
+              {
+                label: 'IntuneWinAppUtilGUI',
+                to: '/Projects/intro',
               },
             ],
           },
