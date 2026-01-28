@@ -3,7 +3,7 @@ sidebar_position: 2
 title: 'Nebula: Introduction'
 description: Get up and running with Nebula modules in minutes.
 hide_title: true
-id: nebula
+id: im-nebula
 tags:
   - Introduction
   - Nebula Modules
@@ -16,7 +16,9 @@ tags:
   style={{ float: "right", maxWidth: "140px", marginLeft: "1rem" }}
 />
 
-# Introduction to Nebula Modules
+# I'm Nebula 👋
+
+## Introduction to Nebula Modules
 
 Nebula modules simplify some of the daily operations involved in interfacing with Microsoft 365 and products within the Microsoft Cloud ecosystem. They provide a set of well-defined functions for common tasks involving Microsoft Exchange (in the Cloud), Entra, and Intune.
 
