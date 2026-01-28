@@ -157,7 +157,7 @@ const config = {
             items: [
               {
                 label: 'Introduction',
-                to: '/Nebula/nebula',
+                to: '/Nebula/im-nebula',
               },
               {
                 label: 'Nebula.Automations',
