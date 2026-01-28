@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 title: "Write-Log"
 description: Main entry point for writing console and file logs with levels, rotation, JSON, and optional colors.
 hide_title: true

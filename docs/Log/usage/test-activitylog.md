@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 title: "Test-ActivityLog"
 description: Validates that the activity log is reachable and writable. Can optionally archive a bad file and recreate it.
 hide_title: true

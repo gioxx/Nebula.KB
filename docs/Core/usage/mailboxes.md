@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 6
 title: "Mailboxes"
 description: Manage aliases, permissions, languages, quotas, and shared mailbox setup.
 hide_title: true

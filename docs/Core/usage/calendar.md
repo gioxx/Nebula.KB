@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 title: "Calendar"
 description: Manage out-of-office messages and export calendar permissions.
 hide_title: true
