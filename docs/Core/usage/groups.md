@@ -14,6 +14,7 @@ tags:
   - Export-M365Group
   - Get-DynamicDistributionGroupFilter
   - Get-EntraGroupDevice
+  - Get-EntraGroupMembers
   - Get-EntraGroupUser
   - Get-RoleGroupsMembers
   - Get-UserGroups
@@ -210,6 +211,46 @@ Get-EntraGroupUser -UserIdentifier "user@contoso.com"
 ```powershell
 "00000000-0000-0000-0000-000000000000" | Get-EntraGroupUser -TreatInputAsId -GridView
 ```
+
+## Get-EntraGroupMembers
+Show the members of an Entra group (users, devices, and other directory objects) (Graph scopes: `Group.Read.All`, `Directory.Read.All`).
+
+**Syntax**
+
+```powershell
+Get-EntraGroupMembers [-GroupName <String>] [-GroupId <String>] [-IncludeDeviceUsers] [-GridView]
+```
+
+| Parameter | Description | Required | Default |
+| --- | --- | :---: | --- |
+| `GroupName` | Target group display name. Pipeline accepted. | Yes* | - |
+| `GroupId` | Target group object ID (use instead of `GroupName`). | Yes* | - |
+| `IncludeDeviceUsers` | When members are devices, resolve registered owners and users. | No | `False` |
+| `GridView` | Show details in Out-GridView. | No | `False` |
+
+\*Use either `GroupName` or `GroupId`.
+
+**Examples**
+```powershell
+Get-EntraGroupMembers "intune - app - netterm"
+```
+
+```powershell
+"intune - app - netterm" | Get-EntraGroupMembers
+```
+
+```powershell
+Get-EntraGroupMembers -GroupId "00000000-0000-0000-0000-000000000000" -GridView
+```
+
+```powershell
+Get-EntraGroupMembers "intune - app - netterm" -IncludeDeviceUsers
+```
+
+:::note
+- When `-IncludeDeviceUsers` is used and the member is a device, the output includes a `Device Owners/Users` column.
+- If owners and users are identical, the list is shown once; otherwise owners and users are combined in the same column.
+:::
 
 ## Get-RoleGroupsMembers
 List Exchange Online role groups and members.

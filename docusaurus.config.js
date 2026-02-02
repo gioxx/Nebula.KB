@@ -98,16 +98,6 @@ const config = {
         },
         items: [
           {
-            to: '/Nebula/intro',
-            label: 'About',
-            position: 'left'
-          },
-          {
-            type: 'html',
-            position: 'left',
-            value: '<span class="navbar-separator"></span>',
-          },
-          {
             to: '/Nebula/Automations/intro',
             label: 'Automations',
             position: 'left'
@@ -134,9 +124,24 @@ const config = {
             value: '<span class="navbar-separator"></span>',
           },
           {
+            to: '/Nebula/intro',
+            label: 'About',
+            position: 'left'
+          },
+          {
             to: 'https://gioxx.org',
             label: 'Blog',
             target: '_self',
+          },
+          {
+            type: 'dropdown',
+            label: 'Utilities',
+            position: 'left',
+            items: [
+              { label: 'E-mail Header Analyzer', to: '/message-header-analyzer' },
+              { label: 'PSADT Log Viewer', to: '/psadt-log-viewer' },
+              { label: 'Quarantine E-mail Analyzer', to: '/quarantine-email-analyzer' },
+            ],
           },
           {
             type: 'search',
@@ -192,7 +197,7 @@ const config = {
             ],
           },
           {
-            title: 'Tools',
+            title: 'Utilities',
             items: [
               {
                 label: 'E-mail Header Analyzer',
