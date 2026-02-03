@@ -231,7 +231,7 @@ Disconnect-Nebula
         <div className={styles.moduleStripInner}>
           <div className={styles.moduleStripHeader}>
             <Heading as="h2">Nebula is available on PowerShell Gallery</Heading>
-            <p>Install with one command. Designed to mix Core, Automations, and Log where needed. Ready to go out of the box, or adapt to your needs.</p>
+            <p>Install with one command. Designed to mix Core, Automations, Log and Tools where needed. Ready to go out of the box, or adapt to your needs.</p>
           </div>
           <div className={styles.moduleStripGrid}>
             {moduleCards.map((mod) => (
@@ -240,13 +240,14 @@ Disconnect-Nebula
                   <img src={mod.icon} alt={mod.name} className={styles.moduleLogo} />
                   <Heading as="h3" className={styles.moduleName}>{mod.name}</Heading>
                 </div>
+                <Link className={styles.moduleVersion} to={mod.gallery}>
+                  <img
+                    src={`https://img.shields.io/powershellgallery/v/Nebula.${mod.name}?label=PowerShell%20Gallery`}
+                    alt={`PowerShell Gallery ${mod.name} version`}
+                    loading="lazy"
+                  />
+                </Link>
                 <p className={styles.moduleStripBlurb}>{mod.blurb}</p>
-                <div className={styles.moduleStripFooter}>
-                  <span className={styles.moduleVersion}>PSGallery · Latest</span>
-                  <Link className={styles.moduleLink} to={mod.gallery}>
-                    Module page
-                  </Link>
-                </div>
               </article>
             ))}
           </div>
