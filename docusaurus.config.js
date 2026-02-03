@@ -134,6 +134,16 @@ const config = {
             target: '_self',
           },
           {
+            to: '/Projects/intro',
+            label: 'Projects',
+            position: 'left'
+          },
+          {
+            to: '/Scripts/intro',
+            label: 'Scripts',
+            position: 'left'
+          },
+          {
             type: 'dropdown',
             label: 'Utilities',
             position: 'left',
