@@ -7,6 +7,7 @@ id: utilities
 tags:
   - Nebula.Tools
   - Tools
+  - Join-ClipboardLines
   - Update-CSVDelimiter
   - Update-PS7
   - Utilities
@@ -16,7 +17,40 @@ tags:
 
 General-purpose helpers for everyday tasks. This page groups small utilities that don't need a dedicated section yet.
 
-For full details and examples, run `Get-Help Update-CSVDelimiter -Detailed` or `Get-Help Update-PS7 -Detailed`.
+For full details and examples, run `Get-Help Join-ClipboardLines -Detailed`, `Get-Help Update-CSVDelimiter -Detailed`, or `Get-Help Update-PS7 -Detailed`.
+
+## Join-ClipboardLines
+
+`Join-ClipboardLines` turns a list of lines from the clipboard into a single PowerShell-ready string.
+
+**Syntax**
+
+```powershell
+Join-ClipboardLines [-Separator <String>] [-Quote <String>] [-Clipboard]
+```
+
+| Parameter | Description | Required | Default |
+| --- | --- | :---: | --- |
+| `Separator` | String used between items. | No | `, ` |
+| `Quote` | Quote character to wrap each item (empty string disables quoting). | No | `"` |
+| `Clipboard` | Copy the output back to the clipboard. | No | `False` |
+
+**Examples**
+```powershell
+# Join lines as a PowerShell-ready string
+Join-ClipboardLines
+
+# Join and copy the result back to the clipboard
+Join-ClipboardLines -Clipboard
+
+# No quotes, custom separator
+Join-ClipboardLines -Separator '; ' -Quote ''
+```
+
+:::note
+- Empty lines are ignored.
+- Requires clipboard availability in the current session.
+:::
 
 ## Update-CSVDelimiter
 
