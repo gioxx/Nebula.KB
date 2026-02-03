@@ -95,6 +95,7 @@
   padding: 1rem;
   backdrop-filter: blur(6px);
   display: grid;
+  grid-template-rows: auto 24px 1fr;
   gap: 0.5rem;
 }
 
@@ -130,16 +131,25 @@
 .moduleVersion {
   font-size: 0.9rem;
   color: rgba(247, 251, 255, 0.75);
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+}
+
+.moduleVersion img {
+  display: block;
+  height: 20px;
+  width: auto;
 }
 
 .moduleLink {
   color: #bfe3ff;
-  font-weight: 600;
+  font-weight: 400;
   text-decoration: none;
 }
 
 .moduleLink:hover {
-  text-decoration: underline;
+  font-weight: 600;
 }
 
 .moduleDot {
