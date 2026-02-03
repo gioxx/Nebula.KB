@@ -139,13 +139,14 @@ Show licenses assigned to a single user with friendly names.
 **Syntax**
 
 ```powershell
-Get-UserMsolAccountSku -UserPrincipalName <String> [-Clipboard] [-ForceLicenseCatalogRefresh]
+Get-UserMsolAccountSku -UserPrincipalName <String> [-Clipboard] [-CheckAvailability] [-ForceLicenseCatalogRefresh]
 ```
 
 | Parameter | Description | Required |
 | --- | --- | :---: |
 | `UserPrincipalName` | Target UPN or object ID. | Yes |
 | `Clipboard` | Copy the resolved license names (fallback: `SkuPartNumber`) to the clipboard as `"License1","License2"`. | No |
+| `CheckAvailability` | Show available seat counts for the assigned SKUs. | No |
 | `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No |
 
 **Example**
@@ -159,6 +160,10 @@ Get-UserMsolAccountSku -UserPrincipalName 'user@contoso.com'
 
 ```powershell
 Get-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -Clipboard
+```
+
+```powershell
+Get-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -CheckAvailability
 ```
 
 ## Move-UserMsolAccountSku
