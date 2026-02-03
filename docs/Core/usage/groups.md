@@ -297,6 +297,7 @@ Remove one or more devices from an Entra group (Graph scopes: `Group.ReadWrite.A
 
 ```powershell
 Remove-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] -DeviceIdentifier <String[]> [-TreatInputAsId] [-PassThru]
+Remove-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] -ClearAll [-PassThru]
 ```
 
 | Parameter | Description | Required | Default |
@@ -305,6 +306,7 @@ Remove-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] -DeviceIdentif
 | `GroupId` | Target group object ID (use instead of `GroupName`). | Yes* | - |
 | `DeviceIdentifier` | Device display name or object ID. Pipeline accepted. | Yes | - |
 | `TreatInputAsId` | Treat every `DeviceIdentifier` as an object ID (skip name lookup). | No | `False` |
+| `ClearAll` | Remove all device members from the group (users and other objects are not removed). Prompts for confirmation. | No | `False` |
 | `PassThru` | Emit a status object per device. | No | `False` |
 
 \*Use either `GroupName` or `GroupId`.
@@ -318,6 +320,14 @@ Remove-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] -DeviceIdentif
 Remove-EntraGroupDevice -GroupId "00000000-0000-0000-0000-000000000000" -DeviceIdentifier "PC1" -PassThru
 ```
 
+```powershell
+Remove-EntraGroupDevice -GroupName "Zero Trust Devices" -ClearAll
+```
+
+```powershell
+Remove-EntraGroupDevice -GroupName "Zero Trust Devices" -ClearAll -WhatIf
+```
+
 ## Remove-EntraGroupUser
 Remove one or more users from an Entra group (Graph scopes: `Group.ReadWrite.All`, `Directory.Read.All`).
 
@@ -325,6 +335,7 @@ Remove one or more users from an Entra group (Graph scopes: `Group.ReadWrite.All
 
 ```powershell
 Remove-EntraGroupUser [-GroupName <String>] [-GroupId <String>] -UserIdentifier <String[]> [-TreatInputAsId] [-PassThru]
+Remove-EntraGroupUser [-GroupName <String>] [-GroupId <String>] -ClearAll [-PassThru]
 ```
 
 | Parameter | Description | Required | Default |
@@ -333,6 +344,7 @@ Remove-EntraGroupUser [-GroupName <String>] [-GroupId <String>] -UserIdentifier 
 | `GroupId` | Target group object ID (use instead of `GroupName`). | Yes* | - |
 | `UserIdentifier` | UPN/display name/object ID. Pipeline accepted. | Yes | - |
 | `TreatInputAsId` | Treat every `UserIdentifier` as an object ID (skip name lookup). | No | `False` |
+| `ClearAll` | Remove all user members from the group (devices and other objects are not removed). Prompts for confirmation. | No | `False` |
 | `PassThru` | Emit a status object per user. | No | `False` |
 
 \*Use either `GroupName` or `GroupId`.
@@ -344,4 +356,12 @@ Remove-EntraGroupUser [-GroupName <String>] [-GroupId <String>] -UserIdentifier 
 
 ```powershell
 Remove-EntraGroupUser -GroupId "00000000-0000-0000-0000-000000000000" -UserIdentifier "user1@contoso.com" -PassThru
+```
+
+```powershell
+Remove-EntraGroupUser -GroupName "Project Team" -ClearAll
+```
+
+```powershell
+Remove-EntraGroupUser -GroupName "Project Team" -ClearAll -WhatIf
 ```
