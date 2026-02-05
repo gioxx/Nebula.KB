@@ -22,6 +22,7 @@ tags:
   - Nebula.Core
   - Remove-EntraGroupDevice
   - Remove-EntraGroupUser
+  - Search-EntraGroup
 ---
 
 # Group helpers
@@ -364,4 +365,36 @@ Remove-EntraGroupUser -GroupName "Project Team" -ClearAll
 
 ```powershell
 Remove-EntraGroupUser -GroupName "Project Team" -ClearAll -WhatIf
+```
+
+## Search-EntraGroup
+Find Entra groups by display name and/or description (Graph scopes: `Group.Read.All`, `Directory.Read.All`).
+
+**Syntax**
+
+```powershell
+Search-EntraGroup -SearchText <String> [-SearchIn <String>] [-GridView]
+```
+
+| Parameter | Description | Required | Default |
+| --- | --- | :---: | --- |
+| `SearchText` | Text to search in display name and/or description. Pipeline accepted. | Yes | - |
+| `SearchIn` | Search target: DisplayName, Description, Any. | No | `DisplayName` |
+| `GridView` | Show details in Out-GridView. | No | `False` |
+
+**Examples**
+```powershell
+Search-EntraGroup -SearchText "java"
+```
+
+```powershell
+Search-EntraGroup -SearchText "jre"
+```
+
+```powershell
+Search-EntraGroup -SearchText "legacy apps" -SearchIn Description
+```
+
+```powershell
+"marketing" | Search-EntraGroup -SearchIn Any -GridView
 ```
