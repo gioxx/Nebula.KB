@@ -26,29 +26,41 @@ For full details and examples, run `Get-Help Join-ClipboardLines -Detailed`, `Ge
 **Syntax**
 
 ```powershell
-Join-ClipboardLines [-Separator <String>] [-Quote <String>] [-Clipboard]
+Join-ClipboardLines [-Separator <String>] [-Quote <String>] [-RemoveDuplicates] [-ShowOutput] [-NoClipboard]
 ```
 
 | Parameter | Description | Required | Default |
 | --- | --- | :---: | --- |
 | `Separator` | String used between items. | No | `, ` |
 | `Quote` | Quote character to wrap each item (empty string disables quoting). | No | `"` |
-| `Clipboard` | Copy the output back to the clipboard. | No | `False` |
+| `RemoveDuplicates` | Remove duplicate lines before joining. | No | `False` |
+| `ShowOutput` | Write the joined string to the pipeline. | No | `False` |
+| `NoClipboard` | Do not copy the output back to the clipboard. | No | `False` |
 
 **Examples**
 ```powershell
-# Join lines as a PowerShell-ready string
+# Join lines as a PowerShell-ready string and copy the result back to the clipboard (default)
 Join-ClipboardLines
-
-# Join and copy the result back to the clipboard
-Join-ClipboardLines -Clipboard
 
 # No quotes, custom separator
 Join-ClipboardLines -Separator '; ' -Quote ''
+
+# Remove duplicates before joining
+Join-ClipboardLines -RemoveDuplicates
+
+# Show the joined string in the output
+Join-ClipboardLines -ShowOutput
+
+# Return output only (no clipboard write)
+Join-ClipboardLines -NoClipboard
 ```
 
 :::note
 - Empty lines are ignored.
+- When `-RemoveDuplicates` is used, the first occurrence is kept and order is preserved.
+- The command prints the number of joined items, and (if enabled) the number of duplicates removed.
+- The joined string is only written to the pipeline when `-ShowOutput` is used.
+- Copies output to the clipboard by default (unless `-NoClipboard` is used).
 - Requires clipboard availability in the current session.
 :::
 
