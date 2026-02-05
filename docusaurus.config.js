@@ -201,7 +201,7 @@ const config = {
                 to: '/Scripts/intro',
               },
               {
-                label: 'IntuneWinAppUtilGUI',
+                label: 'Projects',
                 to: '/Projects/intro',
               },
             ],
