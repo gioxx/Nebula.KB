@@ -271,7 +271,7 @@ Revoke mailbox permissions.
 
 ```powershell
 Remove-MboxPermission -SourceMailbox <String> -UserMailbox <String[]> [-AccessRights <String>]
-Remove-MboxPermission -SourceMailbox <String> -RemoveAllAdditionalPermissions
+Remove-MboxPermission -SourceMailbox <String> -ClearAll
 ```
 
 | Parameter | Description | Required |
@@ -279,7 +279,7 @@ Remove-MboxPermission -SourceMailbox <String> -RemoveAllAdditionalPermissions
 | `SourceMailbox` (`Identity`) | Target mailbox. | Yes |
 | `UserMailbox` | Principal(s) to revoke. | Yes (User mode) |
 | `AccessRights` | Rights (e.g., FullAccess, SendAs, SendOnBehalfTo). Defaults to All. | No |
-| `RemoveAllAdditionalPermissions` | Remove all non-inherited FullAccess, SendAs, and SendOnBehalfTo permissions from the source mailbox. | Yes (All mode) |
+| `ClearAll` | Remove all non-inherited FullAccess, SendAs, and SendOnBehalfTo permissions from the source mailbox. | Yes (All mode) |
 
 **Examples**
 ```powershell
@@ -287,7 +287,7 @@ Remove-MboxPermission -SourceMailbox 'shared@contoso.com' -UserMailbox 'john@con
 ```
 
 ```powershell
-Remove-MboxPermission -SourceMailbox 'shared@contoso.com' -RemoveAllAdditionalPermissions
+Remove-MboxPermission -SourceMailbox 'shared@contoso.com' -ClearAll
 ```
 
 ## Set-MboxLanguage
