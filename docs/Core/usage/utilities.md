@@ -75,7 +75,7 @@ Format-SortedEmailsFromClipboard -PassThru
 
 ## Get-NebulaModuleUpdates
 
-Checks PowerShell Gallery for updates of installed `Nebula.*` modules and reports only the modules that have newer versions available.
+Checks PowerShell Gallery for updates of installed `Nebula.*` modules plus the meta modules `ExchangeOnlineManagement` and `Microsoft.Graph`, and reports only the modules that have newer versions available.
 
 **Syntax**
 
