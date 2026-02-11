@@ -134,9 +134,13 @@ const config = {
             target: '_self',
           },
           {
-            to: '/Projects/intro',
+            type: 'dropdown',
             label: 'Projects',
-            position: 'left'
+            position: 'left',
+            items: [
+              { label: 'Overview', to: '/Projects/intro' },
+              { label: 'Microsoft 365 Tenant Checker', to: '/Projects/m365-tenant-checker' },
+            ],
           },
           {
             to: '/Scripts/intro',
