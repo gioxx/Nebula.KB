@@ -11,6 +11,6 @@ This area hosts documentation for small, self-contained projects that live outsi
 Each page focuses on how to run, deploy, and integrate a specific tool.
 
 ## Available projects
-- [Microsoft 365 Tenant Checker](m365-tenant-checker) — Flask-based utility and minimal web UI to verify if a domain is registered with Microsoft 365.
+- [Microsoft 365 Tenant Checker](Microsoft365/m365-tenant-checker) — Flask-based utility and minimal web UI to verify if a domain is registered with Microsoft 365.
 
 🚧 More projects will be added here as soon as their documentation is ready (beyond what’s already in each GitHub repo’s README! 😄).

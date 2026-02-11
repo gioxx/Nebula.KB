@@ -139,7 +139,7 @@ const config = {
             position: 'left',
             items: [
               { label: 'Overview', to: '/Projects/intro' },
-              { label: 'Microsoft 365 Tenant Checker', to: '/Projects/m365-tenant-checker' },
+              { label: 'Microsoft 365 Tenant Checker', to: '/Projects/Microsoft365/m365-tenant-checker' },
             ],
           },
           {
