@@ -1,11 +1,16 @@
 ---
 id: intro
-title: Work in Progress
+title: 'Projects: introduction'
+description: Overview of side projects documented in this KB.
 sidebar_position: 1
 ---
 
-# 🚧 Work in Progress
+# Projects overview
 
-This section is currently under construction.
+This area hosts documentation for small, self-contained projects that live outside the Nebula PowerShell modules. Often, though, they’re still projects connected to the Microsoft 365 world.  
+Each page focuses on how to run, deploy, and integrate a specific tool.
 
-Please check back later.
+## Available projects
+- [Microsoft 365 Tenant Checker](m365-tenant-checker) — Flask-based utility and minimal web UI to verify if a domain is registered with Microsoft 365.
+
+🚧 More projects will be added here as soon as their documentation is ready (beyond what’s already in each GitHub repo’s README! 😄).
