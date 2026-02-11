@@ -27,7 +27,7 @@ Assign licenses by friendly name (resolved via catalog), SKU part number, or SKU
 **Syntax**
 
 ```powershell
-Add-UserMsolAccountSku -UserPrincipalName <String> -License <String[]> [-ForceLicenseCatalogRefresh]
+Add-UserMsolAccountSku -UserPrincipalName <String> -License <String[]> [-ForceLicenseCatalogRefresh] [-ShowErrorDetails]
 ```
 
 | Parameter | Description | Required |
@@ -35,6 +35,7 @@ Add-UserMsolAccountSku -UserPrincipalName <String> -License <String[]> [-ForceLi
 | `UserPrincipalName` | Target user UPN or object ID. | Yes |
 | `License` | Friendly name, SKU part number, or SKU ID. Accepts multiple values. | Yes |
 | `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No |
+| `ShowErrorDetails` | Include exception details in error messages. | No |
 
 **Examples**
 ```powershell
@@ -139,15 +140,16 @@ Show licenses assigned to a single user with friendly names.
 **Syntax**
 
 ```powershell
-Get-UserMsolAccountSku -UserPrincipalName <String> [-Clipboard] [-CheckAvailability] [-ForceLicenseCatalogRefresh]
+Get-UserMsolAccountSku -UserPrincipalName <String> [-Clipboard] [-CheckAvailability] [-ForceLicenseCatalogRefresh] [-ShowErrorDetails]
 ```
 
 | Parameter | Description | Required |
 | --- | --- | :---: |
 | `UserPrincipalName` | Target UPN or object ID. | Yes |
 | `Clipboard` | Copy the resolved license names (fallback: `SkuPartNumber`) to the clipboard as `"License1","License2"`. | No |
-| `CheckAvailability` | Show available seat counts for the assigned SKUs. | No |
+| `CheckAvailability` | Show tenant available seat counts for the assigned SKUs. | No |
 | `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No |
+| `ShowErrorDetails` | Include exception details in error messages. | No |
 
 **Example**
 ```powershell
@@ -191,7 +193,7 @@ Remove licenses from a user by friendly name (resolved via catalog), SKU part nu
 **Syntax**
 
 ```powershell
-Remove-UserMsolAccountSku -UserPrincipalName <String> -License <String[]> [-ForceLicenseCatalogRefresh]
+Remove-UserMsolAccountSku -UserPrincipalName <String> -License <String[]> [-ForceLicenseCatalogRefresh] [-ShowErrorDetails]
 ```
 
 | Parameter | Description | Required |
@@ -199,9 +201,10 @@ Remove-UserMsolAccountSku -UserPrincipalName <String> -License <String[]> [-Forc
 | `UserPrincipalName` | Target user UPN or object ID. | Yes |
 | `License` | Friendly name, SKU part number, or SKU ID. Accepts multiple values. | Yes |
 | `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No |
+| `ShowErrorDetails` | Include exception details in error messages. | No |
 
 ```powershell
-Remove-UserMsolAccountSku -UserPrincipalName <String> -All [-ForceLicenseCatalogRefresh]
+Remove-UserMsolAccountSku -UserPrincipalName <String> -All [-ForceLicenseCatalogRefresh] [-ShowErrorDetails]
 ```
 
 | Parameter | Description | Required |
@@ -209,6 +212,7 @@ Remove-UserMsolAccountSku -UserPrincipalName <String> -All [-ForceLicenseCatalog
 | `UserPrincipalName` | Target user UPN or object ID. | Yes |
 | `All` | Remove all assigned licenses. | Yes |
 | `ForceLicenseCatalogRefresh` | Redownload license catalog cache. | No |
+| `ShowErrorDetails` | Include exception details in error messages. | No |
 
 **Examples**
 ```powershell
