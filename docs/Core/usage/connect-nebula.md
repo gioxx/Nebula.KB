@@ -56,17 +56,17 @@ Connect-Nebula [-UserPrincipalName <String>] [-GraphScopes <String[]>] [-GraphTe
 | `ForceReconnect` | Skip health checks and reconnect both services. | No | `False` |
 | `SkipGraph` | Connect only EXO, skip Graph entirely. | No | `False` |
 
-:::note
-By default, `Connect-Nebula` checks PowerShell Gallery for updates of `Nebula.*` modules and warns only when updates are available.
-Disable it by setting `CheckUpdatesOnConnect = $false` in your `settings.psd1` and then run `Sync-NebulaConfig`.
-You can also throttle checks by setting `CheckUpdatesIntervalHours` (default is `24`).
-Run `Get-NebulaModuleUpdates` anytime to trigger a manual check.
-:::
-
 **Example**
 ```powershell
 Connect-Nebula -GraphScopes 'User.Read.All','Directory.Read.All' -AutoInstall
 ```
+
+:::note
+By default, `Connect-Nebula` checks PowerShell Gallery for updates of `Nebula.*` modules plus the meta modules `ExchangeOnlineManagement` and `Microsoft.Graph`, warning only when updates are available.
+Disable it by setting `CheckUpdatesOnConnect = $false` in your `settings.psd1` and then run `Sync-NebulaConfig`.
+You can also throttle checks by setting `CheckUpdatesIntervalHours` (default is `24`).
+Run `Get-NebulaModuleUpdates` anytime to trigger a manual check.
+:::
 
 ## Disconnect-Nebula
 Disconnect EXO and/or Graph.
