@@ -139,7 +139,8 @@ const config = {
             position: 'left',
             items: [
               { label: 'Overview', to: '/Projects/intro' },
-              { label: 'Microsoft 365 Tenant Checker', to: '/Projects/Microsoft365/m365-tenant-checker' },
+              { label: 'IntuneWinAppUtil GUI', to: '/Projects/M365/intune-win-app-util-gui' },
+              { label: 'Microsoft 365 Tenant Checker', to: '/Projects/M365/m365-tenant-checker' },
             ],
           },
           {
