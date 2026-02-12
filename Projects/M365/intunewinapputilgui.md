@@ -1,5 +1,5 @@
 ---
-id: intune-win-app-util-gui
+id: intunewinapputilgui
 title: IntuneWinAppUtil GUI
 description: WPF/PowerShell GUI wrapper around Microsoft’s IntuneWinAppUtil.exe for packaging Win32 apps.
 sidebar_position: 1

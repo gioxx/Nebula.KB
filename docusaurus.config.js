@@ -124,29 +124,15 @@ const config = {
             value: '<span class="navbar-separator"></span>',
           },
           {
-            to: '/Nebula/intro',
-            label: 'About',
-            position: 'left'
-          },
-          {
-            to: 'https://gioxx.org',
-            label: 'Blog',
-            target: '_self',
-          },
-          {
             type: 'dropdown',
             label: 'Projects',
             position: 'left',
             items: [
               { label: 'Overview', to: '/Projects/intro' },
-              { label: 'IntuneWinAppUtil GUI', to: '/Projects/M365/intune-win-app-util-gui' },
+              { label: 'Clean Mail Automation', to: '/Projects/clean-mail-automation' },
+              { label: 'IntuneWinAppUtil GUI', to: '/Projects/M365/intunewinapputilgui' },
               { label: 'Microsoft 365 Tenant Checker', to: '/Projects/M365/m365-tenant-checker' },
             ],
-          },
-          {
-            to: '/Scripts/intro',
-            label: 'Scripts',
-            position: 'left'
           },
           {
             type: 'dropdown',
@@ -157,6 +143,21 @@ const config = {
               { label: 'PSADT Log Viewer', to: '/psadt-log-viewer' },
               { label: 'Quarantine E-mail Analyzer', to: '/quarantine-email-analyzer' },
             ],
+          },
+          {
+            type: 'html',
+            position: 'left',
+            value: '<span class="navbar-separator"></span>',
+          },
+          {
+            to: '/Nebula/intro',
+            label: 'About',
+            position: 'left'
+          },
+          {
+            to: 'https://gioxx.org',
+            label: 'Blog',
+            target: '_self',
           },
           {
             type: 'search',
