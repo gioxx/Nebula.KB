@@ -62,6 +62,7 @@ Get-MboxStatistics [-UserPrincipalName <String>] [-IncludeArchive] [-Round]
 - `MailboxTypeDetail`
 - `MailboxSizeGB`
 - `ItemCount`
+- `MailboxCreated`
 - `LastLogonTime`
 - `LastReceived`
 - `LastSent`
