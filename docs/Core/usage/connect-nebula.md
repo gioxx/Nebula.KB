@@ -7,6 +7,7 @@ id: connect-nebula
 tags:
   - Connect-Nebula
   - Connect-EOL
+  - Get-NebulaConnections
   - Disconnect-Nebula
   - Leave-Nebula
   - Nebula.Core
@@ -91,6 +92,34 @@ Disconnect-Nebula -GraphOnly   # keep EXO session alive
 `Leave-Nebula` is an alias for `Disconnect-Nebula`.
 :::
 
+## Get-NebulaConnections
+Show current Nebula connection status for Exchange Online and Microsoft Graph without reconnecting.
+
+**Syntax**
+
+```powershell
+Get-NebulaConnections
+```
+
+**Returned properties**
+
+| Property | Description |
+| --- | --- |
+| `ExchangeOnlineConnected` | `True` when an EXO session is active. |
+| `ExchangeOnlineUser` | Connected EXO user (when available). |
+| `ExchangeOnlineTenant` | Connected EXO organization/tenant (when available). |
+| `MicrosoftGraphConnected` | `True` when a Graph context is active. |
+| `MicrosoftGraphAccount` | Connected Graph account (when available). |
+| `MicrosoftGraphTenantId` | Connected Graph tenant ID (when available). |
+| `MicrosoftGraphScopes` | Scopes present in the active Graph context. |
+
+**Example**
+```powershell
+Connect-Nebula
+Get-NebulaConnections
+Leave-Nebula
+```
+
 ## Questions and answers
 
 ### Which services does `Connect-Nebula` connect?
@@ -100,3 +129,7 @@ Exchange Online always; Microsoft Graph unless you use `-SkipGraph`. Default Gra
 ### Can I operate across multiple tenants?
 
 Yes. Use `Connect-EOL -DelegatedOrganization` for delegated tenants and `Connect-Nebula -GraphTenantId` for Graph. Run `Disconnect-Nebula` before switching contexts.
+
+### How can I check active sessions before disconnecting?
+
+Run `Get-NebulaConnections` and verify `ExchangeOnlineConnected` / `MicrosoftGraphConnected` are `True` or `False`.
