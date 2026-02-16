@@ -3,7 +3,7 @@ sidebar_position: 3
 title: 'Scripts'
 description: How Nebula.Scripts fits into the Nebula ecosystem, between standalone utilities and module candidates.
 hide_title: true
-id: nebula-scripts
+id: Scripts
 tags:
   - Scripts
   - Nebula.Scripts

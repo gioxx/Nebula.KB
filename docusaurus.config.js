@@ -195,7 +195,7 @@ const config = {
             items: [
               {
                 label: 'Nebula.Scripts',
-                to: '/Nebula/nebula-scripts',
+                to: '/Nebula/Scripts',
               },
               {
                 label: 'Projects',
