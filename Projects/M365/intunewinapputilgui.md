@@ -14,7 +14,11 @@ tags:
 
 PowerShell module with a WPF front‑end that wraps Microsoft’s `IntuneWinAppUtil.exe`, making it quicker to package Win32 apps for Intune. Includes validation, auto-download of the prep tool, path-length checks, and configuration persistence.
 
-## Features
+## Demo and repository
+- Source code: [github.com/gioxx/IntuneWinAppUtilGUI](https://github.com/gioxx/IntuneWinAppUtilGUI)
+- PowerShell Gallery package: `IntuneWinAppUtilGUI`
+
+## Key features
 - GUI over all required switches (`-c`, `-s`, `-o`) with browse dialogs.
 - Auto-download and cache of the latest `IntuneWinAppUtil.exe` from Microsoft’s GitHub release.
 - Remembers tool path in `%APPDATA%\IntuneWinAppUtilGUI\config.json`; optional update-check banner.
@@ -27,14 +31,14 @@ PowerShell module with a WPF front‑end that wraps Microsoft’s `IntuneWinAppU
 - PowerShell 5.1+ (7 recommended).
 - .NET Framework 4.7.2+.
 
-## Install and launch
-### From PowerShell Gallery (recommended)
+## Quick start
+### PowerShell Gallery (recommended)
 ```powershell
 Install-Module IntuneWinAppUtilGUI -Scope CurrentUser
 Show-IntuneWinAppUtilGUI
 ```
 
-### From cloned repo / ZIP
+### Local module import (repo/ZIP)
 ```powershell
 Import-Module "C:\IntuneWinAppUtilGUI\IntuneWinAppUtilGUI.psm1"
 Show-IntuneWinAppUtilGUI
@@ -60,18 +64,24 @@ Optionally add the module folder to `$env:PSModulePath` for persistence.
 ## Auto-download behavior
 If no tool path is set, the GUI downloads the latest release of Microsoft’s Win32 Content Prep Tool and stores it under `%APPDATA%\IntuneWinAppUtilGUI\bin`. You can trigger a fresh download with the **Force download** button.
 
-## Tips
+## Repository structure
+```text
+IntuneWinAppUtilGUI/
+|- IntuneWinAppUtilGUI.psm1
+|- UI/UI.xaml
+|- Tools/IntuneWinAppUtilVersions.md
+|- README.md
+`- LICENSE
+```
+
+## Operational notes
 - `ESC` closes the window; `ENTER` runs packaging.
 - `Show-IntuneWinAppUtilGUI -ShowVersion` prints installed/latest module versions.
 - `Show-IntuneWinAppUtilGUI -ForceUpdateBanner` simulates the update banner.
-
-## Known issue: emoji rendering
-On Windows 10 or earlier some emojis (✅, 🚀, 🔧) may render as fallback symbols due to font support. Cosmetic only; functionality is unaffected. Windows 11 displays them correctly.
-
-## Version info
 - Module version in repo: **1.0.7**.
 - UI title reflects the module version (see `UI/UI.xaml`).
 - Reference table of upstream IntuneWinAppUtil releases: `Tools/IntuneWinAppUtilVersions.md`.
+- On Windows 10 or earlier some emojis (✅, 🚀, 🔧) may render as fallback symbols due to font support. Cosmetic only; functionality is unaffected.
 
 ## License
 MIT License. See `LICENSE` in the repo.

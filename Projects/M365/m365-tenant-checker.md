@@ -15,7 +15,7 @@ Small Flask-based utility that queries Microsoft's Autodiscover endpoint to dete
 
 ## Demo and repository
 - Live demo: **https://m365-tenant-checker.onrender.com**
-- Source code: **https://github.com/gioxx/m365-tenant-checker**
+- Source code: [github.com/gioxx/m365-tenant-checker](https://github.com/gioxx/m365-tenant-checker)
 
 ## Key features
 - 🔎 Instant domain check against Autodiscover.

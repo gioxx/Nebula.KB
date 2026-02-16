@@ -52,15 +52,6 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'scripts',
-        path: path.resolve('./Scripts'),
-        routeBasePath: 'Scripts',
-        sidebarPath: path.resolve('./sidebarsScripts.js'),
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
         id: 'projects',
         path: path.resolve('./Projects'),
         routeBasePath: 'Projects',
@@ -204,7 +195,7 @@ const config = {
             items: [
               {
                 label: 'Nebula.Scripts',
-                to: '/Scripts/intro',
+                to: '/Nebula/nebula-scripts',
               },
               {
                 label: 'Projects',
