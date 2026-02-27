@@ -1,4 +1,4 @@
-<img src="static/img/Nebula-Icon-Text.png" alt="Nebula Knowledge Base" height="140" />
+<img src="static/img/Nebula-Icon-Text.png" alt="Nebula Knowledge Base" height="80" />
 
 # Nebula Knowledge Base
 Official documentation for Nebula, available at **[kb.gioxx.org](https://kb.gioxx.org)**
