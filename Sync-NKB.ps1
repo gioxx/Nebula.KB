@@ -18,6 +18,9 @@ Path to the JSON configuration file.
 .PARAMETER WhatIfMode
 If set, no files are actually copied; actions are only logged.
 
+.PARAMETER Environment
+Target documentation environment to sync. Allowed values: prod, dev.
+
 .PARAMETER TimeToleranceSeconds
 Tolerance used when comparing LastWriteTimeUtc to avoid false positives (e.g., Dropbox/FS rounding).
 
@@ -34,11 +37,13 @@ CONFIG EXAMPLE (NebulaKB_sync-docs.config.json)
     "Mappings": [
         {
         "Source": "Documents\\GitHub\\Nebula.KB\\docs",
-        "Destination": "Documents\\GitHub\\Nebula.KB\\Projects\\docs-copy"
+        "Destination": "Documents\\GitHub\\Nebula.KB\\Projects\\docs-copy",
+        "Targets": ["prod"]
         },
         {
         "Source": "Documents\\GitHub\\Nebula.KB\\Projects",
-        "Destination": "Documents\\GitHub\\Nebula.KB\\Backup\\Projects"
+        "Destination": "Documents\\GitHub\\Nebula.KB\\Backup\\Projects",
+        "Targets": ["dev"]
         }
     ]
 }
@@ -48,6 +53,8 @@ CONFIG EXAMPLE (NebulaKB_sync-docs.config.json)
 param(
     [string]$ConfigPath = (Join-Path (Split-Path -Parent $PROFILE) "NebulaKB_sync-docs.config.json"),
     [switch]$WhatIfMode,
+    [ValidateSet("prod", "dev")]
+    [string]$Environment = "prod",
     [int]$TimeToleranceSeconds = 2
 )
 
@@ -123,6 +130,27 @@ function Resolve-PathIfRelative {
     }
 
     return (Join-Path $BasePath $PathValue)
+}
+
+function Get-MappingTargets {
+    param([Parameter(Mandatory)]$Mapping)
+
+    # Backward-compatible default: mappings without explicit targets are treated as prod.
+    if ($null -eq $Mapping.Targets -and $null -eq $Mapping.DocType) {
+        return @("prod")
+    }
+
+    if ($Mapping.Targets) {
+        $targets = @($Mapping.Targets | ForEach-Object { ([string]$_).Trim().ToLowerInvariant() } | Where-Object { $_ })
+        if ($targets.Count -gt 0) { return $targets }
+    }
+
+    if ($Mapping.DocType) {
+        $docType = ([string]$Mapping.DocType).Trim().ToLowerInvariant()
+        if ($docType) { return @($docType) }
+    }
+
+    return @("prod")
 }
 
 function Copy-FileOneWay {
@@ -231,6 +259,7 @@ if (-not $config.Mappings -or $config.Mappings.Count -lt 1) {
 }
 
 $BasePath = [string]$config.BasePath
+Write-Host "Target environment: $Environment" -ForegroundColor Cyan
 
 $IncludePatterns = @("*.md")
 if ($config.IncludePatterns -and $config.IncludePatterns.Count -gt 0) {
@@ -253,6 +282,13 @@ $stats = [ordered]@{
 foreach ($m in $config.Mappings) {
     if (-not $m.Source -or -not $m.Destination) {
         Write-Host "Skipping invalid mapping (missing Source/Destination)." -ForegroundColor Red
+        continue
+    }
+
+    $mappingTargets = Get-MappingTargets -Mapping $m
+    if ($mappingTargets -notcontains $Environment) {
+        $targetLabel = ($mappingTargets -join ",")
+        Write-Host "Skipping mapping for target(s) '$targetLabel' (requested: $Environment)." -ForegroundColor DarkGray
         continue
     }
 
