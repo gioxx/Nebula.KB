@@ -1,19 +1,49 @@
-facebook:
-  label: Facebook
-  permalink: /facebook
-  description: Facebook tag description
+automations:
+  label: Nebula.Automations
+  permalink: /automations
+  description: Updates concerning Nebula.Automations
 
-hello:
-  label: Hello
-  permalink: /hello
-  description: Hello tag description
+exchange:
+  label: Microsoft Exchange
+  permalink: /exchange
+  description: Microsoft Exchange in Cloud
 
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
+core:
+  label: Nebula.Core
+  permalink: /core
+  description: Updates concerning Nebula.Core
 
-hola:
-  label: Hola
-  permalink: /hola
-  description: Hola tag description
+kb:
+  label: Nebula.KB
+  permalink: /kb
+  description: Updates concerning the Nebula.KB
+
+log:
+  label: Nebula.Log
+  permalink: /log
+  description: Updates concerning Nebula.Log
+
+microsoft:
+  label: Microsoft
+  permalink: /microsoft
+  description: Microsoft
+
+nebula:
+  label: Nebula
+  permalink: /nebula
+  description: Nebula modules, in general
+
+powershell:
+  label: PowerShell
+  permalink: /powershell
+  description: PowerShell
+
+scripts:
+  label: Nebula.Scripts
+  permalink: /scripts
+  description: Updates concerning Nebula.Scripts
+
+tools:
+  label: Nebula.Tools
+  permalink: /tools
+  description: Updates concerning Nebula.Tools
