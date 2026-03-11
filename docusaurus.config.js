@@ -109,7 +109,6 @@ const config = {
             label: 'Tools',
             position: 'left'
           },
-          // {to: '/blog', label: 'Blog', position: 'left'},
           {
             type: 'html',
             position: 'left',
@@ -150,6 +149,11 @@ const config = {
             to: 'https://gioxx.org',
             label: 'Blog',
             target: '_self',
+          },
+          {
+            to: '/news',
+            label: 'News',
+            position: 'left',
           },
           {
             type: 'search',
