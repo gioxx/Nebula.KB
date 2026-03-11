@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunknebula=globalThis.webpackChunknebula||[]).push([[1903],{1912(s){s.exports=JSON.parse('{"blogBasePath":"/news","blogTitle":"Blog","authorsListPath":"/news/authors"}')}}]);
