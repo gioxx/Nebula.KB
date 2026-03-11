@@ -5,6 +5,7 @@ Sync documentation using a JSON configuration file.
 .BEHAVIOR
 - Reads a config JSON from the user's PowerShell profile folder (by default).
 - Copies only included patterns recursively.
+- Supports per-mapping mirror mode for full 1:1 sync (`Mirror: true`), including any file extension and deletions on destination.
 - Creates destination directories if missing.
 - Copies ONLY when needed:
   - If destination missing => copy
@@ -19,7 +20,7 @@ Path to the JSON configuration file.
 If set, no files are actually copied; actions are only logged.
 
 .PARAMETER Environment
-Target documentation environment to sync. Allowed values: prod, dev.
+Target documentation environment to sync. Allowed values: prod, dev, blog.
 
 .PARAMETER TimeToleranceSeconds
 Tolerance used when comparing LastWriteTimeUtc to avoid false positives (e.g., Dropbox/FS rounding).
@@ -44,6 +45,12 @@ CONFIG EXAMPLE (NebulaKB_sync-docs.config.json)
         "Source": "Documents\\GitHub\\Nebula.KB\\Projects",
         "Destination": "Documents\\GitHub\\Nebula.KB\\Backup\\Projects",
         "Targets": ["dev"]
+        },
+        {
+        "Source": "Documents\\GitHub\\Nebula.KB\\blog",
+        "Destination": "Documents\\GitHub\\Nebula.KB\\Projects\\blog-copy",
+        "Targets": ["blog"],
+        "Mirror": true
         }
     ]
 }
@@ -53,7 +60,7 @@ CONFIG EXAMPLE (NebulaKB_sync-docs.config.json)
 param(
     [string]$ConfigPath = (Join-Path (Split-Path -Parent $PROFILE) "NebulaKB_sync-docs.config.json"),
     [switch]$WhatIfMode,
-    [ValidateSet("prod", "dev")]
+    [ValidateSet("prod", "dev", "blog")]
     [string]$Environment = "prod",
     [int]$TimeToleranceSeconds = 2
 )
@@ -151,6 +158,46 @@ function Get-MappingTargets {
     }
 
     return @("prod")
+}
+
+function Get-MappingMirrorMode {
+    param([Parameter(Mandatory)]$Mapping)
+
+    if ($null -eq $Mapping.Mirror) { return $false }
+    return [bool]$Mapping.Mirror
+}
+
+function Invoke-MirrorMapping {
+    param(
+        [Parameter(Mandatory)][string]$SourceRoot,
+        [Parameter(Mandatory)][string]$DestinationRoot,
+        [switch]$WhatIf
+    )
+
+    $roboArgs = @(
+        $SourceRoot,
+        $DestinationRoot,
+        "/MIR",
+        "/FFT",
+        "/R:2",
+        "/W:1",
+        "/NP"
+    )
+
+    if ($WhatIf) {
+        $roboArgs += "/L"
+    }
+
+    Write-Host "Mirror mode: robocopy $($roboArgs -join ' ')" -ForegroundColor DarkGray
+    & robocopy @roboArgs
+    $exitCode = $LASTEXITCODE
+
+    # Robocopy exit codes 0-7 are success/partial success; >=8 indicates failure.
+    if ($exitCode -ge 8) {
+        throw "Robocopy failed for mirror mapping (exit code: $exitCode). Source='$SourceRoot' Destination='$DestinationRoot'"
+    }
+
+    return $exitCode
 }
 
 function Copy-FileOneWay {
@@ -277,6 +324,7 @@ $stats = [ordered]@{
     SkippedNewerDest  = 0
     MissingSource     = 0
     TotalSeen         = 0
+    MirroredMappings  = 0
 }
 
 foreach ($m in $config.Mappings) {
@@ -294,11 +342,13 @@ foreach ($m in $config.Mappings) {
 
     $srcRoot = Resolve-PathIfRelative -BasePath $BasePath -PathValue ([string]$m.Source)
     $dstRoot = Resolve-PathIfRelative -BasePath $BasePath -PathValue ([string]$m.Destination)
+    $isMirror = Get-MappingMirrorMode -Mapping $m
 
     Write-Host ""
     Write-Host "=== Mapping ===" -ForegroundColor Cyan
     Write-Host "Source      : $srcRoot"
     Write-Host "Destination : $dstRoot"
+    Write-Host ("Mode        : {0}" -f ($(if ($isMirror) { "Mirror (1:1)" } else { "Filtered copy" })))
 
     if (-not (Test-Path -LiteralPath $srcRoot)) {
         Write-Host "Source folder not found. Skipping: $srcRoot" -ForegroundColor Red
@@ -307,6 +357,12 @@ foreach ($m in $config.Mappings) {
     }
 
     New-DirectoryIfMissing -Path $dstRoot
+
+    if ($isMirror) {
+        [void](Invoke-MirrorMapping -SourceRoot $srcRoot -DestinationRoot $dstRoot -WhatIf:$WhatIfMode)
+        $stats.MirroredMappings++
+        continue
+    }
 
     $files = foreach ($pat in $IncludePatterns) {
         Get-ChildItem -LiteralPath $srcRoot -Recurse -File -Filter $pat -ErrorAction Stop
