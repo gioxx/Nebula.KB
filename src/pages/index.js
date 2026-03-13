@@ -3,12 +3,12 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import HomeAlerts from '@site/src/components/HomeAlerts';
 import PowerShellAvatar from '@site/static/img/PowerShell-Avatar_128.svg';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
 function HomepageHeader() {
-  const { siteConfig } = useDocusaurusContext();
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
@@ -55,6 +55,7 @@ export default function Home() {
     >
       <HomepageHeader />
       <main>
+        <HomeAlerts />
         <HomepageFeatures />
       </main>
     </Layout>
