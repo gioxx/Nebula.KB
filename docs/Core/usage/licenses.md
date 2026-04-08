@@ -19,10 +19,22 @@ tags:
 
 # License helpers
 
-Backed by Microsoft Graph with a cached SKU catalog. For full details and examples, run `Get-Help <FunctionName> -Detailed`.
+Requires Microsoft Graph and a cached SKU catalog. For full details and examples, run `Get-Help <FunctionName> -Detailed`.
+
+Use `Export-MsolAccountSku` when you need:
+- a full tenant license assignment export
+- a domain-scoped report for a specific mail domain
+- a license-scoped report for users who hold a specific SKU, while still keeping all of their assigned licenses in the CSV
+
+| Scenario | Use this filter | Result |
+| --- | --- | --- |
+| Full export | none | All licensed users and all of their assigned licenses |
+| Domain report | `-Domain` | Only users in the selected domain, with all of their assigned licenses |
+| License report | `-License` | Only users who have the selected license, with all of their assigned licenses |
 
 :::note User identifier resolution
 User-centric license cmdlets (`Add/Get/Remove/Copy/Move-UserMsolAccountSku`) support full UPNs/object IDs and short identifiers (for example alias/SamAccountName/UPN prefix) via the shared resolver.
+Now the resolver prefers a Microsoft Graph-friendly identity when available (`-PreferGraphIdentity`), improving reliability for object-ID-based lookups.
 :::
 
 ## Add-UserMsolAccountSku
@@ -97,16 +109,20 @@ Copy-UserMsolAccountSku 'user1@contoso.com' 'user2@contoso.com'
 
 ## Export-MsolAccountSku
 Export all users with assigned licenses to CSV, mapping SKU part numbers to friendly names.
+Use `-Domain` to limit the export to users whose `Mail`, `UserPrincipalName`, or `ProxyAddresses` match the domain.
+Use `-License` to limit the export to users who have at least one matching license, while still exporting all of the licenses assigned to those users.
 
 **Syntax**
 
 ```powershell
-Export-MsolAccountSku [-CsvFolder <String>] [-ForceLicenseCatalogRefresh]
+Export-MsolAccountSku [-CsvFolder <String>] [-Domain <String>] [-License <String[]>] [-ForceLicenseCatalogRefresh]
 ```
 
 | Parameter | Type | Description | Required | Default |
 | --- | --- | --- | :---: | --- |
 | `CsvFolder` | String | Output folder. | No | Current directory |
+| `Domain` | String | Limit the export to users in the specified domain. | No | - |
+| `License` | String[] | Limit the export to users who have at least one matching license. Accepts friendly name, SKU part number, or SKU ID. | No | - |
 | `ForceLicenseCatalogRefresh` | Switch | Redownload the license catalog cache. | No | `False` |
 
 **Example**
@@ -114,20 +130,33 @@ Export-MsolAccountSku [-CsvFolder <String>] [-ForceLicenseCatalogRefresh]
 Export-MsolAccountSku -CsvFolder 'C:\Temp\Reports'
 ```
 
+```powershell
+Export-MsolAccountSku -Domain 'contoso.com'
+```
+
+```powershell
+Export-MsolAccountSku -License 'Exchange Online (Plan 1)'
+```
+
+:::note License filtered export
+When you pass `-License`, the CSV still includes every license assigned to each matching user. If a user has `Exchange Online (Plan 1)` plus `Microsoft 365 E3`, both rows are exported.
+:::
+
 ## Get-TenantMsolAccountSku
 List tenant SKUs with resolved names, totals, consumed, available (enabled minus consumed), and seat states (filter by name or SKU part number).
 
 **Syntax**
 
 ```powershell
-Get-TenantMsolAccountSku [-ForceLicenseCatalogRefresh] [-Filter <String>] [-SampleUsers <Int32>] [-AsTable] [-GridView]
+Get-TenantMsolAccountSku [-ForceLicenseCatalogRefresh] [-Filter <String>] [-SampleUsers <Int32>] [-IncludeSampleUsers] [-AsTable] [-GridView]
 ```
 
 | Parameter | Type | Description | Required | Default |
 | --- | --- | --- | :---: | --- |
 | `ForceLicenseCatalogRefresh` | Switch | Redownload license catalog cache. | No | `False` |
 | `Filter` | String | Show only licenses whose name or `SkuPartNumber` contains the provided text. | No | - |
-| `SampleUsers` | Int32 | Return up to N sample users per license (requires `-Filter`). Defaults to 5 when specified. | No | `5` |
+| `SampleUsers` | Int32 | Return up to N sample users per license (requires `-Filter`). | No | - |
+| `IncludeSampleUsers` | Switch | Return sample users using the default limit of 5 (requires `-Filter`). | No | `False` |
 | `AsTable` | Switch | Format output as a table. | No | `False` |
 | `GridView` | Switch | Show output in a GridView window. | No | `False` |
 
@@ -144,8 +173,17 @@ Get-TenantMsolAccountSku -Filter "E3" -AsTable
 Get-TenantMsolAccountSku -Filter "E3" -SampleUsers
 ```
 
+```powershell
+Get-TenantMsolAccountSku -Filter "E3" -IncludeSampleUsers
+```
+
 :::note Available licenses: how counting works
 `Available` is calculated as `Enabled - Consumed` (never below zero). The `Total` column shows a friendly breakdown (Enabled/Suspended), while `TotalCount` remains the numeric total for scripting.
+:::
+
+:::note Sample users display
+When you request sample users together with `-AsTable`, Nebula.Core prints the license summary as a table and then lists sample users in a separate readable block for each SKU.
+With `-GridView`, Nebula.Core opens a summary grid and, when sample users are requested, a second grid dedicated to sample users.
 :::
 
 :::tip Microsoft 365 Subscriptions (Admin Portal)
@@ -154,6 +192,10 @@ Need renewal/expiration or billing profile details? Open the Microsoft 365 Admin
 
 ## Get-UserMsolAccountSku
 Show licenses assigned to a single user with friendly names.
+
+:::note No assigned licenses
+If the target user exists but has no assigned licenses, Nebula.Core prints an explicit warning instead of returning only the processing header.
+:::
 
 **Syntax**
 

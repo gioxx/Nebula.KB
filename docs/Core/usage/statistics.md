@@ -6,6 +6,7 @@ hide_title: true
 id: statistics
 tags:
   - Export-MboxStatistics
+  - Export-MboxDeletedItemSize
   - Get-MboxStatistics
   - Nebula.Core
   - Statistics
@@ -13,7 +14,7 @@ tags:
 
 # Statistic helpers
 
-For full parameter descriptions and up-to-date notes, run `Get-Help Export-MboxStatistics -Detailed` or `Get-Help Get-MboxStatistics -Detailed`.
+For full details and examples, run `Get-Help Export-MboxStatistics -Detailed` or `Get-Help Get-MboxStatistics -Detailed`.
 
 ## Export-MboxStatistics
 Export mailbox statistics (size, quotas, archive info) either to CSV (all mailboxes) or as objects (single mailbox).
@@ -38,6 +39,32 @@ Export-MboxStatistics -CsvFolder 'C:\Temp\Reports' -Round
 
 # Inspect a single mailbox as objects
 Export-MboxStatistics -UserPrincipalName 'user@contoso.com'
+```
+
+## Export-MboxDeletedItemSize
+Export deleted item store usage for user mailboxes. The report is exported to CSV by default.
+
+**Syntax**
+
+```powershell
+Export-MboxDeletedItemSize [[-UserPrincipalName] <String[]>] [-CsvFolder <String>] [-Csv]
+```
+
+| Parameter | Type | Description | Required | Default |
+| --- | --- | --- | :---: | --- |
+| `UserPrincipalName` (`User`, `Identity`, `Mailbox`, `SourceMailbox`) | String[] | Optional mailbox identity or identities. When omitted, all user mailboxes are scanned. Pipeline accepted. | No | - |
+| `CsvFolder` | String | Destination folder for the CSV file. | No | Current directory |
+| `Csv` | Boolean | Export the report to CSV. Use `-Csv:$false` to return objects instead. | No | `True` |
+
+**Examples**
+```powershell
+# Export all user mailboxes to CSV
+Export-MboxDeletedItemSize
+```
+
+```powershell
+# Export a subset of mailboxes to a custom folder
+'user1@contoso.com','user2@contoso.com' | Export-MboxDeletedItemSize -CsvFolder 'C:\Temp\Reports'
 ```
 
 ## Get-MboxStatistics

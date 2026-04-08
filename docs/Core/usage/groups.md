@@ -11,6 +11,7 @@ tags:
   - Dynamic Distribution Groups
   - Export-DistributionGroups
   - Export-DynamicDistributionGroups
+  - Export-EmptyEntraGroups
   - Export-M365Group
   - Get-DynamicDistributionGroupFilter
   - Get-EntraGroupDevice
@@ -27,7 +28,7 @@ tags:
 
 # Group helpers
 
-Requires EXO (for DGs/role groups) and Microsoft Graph for M365 groups where applicable. For complete, up-to-date info, run `Get-Help <FunctionName> -Detailed`.
+Requires EXO for DGs and role groups, and Microsoft Graph for Microsoft 365 groups where applicable. For full details and examples, run `Get-Help <FunctionName> -Detailed`.
 
 ## Add-EntraGroupDevice
 Add one or more devices to an Entra group (Graph scopes: `Group.ReadWrite.All`, `Directory.Read.All`).
@@ -35,7 +36,7 @@ Add one or more devices to an Entra group (Graph scopes: `Group.ReadWrite.All`, 
 **Syntax**
 
 ```powershell
-Add-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] -DeviceIdentifier <String[]> [-TreatInputAsId] [-PassThru]
+Add-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] [[-DeviceIdentifier] <String[]>] [-TreatInputAsId] [-PassThru]
 ```
 
 | Parameter | Type | Description | Required | Default |
@@ -54,7 +55,7 @@ Add-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] -DeviceIdentifier
 ```
 
 ```powershell
-Add-EntraGroupDevice -GroupId "00000000-0000-0000-0000-000000000000" -DeviceIdentifier "PC1" -PassThru
+Add-EntraGroupDevice "PC1" -GroupId "00000000-0000-0000-0000-000000000000" -PassThru
 ```
 
 ## Add-EntraGroupUser
@@ -63,7 +64,7 @@ Add one or more users to an Entra group (Graph scopes: `Group.ReadWrite.All`, `D
 **Syntax**
 
 ```powershell
-Add-EntraGroupUser [-GroupName <String>] [-GroupId <String>] -UserIdentifier <String[]> [-TreatInputAsId] [-PassThru]
+Add-EntraGroupUser [-GroupName <String>] [-GroupId <String>] [[-UserIdentifier] <String[]>] [-TreatInputAsId] [-PassThru]
 ```
 
 | Parameter | Type | Description | Required | Default |
@@ -82,7 +83,7 @@ Add-EntraGroupUser [-GroupName <String>] [-GroupId <String>] -UserIdentifier <St
 ```
 
 ```powershell
-Add-EntraGroupUser -GroupId "00000000-0000-0000-0000-000000000000" -UserIdentifier "user1@contoso.com" -PassThru
+Add-EntraGroupUser "user1@contoso.com" -GroupId "00000000-0000-0000-0000-000000000000" -PassThru
 ```
 
 ## Export-DistributionGroups
@@ -145,6 +146,31 @@ Export-M365Group [-M365Group <String[]>] [-Csv] [-CsvFolder <String>]
 Export-M365Group -M365Group "Project A" -CsvFolder 'C:\Temp\M365'
 ```
 
+## Export-EmptyEntraGroups
+Export Entra groups with zero members.
+
+**Syntax**
+
+```powershell
+Export-EmptyEntraGroups [-CsvFolder <String>] [-Csv]
+```
+
+| Parameter | Type | Description | Required | Default |
+| --- | --- | --- | :---: | --- |
+| `CsvFolder` | String | Destination for the CSV file. | No | Current directory |
+| `Csv` | Boolean | Export the report to CSV. Use `-Csv:$false` to return objects instead. | No | `True` |
+
+**Examples**
+```powershell
+# Export every empty Entra group to CSV
+Export-EmptyEntraGroups
+```
+
+```powershell
+# Export to a custom folder
+Export-EmptyEntraGroups -CsvFolder 'C:\Temp\Groups'
+```
+
 ## Get-DynamicDistributionGroupFilter
 Show the simplified filter of a dynamic distribution group.
 
@@ -171,7 +197,7 @@ Show the Entra groups a device belongs to (Graph scopes: `Group.Read.All`, `Dire
 **Syntax**
 
 ```powershell
-Get-EntraGroupDevice -DeviceIdentifier <String> [-TreatInputAsId] [-GridView]
+Get-EntraGroupDevice [[-DeviceIdentifier] <String>] [-TreatInputAsId] [-GridView]
 ```
 
 | Parameter | Type | Description | Required | Default |
@@ -182,7 +208,7 @@ Get-EntraGroupDevice -DeviceIdentifier <String> [-TreatInputAsId] [-GridView]
 
 **Examples**
 ```powershell
-Get-EntraGroupDevice -DeviceIdentifier "PC123"
+Get-EntraGroupDevice "PC123"
 ```
 
 ```powershell
@@ -195,7 +221,7 @@ Show the Entra groups a user belongs to (Graph scopes: `Group.Read.All`, `Direct
 **Syntax**
 
 ```powershell
-Get-EntraGroupUser -UserIdentifier <String> [-TreatInputAsId] [-GridView]
+Get-EntraGroupUser [[-UserIdentifier] <String>] [-TreatInputAsId] [-GridView]
 ```
 
 | Parameter | Type | Description | Required | Default |
@@ -206,7 +232,7 @@ Get-EntraGroupUser -UserIdentifier <String> [-TreatInputAsId] [-GridView]
 
 **Examples**
 ```powershell
-Get-EntraGroupUser -UserIdentifier "user@contoso.com"
+Get-EntraGroupUser "user@contoso.com"
 ```
 
 ```powershell
@@ -310,7 +336,7 @@ Remove one or more devices from an Entra group (Graph scopes: `Group.ReadWrite.A
 **Syntax**
 
 ```powershell
-Remove-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] -DeviceIdentifier <String[]> [-TreatInputAsId] [-PassThru]
+Remove-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] [[-DeviceIdentifier] <String[]>] [-TreatInputAsId] [-PassThru]
 Remove-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] -ClearAll [-PassThru]
 ```
 
@@ -331,7 +357,7 @@ Remove-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] -ClearAll [-Pa
 ```
 
 ```powershell
-Remove-EntraGroupDevice -GroupId "00000000-0000-0000-0000-000000000000" -DeviceIdentifier "PC1" -PassThru
+Remove-EntraGroupDevice "PC1" -GroupId "00000000-0000-0000-0000-000000000000" -PassThru
 ```
 
 ```powershell
@@ -348,7 +374,7 @@ Remove one or more users from an Entra group (Graph scopes: `Group.ReadWrite.All
 **Syntax**
 
 ```powershell
-Remove-EntraGroupUser [-GroupName <String>] [-GroupId <String>] -UserIdentifier <String[]> [-TreatInputAsId] [-PassThru]
+Remove-EntraGroupUser [-GroupName <String>] [-GroupId <String>] [[-UserIdentifier] <String[]>] [-TreatInputAsId] [-PassThru]
 Remove-EntraGroupUser [-GroupName <String>] [-GroupId <String>] -ClearAll [-PassThru]
 ```
 
@@ -369,7 +395,7 @@ Remove-EntraGroupUser [-GroupName <String>] [-GroupId <String>] -ClearAll [-Pass
 ```
 
 ```powershell
-Remove-EntraGroupUser -GroupId "00000000-0000-0000-0000-000000000000" -UserIdentifier "user1@contoso.com" -PassThru
+Remove-EntraGroupUser "user1@contoso.com" -GroupId "00000000-0000-0000-0000-000000000000" -PassThru
 ```
 
 ```powershell
