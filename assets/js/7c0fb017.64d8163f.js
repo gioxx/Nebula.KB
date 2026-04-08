@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunknebula=globalThis.webpackChunknebula||[]).push([[7169],{6822(a){a.exports=JSON.parse('{"metadata":{"permalink":"/news","page":1,"postsPerPage":10,"totalPages":1,"totalCount":3,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
