@@ -32,7 +32,7 @@ Use `Export-MsolAccountSku` when you need:
 | Domain report | `-Domain` | Only users in the selected domain, with all of their assigned licenses |
 | License report | `-License` | Only users who have the selected license, with all of their assigned licenses |
 
-:::note User identifier resolution
+:::note[User identifier resolution]
 User-centric license cmdlets (`Add/Get/Remove/Copy/Move-UserMsolAccountSku`) support full UPNs/object IDs and short identifiers (for example alias/SamAccountName/UPN prefix) via the shared resolver.
 Now the resolver prefers a Microsoft Graph-friendly identity when available (`-PreferGraphIdentity`), improving reliability for object-ID-based lookups.
 :::
@@ -75,11 +75,11 @@ Add-UserMsolAccountSku 'user@contoso.com' -License 'Microsoft 365 Business Stand
 'user1@contoso.com','user2@contoso.com' | Add-UserMsolAccountSku -License 'Microsoft 365 Business Standard EEA (no Teams)'
 ```
 
-:::note Mandatory usage location parameter
+:::note[Mandatory usage location parameter]
 If the target user has no `UsageLocation`, Nebula.Core sets it automatically using the `UsageLocation` key from your configuration (default `US`, override via `%USERPROFILE%\.NebulaCore\settings.psd1`). If updating the usage location fails, license assignment stops.
 :::
 
-:::warning Licenses availability
+:::warning[Licenses availability]
 If the tenant does not have units available for the requested license, the assignment is avoided and a warning message is displayed.
 :::
 
@@ -138,7 +138,7 @@ Export-MsolAccountSku -Domain 'contoso.com'
 Export-MsolAccountSku -License 'Exchange Online (Plan 1)'
 ```
 
-:::note License filtered export
+:::note[License filtered export]
 When you pass `-License`, the CSV still includes every license assigned to each matching user. If a user has `Exchange Online (Plan 1)` plus `Microsoft 365 E3`, both rows are exported.
 :::
 
@@ -177,23 +177,23 @@ Get-TenantMsolAccountSku -Filter "E3" -SampleUsers
 Get-TenantMsolAccountSku -Filter "E3" -IncludeSampleUsers
 ```
 
-:::note Available licenses: how counting works
+:::note[Available licenses: how counting works]
 `Available` is calculated as `Enabled - Consumed` (never below zero). The `Total` column shows a friendly breakdown (Enabled/Suspended), while `TotalCount` remains the numeric total for scripting.
 :::
 
-:::note Sample users display
+:::note[Sample users display]
 When you request sample users together with `-AsTable`, Nebula.Core prints the license summary as a table and then lists sample users in a separate readable block for each SKU.
 With `-GridView`, Nebula.Core opens a summary grid and, when sample users are requested, a second grid dedicated to sample users.
 :::
 
-:::tip Microsoft 365 Subscriptions (Admin Portal)
+:::tip[Microsoft 365 Subscriptions (Admin Portal)]
 Need renewal/expiration or billing profile details? Open the Microsoft 365 Admin Center subscriptions page: https://admin.cloud.microsoft/?#/subscriptions
 :::
 
 ## Get-UserMsolAccountSku
 Show licenses assigned to a single user with friendly names.
 
-:::note No assigned licenses
+:::note[No assigned licenses]
 If the target user exists but has no assigned licenses, Nebula.Core prints an explicit warning instead of returning only the processing header.
 :::
 

@@ -32,11 +32,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 - Statistics: mailbox size/quota exports (CSV or object mode).
 - Utilities: clipboard helpers for message IDs and e-mails (`mids`, `fse`).
 
-:::tip Use Get-Help
+:::tip[Use Get-Help]
 Every function exposes built-in help. Use `Get-Help <FunctionName> -Detailed` or `-Examples` for notes, parameters, and prerequisites.
 :::
 
-:::info Alternative docs + AI assistant
+:::info[Alternative docs + AI assistant]
 If you prefer an alternative documentation view with AI chat support, you can use **DeepWiki**:  
 [https://deepwiki.com/gioxx/Nebula.Core](https://deepwiki.com/gioxx/Nebula.Core)
 

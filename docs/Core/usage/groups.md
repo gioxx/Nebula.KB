@@ -316,7 +316,7 @@ Get-UserGroups -UserPrincipalName <String> [-GridView]
 - Default output columns: `GroupName`, `GroupMail`
 - With `-GridView`: additional details are included (description, type, ID, etc.)
 
-:::warning Breaking Change (version 1.2.0 or newer)
+:::warning[Breaking Change (version 1.2.0 or newer)]
 `Get-UserGroups` now returns `GroupName` and `GroupMail` instead of `Group Name` and `Group Mail`.
 Update any legacy filters/scripts accordingly, for example: use `$_.GroupName` instead of `$_.'Group Name'`.
 :::
@@ -406,7 +406,7 @@ Remove-EntraGroupUser -GroupName "Project Team" -ClearAll
 Remove-EntraGroupUser -GroupName "Project Team" -ClearAll -WhatIf
 ```
 
-:::note User resolution
+:::note[User resolution]
 `Add/Get/Remove-EntraGroupUser` now use the shared resolver (`Find-UserRecipient`), so short identifiers are supported in addition to full UPNs and object IDs.
 :::
 

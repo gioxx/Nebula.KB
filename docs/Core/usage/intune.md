@@ -23,7 +23,7 @@ Requires Microsoft Graph. For full details and examples, run `Get-Help <Function
 ## Export-IntuneAppInventory
 Report Intune-managed devices that have matching applications installed. The report is built from detected apps and can optionally include deployed app status data as well.
 
-:::info Credits
+:::info[Credits]
 The original script is entirely the work of **Ugur Koc** (via [intuneautomation.com/script/get-application-inventory-report/](https://www.intuneautomation.com/script/get-application-inventory-report/)).  
 I merely made a few minor tweaks and integrated the rest into the module and this specific function.
 :::
@@ -158,7 +158,7 @@ Default console output highlights rows containing `Exclude` with a different col
 ## New-IntuneAppBasedGroup
 Create or update Entra security groups based on apps detected on Intune-managed devices. The command supports multiple apps in a single run, optional version and platform filtering, and a dry-run preview.
 
-:::info Credits
+:::info[Credits]
 The original script is entirely the work of **Ugur Koc** (via [intuneautomation.com/script/create-app-based-entra-id-groups/](https://www.intuneautomation.com/script/create-app-based-entra-id-groups/)).  
 I merely made a few minor tweaks and integrated the rest into the module and this specific function.
 :::
