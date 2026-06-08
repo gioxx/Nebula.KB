@@ -52,10 +52,22 @@ New-SharedMailbox -SharedMailboxSMTPAddress "sharedmailbox@contoso.com" `
 Set-MboxLanguage -SourceMailbox 'user@contoso.com' -Language en-US
 ```
 
+## Set usage location for users
+
+```powershell
+'user1@contoso.com','user2@contoso.com' | Set-UserUsageLocation -UsageLocation IT
+```
+
+## Get usage location for users
+
+```powershell
+'user1@contoso.com','user2@contoso.com' | Get-UserUsageLocation
+```
+
 ## Export mailbox statistics (CSV, batched)
 
 ```powershell
-Export-MboxStatistics -CsvFolder 'C:\Reports\Mailboxes' -Round -BatchSize 50
+Export-MboxStatistics -CsvFolder 'C:\Reports\Mailboxes' -Round -BatchSize 50 -Resume
 ```
 
 ## Export Intune app inventory
@@ -99,8 +111,40 @@ Export-M365Group -CsvFolder 'C:\Reports\M365'
 Export-EmptyEntraGroups -CsvFolder 'C:\Reports\Groups'
 ```
 
+## Create, clone, and manage Entra security groups
+
+```powershell
+New-EntraSecurityGroup -GroupName 'Sec - Finance' -Description 'Finance security group'
+```
+
+```powershell
+Set-EntraGroupDescription -GroupName 'GitLab-Prod' -Description 'Production GitLab access group'
+```
+
+```powershell
+Set-EntraGroupDisplayName -GroupName 'GitLab-Prod' -DisplayName 'GitLab - Production'
+```
+
+```powershell
+Copy-EntraGroup -SourceGroupName 'GitLab-Prod' -DestinationGroupName 'GitLab-Prod-Test' -SkipOwners
+```
+
+```powershell
+'user1@contoso.com','user2@contoso.com' | Add-EntraGroupOwner -GroupName 'Sec - Finance'
+```
+
+```powershell
+Copy-EntraGroupOwner -SourceGroupName 'Sec - Finance' -DestinationGroupName 'Sec - Finance - Test'
+```
+
 ## Normalize MessageIds from clipboard and release immediately
 
 ```powershell
 Format-MessageIDsFromClipboard   # formats, releases, and shows output
+```
+
+## Format any clipboard list as quoted values
+
+```powershell
+Format-QuotedListFromClipboard -PassThru
 ```
