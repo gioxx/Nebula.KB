@@ -136,12 +136,87 @@ Uninstall-Module ExchangeOnlineManagement -RequiredVersion 3.9.2 -Force
 
 Adjust the versions to match the obsolete releases found on the computer. Microsoft Graph requires more care: uninstalling only the `Microsoft.Graph` metapackage may leave its separately installed `Microsoft.Graph.*` dependencies behind. Inventory the whole family, remove the unwanted release consistently, and follow Microsoft's [Graph module removal guidance](https://learn.microsoft.com/en-us/services-hub/unified/health/remove-graph-module) when a manual cleanup is required.
 
-After cleanup, open a new PowerShell process and confirm that no unwanted release remains:
+### Deep-clean Graph before reinstalling the latest release
+
+If the metapackage has already been uninstalled but old `Microsoft.Graph.*` modules remain, or if CurrentUser and AllUsers installations have become mixed, the most deterministic recovery is to remove the entire Graph module family and reinstall one release into one scope.
+
+This is a destructive procedure. Close every PowerShell process, then open a fresh **elevated** PowerShell window. First discover all module roots and preview the exact Graph directories that will be removed:
+
+```powershell
+$moduleRoots = $env:PSModulePath -split [IO.Path]::PathSeparator |
+    Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+    ForEach-Object { [IO.Path]::GetFullPath($_) } |
+    Select-Object -Unique
+
+$graphTargets = foreach ($moduleRoot in $moduleRoots) {
+    if (Test-Path -LiteralPath $moduleRoot) {
+        Get-ChildItem -LiteralPath $moduleRoot -Directory |
+            Where-Object Name -Match '^Microsoft\.Graph(?:\.|$)'
+    }
+}
+
+$graphTargets | Select-Object FullName
+```
+
+Review that list before continuing. The safety checks below refuse to remove a directory unless its parent is one of the discovered module roots and its name belongs to the `Microsoft.Graph` family:
+
+```powershell
+foreach ($target in $graphTargets) {
+    $targetPath = [IO.Path]::GetFullPath($target.FullName)
+    $parentPath = [IO.Path]::GetFullPath($target.Parent.FullName)
+
+    if (
+        $moduleRoots -notcontains $parentPath -or
+        $target.Name -notmatch '^Microsoft\.Graph(?:\.|$)'
+    ) {
+        throw "Unexpected path, cleanup stopped: $targetPath"
+    }
+
+    Remove-Item -LiteralPath $targetPath -Recurse -Force
+}
+```
+
+Confirm that no Graph module directory remains in any active module path:
+
+```powershell
+foreach ($moduleRoot in $moduleRoots) {
+    Get-ChildItem -LiteralPath $moduleRoot -Directory -ErrorAction SilentlyContinue |
+        Where-Object Name -Match '^Microsoft\.Graph(?:\.|$)'
+}
+```
+
+The command must return no results. Reinstall the selected release into a single scope; the verified recovery used Microsoft.Graph 2.38.1 in AllUsers:
+
+```powershell
+$graphVersion = '2.38.1'
+
+Install-Module Microsoft.Graph `
+    -RequiredVersion $graphVersion `
+    -Scope AllUsers `
+    -Repository PSGallery `
+    -AllowClobber `
+    -Force
+```
+
+Finally, make sure that every available Graph module belongs to the selected release:
 
 ```powershell
 Get-Module Microsoft.Graph* -ListAvailable |
-    Where-Object Version -eq '2.36.1'
+    Group-Object Version |
+    Select-Object Name, Count
 
+Get-Module Microsoft.Graph* -ListAvailable |
+    Where-Object Version -ne $graphVersion |
+    Select-Object Name, Version, Path
+```
+
+In the verified 2.38.1 installation, the first command returned 40 modules at version 2.38.1 and the second command returned nothing. The module count can change in later Graph releases; the important result is that no other version remains.
+
+Close the cleanup window and open another new PowerShell process before testing authentication or Nebula commands. This guarantees that the test does not reuse an assembly loaded before or during maintenance.
+
+After either a selective cleanup or a full reinstall, confirm the final Exchange Online inventory as well:
+
+```powershell
 Get-Module ExchangeOnlineManagement -ListAvailable |
     Sort-Object Version -Descending |
     Select-Object Name, Version, Path
@@ -167,6 +242,7 @@ If your task requires additional Graph delegated permissions, request the comple
 ```powershell
 $scopes = @(
     'User.Read.All'
+    'LicenseAssignment.Read.All'
     'Group.ReadWrite.All'
 )
 
