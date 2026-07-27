@@ -6,7 +6,7 @@ authors: [gioxx]
 tags: [microsoft, exchange, powershell, core]
 ---
 
-:::info[Update — July 16, 2026]
+:::info[Update - July 16, 2026]
 Based on customer feedback, Microsoft postponed the client-side removal of the `-Credential` parameter. New Exchange Online PowerShell module releases will stop supporting it beginning in **December 2026**, not July 2026 as originally announced.
 
 The retirement has not been cancelled, but the additional time removes the immediate July deadline and gives administrators a longer migration window.
