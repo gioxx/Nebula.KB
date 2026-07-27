@@ -90,10 +90,10 @@ The upstream issue also documents the error with both delegated user authenticat
 
 ## Temporary workaround for Nebula
 
-Start from a completely new PowerShell 7 window. Load Nebula, connect to Microsoft Graph first, and then connect to Exchange Online with WAM disabled:
+Start from a completely new PowerShell 7 window. Import `Nebula.Core` using its public module name, connect to Microsoft Graph first, and then connect to Exchange Online with WAM disabled:
 
 ```powershell
-nebula-dev
+Import-Module Nebula.Core
 
 Connect-MgGraph -Scopes 'User.Read.All' -NoWelcome
 Connect-EOL -DisableWAM
