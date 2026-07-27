@@ -88,9 +88,72 @@ Disconnecting a service session does not unload the .NET assemblies already load
 
 The upstream issue also documents the error with both delegated user authentication and certificate authentication, so it should not be treated as a problem limited to the browser prompt.
 
+## Keep installed module versions clean
+
+Connection order is not the only way to produce an assembly conflict. PowerShell supports installing multiple module versions side by side, and `Update-Module` does not necessarily remove the versions that were already present. This is useful for rollback, but it can become dangerous when different parts of a binary module family are loaded from different releases.
+
+During verification of this regression, Microsoft Graph authentication succeeded with `Microsoft.Graph.Authentication` 2.36.1 already loaded. A later Nebula license command caused PowerShell to auto-load `Microsoft.Graph.Users` and `Microsoft.Graph.Identity.DirectoryManagement` 2.38.1. Both newer modules required the Authentication assembly from their own 2.38.1 release, producing a second and more explicit failure:
+
+```text
+Could not load file or assembly
+'Microsoft.Graph.Authentication, Version=2.38.1.0'.
+Assembly with same name is already loaded.
+```
+
+This is separate from the Exchange Online/Graph `WithLogging` regression described above, but it belongs to the same class of problem: incompatible assemblies have been selected inside one PowerShell process.
+
+`Get-InstalledModule` can make the installation look cleaner than it is because, without `-AllVersions`, it reports only the latest installed version. Always include all versions when auditing Microsoft 365 administration modules:
+
+```powershell
+Get-InstalledModule -Name Microsoft.Graph -AllVersions |
+    Select-Object Name, Version, InstalledLocation
+
+Get-InstalledModule -Name ExchangeOnlineManagement -AllVersions |
+    Select-Object Name, Version, InstalledLocation
+```
+
+Microsoft Graph is a metapackage composed of many `Microsoft.Graph.*` modules. Inspect the complete family as well as the module already loaded in memory:
+
+```powershell
+Get-Module Microsoft.Graph* -ListAvailable |
+    Sort-Object Name, Version |
+    Select-Object Name, Version, Path
+
+Get-Module Microsoft.Graph.Authentication |
+    Select-Object Name, Version, Path
+```
+
+All Graph submodules used in a session should come from one coherent release. For example, Authentication 2.36.1 must not be mixed with Users or Identity.DirectoryManagement 2.38.1.
+
+Before removing obsolete versions, close **every** PowerShell process so that no module DLL remains locked. Keep an older version only when it is part of an intentionally pinned and fully consistent module set. If no rollback set is required, remove the obsolete version from every module path, including both CurrentUser and AllUsers locations.
+
+Cleaning ExchangeOnlineManagement is relatively direct because its releases live under one module name:
+
+```powershell
+Uninstall-Module ExchangeOnlineManagement -RequiredVersion 3.8.0 -Force
+Uninstall-Module ExchangeOnlineManagement -RequiredVersion 3.9.2 -Force
+```
+
+Adjust the versions to match the obsolete releases found on the computer. Microsoft Graph requires more care: uninstalling only the `Microsoft.Graph` metapackage may leave its separately installed `Microsoft.Graph.*` dependencies behind. Inventory the whole family, remove the unwanted release consistently, and follow Microsoft's [Graph module removal guidance](https://learn.microsoft.com/en-us/services-hub/unified/health/remove-graph-module) when a manual cleanup is required.
+
+After cleanup, open a new PowerShell process and confirm that no unwanted release remains:
+
+```powershell
+Get-Module Microsoft.Graph* -ListAvailable |
+    Where-Object Version -eq '2.36.1'
+
+Get-Module ExchangeOnlineManagement -ListAvailable |
+    Sort-Object Version -Descending |
+    Select-Object Name, Version, Path
+```
+
+:::warning
+Do not treat the presence of an older folder as proof that it caused a specific failure: side-by-side versions are supported. The dangerous condition is loading incompatible releases into the same process. A clean module inventory removes that ambiguity and makes regressions much easier to reproduce and support.
+:::
+
 ## Temporary workaround for Nebula
 
-Start from a completely new PowerShell 7 window. Import `Nebula.Core` using its public module name, connect to Microsoft Graph first, and then connect to Exchange Online with WAM disabled:
+After confirming that the installed Graph modules form one coherent release, start from a completely new PowerShell 7 window. Import `Nebula.Core` using its public module name, connect to Microsoft Graph first, and then connect to Exchange Online with WAM disabled:
 
 ```powershell
 Import-Module Nebula.Core
