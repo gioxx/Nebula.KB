@@ -63,16 +63,23 @@ This is why the error reports a missing method even though all modules are insta
 
 Microsoft explains this general behavior in [Resolving PowerShell module assembly dependency conflicts](https://learn.microsoft.com/powershell/scripting/dev-cross-plat/resolving-dependency-conflicts).
 
-## Why `Connect-Nebula` exposes the problem
+## Why older `Connect-Nebula` versions exposed the problem
 
-`Connect-Nebula` currently follows this sequence:
+Older Nebula releases followed this sequence:
 
 1. verify or establish the Exchange Online session;
 2. verify or establish the Microsoft Graph session.
 
-That sequence is normally convenient, but it means ExchangeOnlineManagement gets the first opportunity to load its authentication stack. When `Connect-MgGraph` subsequently starts interactive authentication, Graph can encounter the incompatible assembly already present in the process and fail with `MissingMethodException`.
+That sequence was normally convenient, but it gave ExchangeOnlineManagement the first opportunity to load its authentication stack. When `Connect-MgGraph` subsequently started interactive authentication, Graph could encounter the incompatible assembly already present in the process and fail with `MissingMethodException`.
 
-The Exchange Online connection shown before the error is therefore valid. Only the following Graph authentication attempt fails.
+The Exchange Online connection shown before the error was therefore valid. Only the following Graph authentication attempt failed.
+
+The current Nebula workaround reverses the order and uses a WAM-disabled Exchange Online sign-in in the combined flow:
+
+1. initialize Microsoft Graph;
+2. connect to Exchange Online with `-DisableWAM`.
+
+This avoids both the original Graph-side assembly failure and the Exchange Online RuntimeBroker failure that can occur when WAM is initialized after Graph in the same process. Direct `Connect-EOL` calls and `Connect-Nebula -SkipGraph` retain their normal WAM-first behavior.
 
 ## Why retrying does not help
 
@@ -265,6 +272,28 @@ Once both sessions exist, Nebula commands can use them normally. Running `Connec
 The exact outcome can vary with module patch versions and other Microsoft modules loaded in the same process. Always begin with a clean PowerShell process and validate the sequence in your environment before adopting it in an operational runbook.
 :::
 
+## How to verify when WAM can return
+
+When Microsoft publishes a module combination that is supposed to resolve the clash, do not remove Nebula's `-DisableWAM` mitigation immediately. First test the same process order with Exchange Online WAM explicitly required and fallback disabled:
+
+```powershell
+pwsh -NoProfile
+Import-Module Nebula.Core
+
+Connect-MgGraph -Scopes 'User.Read.All' -NoWelcome
+Connect-EOL -NoWamFallback
+```
+
+The test is successful only if both connections complete in that new PowerShell process and Exchange Online reports the normal `interactive (WAM)` mode. `-NoWamFallback` is important: without it, Nebula could hide a still-present regression by retrying automatically with `-DisableWAM`.
+
+Treat the following as evidence that the workaround is still required:
+
+- `InteractiveBrowserCredential authentication failed` with a `WithLogging` method error;
+- `RuntimeBroker` or `Error Acquiring Token` failures from Exchange Online;
+- `Assembly with same name is already loaded` or another MSAL/IdentityModel load error.
+
+Only after the clean WAM test succeeds should the `Connect-Nebula` implementation be changed to stop forcing `-DisableWAM`. Repeat the test after every update of PowerShell, ExchangeOnlineManagement, Microsoft.Graph, or any `Microsoft.Graph.*` submodule.
+
 ## Other operational options
 
 If the temporary sequence is not suitable, consider one of these alternatives:
@@ -289,7 +318,7 @@ Use the following sources to track the problem and decide when to remove the wor
 2. Review [Microsoft Graph PowerShell releases](https://github.com/microsoftgraph/msgraph-sdk-powershell/releases) for authentication dependency updates and references to the issue.
 3. Check the [Microsoft.Graph.Authentication version history](https://www.powershellgallery.com/packages/Microsoft.Graph.Authentication) before upgrading.
 4. Check the [ExchangeOnlineManagement version history](https://www.powershellgallery.com/packages/ExchangeOnlineManagement) and the [official module requirements](https://learn.microsoft.com/powershell/exchange/exchange-online-powershell-v2).
-5. After either module changes, open a fresh PowerShell process and test both connection orders before removing the workaround from scripts or documentation.
+5. After either module changes, open a fresh PowerShell process and run the WAM verification above before removing the workaround from scripts or documentation.
 
 For additional field evidence covering the ExchangeOnlineManagement 3.10 and Microsoft.Graph 2.38 generation, see [The Grief and Joys of New PowerShell Releases](https://office365itpros.com/2026/06/22/powershell-woes-and-cmdlets/).
 
