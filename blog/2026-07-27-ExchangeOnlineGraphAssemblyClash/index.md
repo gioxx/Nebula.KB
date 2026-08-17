@@ -8,7 +8,7 @@ tags: [microsoft, exchange, powershell, core]
 
 Updating PowerShell and the Microsoft 365 administration modules should be a routine maintenance operation. Unfortunately, a currently open regression can make the latest Exchange Online and Microsoft Graph modules fail when they are used in the same PowerShell 7 session.
 
-The failure has been confirmed with **PowerShell 7.6.4**, **ExchangeOnlineManagement 3.10.1**, and **Microsoft.Graph 2.38.1**. In Nebula, it appears while `Connect-Nebula` is establishing the Microsoft Graph session:
+The failure was first confirmed with **PowerShell 7.6.4**, **ExchangeOnlineManagement 3.10.1**, and **Microsoft.Graph 2.38.1**. A follow-up test with **Microsoft.Graph 2.39.0** still found a conflict in the same combined session: Graph connected after the order change, but Exchange Online WAM failed with a `RuntimeBroker`/`NullReferenceException`. In the original Nebula flow, the error appeared while `Connect-Nebula` was establishing the Microsoft Graph session:
 
 ```text
 Connect-MgGraph:
@@ -22,8 +22,8 @@ This is not a permissions, Conditional Access, consent, or token-cache error. It
 
 {/* truncate */}
 
-:::danger[Current status — July 27, 2026]
-The Microsoft Graph PowerShell issue tracking this problem is still open and no generally available vendor fix has been confirmed. Treat the workaround below as temporary and retest it whenever either module is updated.
+:::danger[Current status — August 17, 2026]
+The Microsoft Graph PowerShell issue tracking this problem is still open and no generally available vendor fix has been confirmed. Microsoft.Graph 2.39.0 did not remove the combined-session problem in the follow-up test, so treat the workaround below as temporary and retest it whenever either module is updated.
 :::
 
 ## Confirmed environment
@@ -36,6 +36,10 @@ The condition described in this article was reproduced with the following versio
 | ExchangeOnlineManagement | 3.10.1 |
 | Microsoft.Graph | 2.38.1 |
 | Microsoft.Graph.Authentication | 2.38.1 |
+
+### Follow-up test with Microsoft.Graph 2.39.0
+
+On August 17, 2026, the same PowerShell 7.6.4 and ExchangeOnlineManagement 3.10.1 environment was retested after updating Microsoft.Graph and Microsoft.Graph.Authentication to 2.39.0. The Graph-first sequence completed the Graph sign-in, but the subsequent Exchange Online WAM sign-in failed with `RuntimeBroker` and `System.NullReferenceException` while acquiring the token. This confirms that 2.39.0 does not yet justify removing Nebula's WAM-disabled Exchange Online mitigation.
 
 PowerShell 7.6 itself is not the regression. In fact, Microsoft documents PowerShell **7.6.0 or later** as a requirement for ExchangeOnlineManagement 3.10.0 and later because those releases use .NET 10 dependencies.
 
