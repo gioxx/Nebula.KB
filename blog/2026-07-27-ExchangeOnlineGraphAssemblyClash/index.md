@@ -298,6 +298,21 @@ Treat the following as evidence that the workaround is still required:
 
 Only after the clean WAM test succeeds should the `Connect-Nebula` implementation be changed to stop forcing `-DisableWAM`. Repeat the test after every update of PowerShell, ExchangeOnlineManagement, Microsoft.Graph, or any `Microsoft.Graph.*` submodule.
 
+## Related friction: repeated account-picker prompts during bulk Graph operations
+
+Some administrators report a related but distinct symptom after a Graph session is already connected and healthy: running many delegated Graph operations in sequence (for example, 50 license or group changes in a loop) triggers a WAM account-picker prompt on individual operations instead of failing once at connect time. This is not the `WithLogging`/`RuntimeBroker` exception described above — the session connects fine — but it belongs to the same family of problems, since it stems from the WAM broker behaving unreliably once the mixed Exchange Online/Graph authentication assemblies are loaded in the process.
+
+`Connect-MgGraph -UseDeviceCode` was tried as a workaround for this friction and **does not reliably help**: in a field test, `Connect-Nebula -GraphDeviceCode` failed with `Authentication timed out after 120 seconds due to inactivity` instead of ever printing a device code, consistent with a WAM broker prompt still being attempted underneath (WAM's own dialog auto-cancels after roughly two minutes of inactivity) and with the [Why retrying does not help](#why-retrying-does-not-help) section already listing device-code as ineffective for this regression. Do not rely on it.
+
+The reliable mitigation is the same one used for the connect-time clash: close **every** PowerShell window (disconnecting sessions in the same process is not enough — the loaded assemblies stay loaded), open a fresh process, and run the normal, WAM-based combined flow:
+
+```powershell
+Import-Module Nebula.Core
+Connect-Nebula
+```
+
+If the account-picker prompts still resurface per operation in an otherwise clean, single-purpose process, treat it as further field evidence of the same upstream regression and track [msgraph-sdk-powershell issue #3394](https://github.com/microsoftgraph/msgraph-sdk-powershell/issues/3394) rather than working around it with device-code. For unattended or bulk scripted runs, app-only certificate-based Graph authentication (`Connect-MgGraph -ClientId ... -CertificateThumbprint ...`) avoids interactive broker prompts entirely and is a more dependable option than delegated auth for that scenario.
+
 ## Other operational options
 
 If the temporary sequence is not suitable, consider one of these alternatives:
@@ -307,6 +322,33 @@ If the temporary sequence is not suitable, consider one of these alternatives:
 - **Wait for a vendor correction:** if the workflow is not urgent, avoid redesigning authentication around an upstream regression and retest after new module releases.
 
 Do not blindly downgrade production modules. Older combinations may have their own defects or support limitations, and a version pair that works on Windows PowerShell 5.1 may behave differently on PowerShell 7.
+
+### A simpler pin: keep Exchange Online below the WAM-by-default release
+
+Web Account Manager only became the default Exchange Online sign-in path starting with `ExchangeOnlineManagement` **3.7.0**. Below that version, `Connect-ExchangeOnline` never touches the WAM broker at all, so it cannot clash with whatever authentication path Microsoft.Graph.Authentication uses in the same process — regardless of the installed Graph version. This is a smaller, more surgical pin than pulling the whole Graph module family back to an older release, and it avoids app-only/certificate reconfiguration entirely for interactive admin use.
+
+```powershell
+# Close every PowerShell window first.
+Get-InstalledModule ExchangeOnlineManagement -AllVersions | Select-Object Name, Version
+Uninstall-Module ExchangeOnlineManagement -AllVersions -Force
+Install-Module ExchangeOnlineManagement -RequiredVersion 3.6.0 -Scope CurrentUser -Force
+```
+
+Then, in a fresh PowerShell process:
+
+```powershell
+Import-Module Nebula.Core
+Connect-Nebula
+```
+
+With Exchange Online below 3.7.0, `Connect-EOL`/`Connect-Nebula` no longer need `-DisableWAM`: the classic (non-WAM) interactive flow is used automatically, so there is no broker for Graph's authentication stack to conflict with.
+
+Trade-offs to weigh before pinning down:
+
+- You lose any fix or feature shipped in ExchangeOnlineManagement 3.7.0 and later, including the .NET dependency changes tied to 3.10.0+.
+- Microsoft can deprecate older module releases with limited notice; a pin is a maintenance liability, not a permanent fix.
+- It only addresses the Exchange Online side of the clash. If a future Graph release introduces the same kind of default broker behavior, the same class of conflict can reappear from the other direction.
+- This does not fix the upstream regression — it removes one of the two colliding broker paths. Re-test without the pin after every Exchange Online or Graph update, using the same verification steps as [How to verify when WAM can return](#how-to-verify-when-wam-can-return).
 
 ## This is not MC1248389
 
