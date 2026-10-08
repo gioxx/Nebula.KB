@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 9
 title: "Mailboxes"
 description: Manage aliases, permissions, languages, quotas, and shared mailbox setup.
 hide_title: true
@@ -220,7 +220,7 @@ Get-MboxLastMessageTrace -SourceMailbox 'user@contoso.com' -IncludeTrace
 ```
 
 ## Get-MboxPermission
-List mailbox permissions.
+List mailbox permissions. The output heading also shows the source mailbox `RecipientTypeDetails` value (for example, `SharedMailbox`).
 
 **Syntax**
 

@@ -22,6 +22,8 @@ For full details and examples, run `Get-Help <FunctionName> -Detailed` or `-Exam
 Connect to Exchange Online (EXO V3), auto-importing the module and auto-detecting the current user when `-UserPrincipalName` is not supplied.
 By default it tries the standard interactive sign-in flow with WAM. This matters because WAM became the default Exchange Online auth path starting with `ExchangeOnlineManagement` `3.7.0`. If the EXO module fails with a WAM/MSAL broker error, Nebula automatically retries with `-DisableWAM`.
 
+`Connect-ExchangeOnline`'s own cosmetic "Sign in by Web Account Manager (WAM) is enabled by default" notice is hidden on every call unless you pass `-Verbose` — useful when diagnosing WAM/broker issues, otherwise just noise repeated on every sign-in.
+
 **Syntax**
 
 ```powershell
@@ -53,8 +55,12 @@ Connect-EOL -DisableWAM
 Connect-EOL -DisableWAM -Device
 ```
 
+:::note[Pinned pre-3.7.2 ExchangeOnlineManagement]
+`-DisableWAM` and `-Device` only exist on `Connect-ExchangeOnline` starting with `ExchangeOnlineManagement` 3.7.2 (the release that made WAM the default). If you've intentionally pinned an older version as a workaround for the Graph/EOL assembly clash, `Connect-EOL` detects this and silently ignores `-DisableWAM` (nothing to disable) or warns and falls back to the standard interactive flow for `-Device`, instead of failing with a parameter-binding error.
+:::
+
 ## Connect-Nebula
-One-shot helper that ensures EXO is connected, then (optionally) connects Microsoft Graph.
+One-shot helper that connects Microsoft Graph first and then Exchange Online with WAM disabled. The order and EXO authentication mode are intentional: they let Graph load its dependencies before Exchange Online and avoid the known cross-module assembly and broker conflict. Use `-SkipGraph` when only an EXO session is required and you want the normal EXO WAM flow.
 
 **Syntax**
 
@@ -77,6 +83,10 @@ Connect-Nebula [-UserPrincipalName <String>] [-GraphScopes <String[]>] [-GraphTe
 ```powershell
 Connect-Nebula -GraphScopes 'User.Read.All','Directory.Read.All' -AutoInstall
 ```
+
+:::tip[Repeated Graph auth prompts during bulk operations]
+If a healthy, already-connected Graph session keeps popping a WAM account-picker on individual delegated Graph operations (for example, running many license or group changes in a loop), this is related WAM broker friction from the known Exchange Online/Graph assembly clash, not a normal re-auth. `-GraphDeviceCode` is **not** a reliable workaround for it — in practice it can fail with `Authentication timed out after 120 seconds due to inactivity` instead of prompting a code. Close every PowerShell window (not just disconnect) and re-run plain `Connect-Nebula` in a fresh process instead. See [Exchange Online and Microsoft Graph PowerShell assembly clash](https://kb.gioxx.org/news/exchange-online-graph-assembly-clash) for background and unattended/bulk-script alternatives (app-only certificate auth).
+:::
 
 :::note[Automatic update function]
 By default, `Connect-Nebula` checks PowerShell Gallery for updates of `Nebula.*` modules plus the meta modules `ExchangeOnlineManagement` and `Microsoft.Graph`, warning only when updates are available.
@@ -167,7 +177,7 @@ For real usability checks after long idle periods, prefer `ExchangeOnlineHealthy
 
 ### What happens if Exchange Online auth breaks after a Windows lock or idle period?
 
-Nebula still tries the normal EXO login first, which uses WAM by default starting with `ExchangeOnlineManagement` `3.7.0`. If the broker fails with a WAM/MSAL error, `Connect-EOL` retries automatically with `-DisableWAM`.
+When using `Connect-Nebula`, Microsoft Graph is initialized first and the subsequent EXO login uses `-DisableWAM`, so the Graph/EXO authentication modules do not clash in the same PowerShell process. Direct `Connect-EOL` calls still try the normal WAM-based login first (WAM is the default starting with `ExchangeOnlineManagement` `3.7.0`) and retry with `-DisableWAM` when the broker reports a recognized WAM/MSAL error.
 
 If you want to bypass WAM immediately, use:
 

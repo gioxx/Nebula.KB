@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 title: "Groups"
 description: Export distribution/dynamic groups, M365 groups, role groups, and user/device memberships, plus Entra security-group ownership helpers.
 hide_title: true
@@ -37,6 +37,10 @@ tags:
 
 Requires EXO for DGs and role groups, and Microsoft Graph for Microsoft 365 groups where applicable. For full details and examples, run `Get-Help <FunctionName> -Detailed`.
 
+For the Entra group membership helpers (`Add/Remove` for `Device`, `Owner`, and `User`), the first positional argument is the group and the second positional argument is the member identifier. The named-parameter forms still work exactly as before.
+
+User-focused helpers now live in `users.md`, including `Search-EntraUser` for guest UPN fragments and other partial matches.
+
 ## Add-EntraGroupDevice
 Add one or more devices to an Entra group (Graph scopes: `Group.ReadWrite.All`, `Directory.Read.All`).
 
@@ -62,7 +66,7 @@ Add-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] [[-DeviceIdentifi
 ```
 
 ```powershell
-Add-EntraGroupDevice "PC1" -GroupId "00000000-0000-0000-0000-000000000000" -PassThru
+Add-EntraGroupDevice "Zero Trust Devices" "PC1" -PassThru
 ```
 
 ## Add-EntraGroupOwner
@@ -90,7 +94,7 @@ Add-EntraGroupOwner [-GroupName <String>] [-GroupId <String>] [[-OwnerIdentifier
 ```
 
 ```powershell
-Add-EntraGroupOwner "user1@contoso.com" -GroupId "00000000-0000-0000-0000-000000000000" -PassThru
+Add-EntraGroupOwner "Project Team" "user1@contoso.com" -PassThru
 ```
 
 ## Add-EntraGroupUser
@@ -106,11 +110,17 @@ Add-EntraGroupUser [-GroupName <String>] [-GroupId <String>] [[-UserIdentifier] 
 | --- | --- | --- | :---: | --- |
 | `GroupName` | String | Target group display name. | Yes* | - |
 | `GroupId` | String | Target group object ID (use instead of `GroupName`). | Yes* | - |
-| `UserIdentifier` | String[] | UPN/display name/object ID, plus short identifiers (alias/SamAccountName/UPN prefix). Pipeline accepted. | Yes | - |
+| `UserIdentifier` | String[] | UPN/display name/object ID, external e-mail for invited guests, plus short identifiers (alias/SamAccountName/UPN prefix). Pipeline accepted. | Yes | - |
 | `TreatInputAsId` | Switch | Treat every `UserIdentifier` as an object ID (skip name lookup). | No | `False` |
 | `PassThru` | Switch | Emit a status object per user. | No | `False` |
 
 \*Use either `GroupName` or `GroupId`.
+
+`Add-EntraGroupUser` also accepts the first two positional arguments, so this works too:
+
+```powershell
+Add-EntraGroupUser "Project Team" "user1@contoso.com"
+```
 
 **Examples**
 ```powershell
@@ -118,7 +128,7 @@ Add-EntraGroupUser [-GroupName <String>] [-GroupId <String>] [[-UserIdentifier] 
 ```
 
 ```powershell
-Add-EntraGroupUser "user1@contoso.com" -GroupId "00000000-0000-0000-0000-000000000000" -PassThru
+Add-EntraGroupUser -GroupId "00000000-0000-0000-0000-000000000000" "user1@contoso.com" -PassThru
 ```
 
 ## Copy-EntraGroup
@@ -366,7 +376,7 @@ Get-EntraGroupUser [[-UserIdentifier] <String>] [-TreatInputAsId] [-GridView]
 
 | Parameter | Type | Description | Required | Default |
 | --- | --- | --- | :---: | --- |
-| `UserIdentifier` | String | UPN/display name/object ID, plus short identifiers (alias/SamAccountName/UPN prefix). Pipeline accepted. | Yes | - |
+| `UserIdentifier` | String | UPN/display name/object ID, external e-mail for invited guests, plus short identifiers (alias/SamAccountName/UPN prefix). Pipeline accepted. | Yes | - |
 | `TreatInputAsId` | Switch | Treat the `UserIdentifier` as an object ID (skip name lookup). | No | `False` |
 | `GridView` | Switch | Show details in Out-GridView. | No | `False` |
 
@@ -415,6 +425,8 @@ Get-UserGroups -UserPrincipalName <String> [-GridView]
 **Output**
 - Default output columns: `GroupName`, `GroupMail`
 - With `-GridView`: additional details are included (description, type, ID, etc.)
+
+`Get-UserGroups` first tries the Exchange recipient view for regular mailbox users. If that lookup is not available, it falls back to Microsoft Graph so Entra guest users can still be inspected from PowerShell.
 
 :::warning[Breaking Change (version 1.2.0 or newer)]
 `Get-UserGroups` now returns `GroupName` and `GroupMail` instead of `Group Name` and `Group Mail`.
@@ -482,7 +494,7 @@ Remove-EntraGroupDevice [-GroupName <String>] [-GroupId <String>] -ClearAll [-Pa
 ```
 
 ```powershell
-Remove-EntraGroupDevice "PC1" -GroupId "00000000-0000-0000-0000-000000000000" -PassThru
+Remove-EntraGroupDevice "Zero Trust Devices" "PC1" -PassThru
 ```
 
 ```powershell
@@ -520,6 +532,10 @@ Remove-EntraGroupOwner [-GroupName <String>] [-GroupId <String>] -ClearAll [-Pas
 ```
 
 ```powershell
+Remove-EntraGroupOwner "Project Team" "user1@contoso.com" -PassThru
+```
+
+```powershell
 Remove-EntraGroupOwner -GroupName "Project Team" -ClearAll
 ```
 
@@ -545,7 +561,7 @@ Remove-EntraGroupUser [-GroupName <String>] [-GroupId <String>] -ClearAll [-Pass
 | --- | --- | --- | :---: | --- |
 | `GroupName` | String | Target group display name. | Yes* | - |
 | `GroupId` | String | Target group object ID (use instead of `GroupName`). | Yes* | - |
-| `UserIdentifier` | String[] | UPN/display name/object ID, plus short identifiers (alias/SamAccountName/UPN prefix). Pipeline accepted. | Yes | - |
+| `UserIdentifier` | String[] | UPN/display name/object ID, external e-mail for invited guests, plus short identifiers (alias/SamAccountName/UPN prefix). Pipeline accepted. | Yes | - |
 | `TreatInputAsId` | Switch | Treat every `UserIdentifier` as an object ID (skip name lookup). | No | `False` |
 | `ClearAll` | Switch | Remove all user members from the group (devices and other objects are not removed). Prompts for confirmation. | No | `False` |
 | `PassThru` | Switch | Emit a status object per user. | No | `False` |
@@ -558,7 +574,7 @@ Remove-EntraGroupUser [-GroupName <String>] [-GroupId <String>] -ClearAll [-Pass
 ```
 
 ```powershell
-Remove-EntraGroupUser "user1@contoso.com" -GroupId "00000000-0000-0000-0000-000000000000" -PassThru
+Remove-EntraGroupUser "Project Team" "user1@contoso.com" -PassThru
 ```
 
 ```powershell
@@ -570,7 +586,7 @@ Remove-EntraGroupUser -GroupName "Project Team" -ClearAll -WhatIf
 ```
 
 :::note[User resolution]
-`Add/Get/Remove-EntraGroupUser` now use the shared resolver (`Find-UserRecipient`), so short identifiers are supported in addition to full UPNs and object IDs.
+`Add/Get/Remove-EntraGroupUser` accept the external e-mail address of an invited Entra guest. Tenant UPNs and object IDs keep the direct Microsoft Graph lookup; only a failed direct lookup falls back to the shared resolver (`Find-UserRecipient`) for a Graph-compatible identity.
 :::
 
 ## Search-EntraGroup

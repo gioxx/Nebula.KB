@@ -1,5 +1,5 @@
 ---
-sidebar_position: 9
+sidebar_position: 11
 title: "Security"
 description: Disable devices, block sign-in, edit content filter policies, and revoke sessions via Microsoft Graph.
 hide_title: true
@@ -81,10 +81,18 @@ Edit-ContentFilterPolicy -Identity Contoso -BlockedSender user@contoso.com
 Edit-ContentFilterPolicy -Identity Contoso -AllowedDomain contoso.com -Remove
 ```
 
+```powershell
+@(
+    [pscustomobject]@{ Identity = 'Contoso'; AllowedSender = 'survey-noreply@lr.surveymonkeyuser.com' },
+    [pscustomobject]@{ Identity = 'Contoso'; BlockedDomain = 'example.com' }
+) | Edit-ContentFilterPolicy -Remove
+```
+
 Notes:
 - The command returns a summary object with the refreshed policy state.
 - When adding allowed senders, missing mail contacts are created and hidden from the address list if `-AllowedSendersGroup` is provided.
 - When adding or removing allowed domains, matching transport-rule exceptions are updated too if `-TransportRuleNames` is provided.
+- For multi-list updates, prefer piping objects with `Identity` plus `AllowedSender`, `BlockedSender`, `AllowedDomain`, or `BlockedDomain` properties so each value binds explicitly.
 
 ## Get-ContentFilterPolicy
 List hosted content filter policies and inspect their current allow/block lists.

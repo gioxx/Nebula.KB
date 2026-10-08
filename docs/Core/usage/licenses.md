@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 8
 title: "Licenses"
 description: Export tenant license assignments and inspect user licenses with friendly SKU names.
 hide_title: true
@@ -20,6 +20,10 @@ tags:
 # License helpers
 
 Requires Microsoft Graph and a cached SKU catalog. For full details and examples, run `Get-Help <FunctionName> -Detailed`.
+
+:::note[Primary and custom catalogs]
+SKU part numbers are resolved against the primary catalog (`M365_licenses.json`, sourced from Microsoft's official CSV) first, then against a custom catalog (`M365_licenses_custom.json`) for SKUs Microsoft hasn't published there yet. Both are cached locally and shown by `Get-NebulaConfig`. Lookup also strips invisible Unicode characters (e.g. zero-width spaces occasionally present in `SkuPartNumber` values returned by Graph for some tenants/SKUs) before matching, so those SKUs resolve correctly instead of showing up as unmapped.
+:::
 
 Use `Export-MsolAccountSku` when you need:
 - a full tenant license assignment export
@@ -107,6 +111,10 @@ Copy-UserMsolAccountSku -SourceUserPrincipalName 'user1@contoso.com' -Destinatio
 Copy-UserMsolAccountSku 'user1@contoso.com' 'user2@contoso.com'
 ```
 
+:::warning[Licenses availability]
+Before assigning, Nebula.Core checks tenant seat availability for each source license. Licenses with no available units are skipped with a warning instead of failing the whole copy; every license that does have availability is still assigned.
+:::
+
 ## Export-MsolAccountSku
 Export all users with assigned licenses to CSV, mapping SKU part numbers to friendly names.
 Use `-Domain` to limit the export to users whose `Mail`, `UserPrincipalName`, or `ProxyAddresses` match the domain.
@@ -190,6 +198,10 @@ With `-GridView`, Nebula.Core opens a summary grid and, when sample users are re
 Need renewal/expiration or billing profile details? Open the Microsoft 365 Admin Center subscriptions page: https://admin.cloud.microsoft/?#/subscriptions
 :::
 
+:::note[Offline fallback to stale cache]
+If the license catalog file can't be downloaded from GitHub (network issue, GitHub outage, ...) after all retry attempts, Nebula.Core falls back to the last cached copy instead of failing, and prints a warning noting the cache is stale. The command still works, just with a possibly outdated SKU catalog. If no cache exists yet, the error is still raised.
+:::
+
 ## Get-UserMsolAccountSku
 Show licenses assigned to a single user with friendly names.
 
@@ -252,6 +264,10 @@ Move-UserMsolAccountSku -SourceUserPrincipalName 'user1@contoso.com' -Destinatio
 ```powershell
 Move-UserMsolAccountSku 'user1@contoso.com' 'user2@contoso.com'
 ```
+
+:::warning[Licenses availability]
+Before assigning, Nebula.Core checks tenant seat availability for each source license. A license with no available units is left on the source (not removed) instead of failing the whole move; every license that does have availability is still assigned to the destination and removed from the source.
+:::
 
 ## Remove-UserMsolAccountSku
 Remove licenses from a user by friendly name (resolved via catalog), SKU part number, or SKU ID.
