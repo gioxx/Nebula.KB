@@ -1,13 +1,14 @@
 ---
 sidebar_position: 11
 title: "Security"
-description: Disable devices, block sign-in, edit content filter policies, and revoke sessions via Microsoft Graph.
+description: List and disable user devices, block sign-in, edit content filter policies, and revoke sessions via Microsoft Graph.
 hide_title: true
 id: security
 tags:
   - Disable-UserDevices
   - Disable-UserSignIn
   - Get-ContentFilterPolicy
+  - Get-UserDevices
   - Edit-ContentFilterPolicy
   - Revoke-UserSessions
   - Nebula.Core
@@ -27,7 +28,7 @@ Disable-UserDevices -UserPrincipalName <String[]> [-PassThru]
 
 | Parameter | Type | Description | Required | Default |
 | --- | --- | --- | :---: | --- |
-| `UserPrincipalName` (`Identity`) | String[] | Target users (UPN/object ID/short identifier). Pipeline accepted. | Yes | - |
+| `UserPrincipalName` (`Identity`, `User`, `UPN`) | String[] | Target users (UPN/object ID/short identifier). Pipeline accepted. | Yes | - |
 | `PassThru` | Switch | Emit the impacted devices. | No | `False` |
 
 **Example**
@@ -45,7 +46,7 @@ Disable-UserSignIn -UserPrincipalName <String[]> [-PassThru]
 
 | Parameter | Type | Description | Required | Default |
 | --- | --- | --- | :---: | --- |
-| `UserPrincipalName` (`Identity`) | String[] | Target users (UPN/object ID/short identifier). Pipeline accepted. | Yes | - |
+| `UserPrincipalName` (`Identity`, `User`, `UPN`) | String[] | Target users (UPN/object ID/short identifier). Pipeline accepted. | Yes | - |
 | `PassThru` | Switch | Emit the impacted users. | No | `False` |
 
 **Example**
@@ -125,6 +126,36 @@ Notes:
 - Use `-Detailed` to include the resolved allow/block entries.
 - Use this before `Edit-ContentFilterPolicy` if you want to see the current configuration.
 
+## Get-UserDevices
+List the devices of one or more users, combining Entra ID (devices the user registered or owns) and Intune (devices managed for the user). The Entra and Intune records of the same device become one row.
+
+**Syntax**
+```powershell
+Get-UserDevices [-UserPrincipalName] <String[]> [-GridView]
+```
+
+| Parameter | Type | Description | Required | Default |
+| --- | --- | --- | :---: | --- |
+| `UserPrincipalName` (`Identity`, `User`, `UPN`) | String[] | Target users (UPN/mail/object ID/short identifier). Pipeline accepted. | Yes | - |
+| `GridView` | Switch | Show the rows in a grid instead of returning them. | No | `False` |
+
+**Output**
+
+The console shows `User`, `Device Name`, `Model`, `OS`, `Serial Number` and `Source`. Every row also has `Manufacturer`, `OSVersion`, `JoinType` (`Entra joined`, `Hybrid joined`, `Registered`), `Relationship` (`Registered`, `Owner`), `Ownership` (`company`, `personal` or `unknown`), `Enabled`, `Compliance`, `LastSignIn`, `LastSync`, `EntraObjectId`, `EntraDeviceId` and `IntuneDeviceId`: use `Select-Object *`, `Export-Csv` or `-GridView` to see them.
+
+`Source` is `Entra+Intune` when Entra and Intune both know the device, including managed devices the user doesn't register or own in Entra (e.g. hybrid-joined PCs, shown with an empty `Relationship`); `Entra` for devices Intune doesn't manage (e.g. a personal phone that is only registered); and `Intune` for managed devices that have no Entra device record.
+
+If the Entra or Intune devices of a user can't be read, that user is reported as an error and returns no rows.
+
+Requires Microsoft Graph `User.Read.All`, `Directory.Read.All` and `DeviceManagementManagedDevices.Read.All`.
+
+**Examples**
+```powershell
+Get-UserDevices user1@contoso.com
+'user1@contoso.com', 'user2@contoso.com' | Get-UserDevices | Export-Csv .\devices.csv -NoTypeInformation
+Get-UserDevices user1@contoso.com | Select-Object *
+```
+
 ## Revoke-UserSessions
 Force sign-out by revoking refresh tokens for users.
 
@@ -136,7 +167,7 @@ Revoke-UserSessions [-All] [-UserPrincipalName <String[]>] [-Exclude <String[]>]
 | Parameter | Type | Description | Required | Default |
 | --- | --- | --- | :---: | --- |
 | `All` | Switch | Target every user in the tenant. | No | `False` |
-| `UserPrincipalName` (`Identity`) | String[] | Users to target (UPN/object ID/short identifier). Pipeline accepted. | No | - |
+| `UserPrincipalName` (`Identity`, `User`, `UPN`) | String[] | Users to target (UPN/object ID/short identifier). Pipeline accepted. | No | - |
 | `Exclude` | String[] | Users to skip (UPN/object ID/short identifier; applies to both -All and explicit lists). | No | - |
 | `PassThru` | Switch | Emit the impacted users. | No | `False` |
 
@@ -152,4 +183,4 @@ Revoke-UserSessions -All -Exclude user@contoso.com -Confirm:$false
 Notes:
 - Supports `-WhatIf`/`-Confirm` for safety.
 - Skips missing users and reports exclusions.
-- User identities are resolved through `Find-UserRecipient`, so short identifiers are supported.
+- User identities are looked up in Microsoft Graph first (UPN, mail, or object ID, in batches of 20); only identities Graph can't find fall back to `Find-UserRecipient`, so short identifiers are still supported.

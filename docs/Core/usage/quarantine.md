@@ -6,6 +6,7 @@ hide_title: true
 id: quarantine
 tags:
   - Export-QuarantineEml
+  - Get-QuarantineForMailbox
   - Get-QuarantineFrom
   - Get-QuarantineFromDomain
   - Get-QuarantineToRelease
@@ -50,6 +51,33 @@ Export-QuarantineEml -Identity 'f3a3dda8-3f78-46c9-332b-08de38f41262\a94e1c02-1d
   -DestinationFolder C:\Temp\Quarantine
 ```
 
+## Get-QuarantineForMailbox
+List quarantined messages for a mailbox, checked across all of its SMTP aliases (primary and secondary), since `Get-QuarantineMessage -RecipientAddress` only matches the exact address a message was sent to. Defaults to a 15-day lookback (`Get-QuarantineMessage` itself defaults to 7).
+
+**Syntax**
+
+```powershell
+Get-QuarantineForMailbox -Identity <String[]> [-IncludeReleased] [-Days <Int>] [-StartReceivedDate <DateTime>] [-EndReceivedDate <DateTime>]
+```
+
+| Parameter | Type | Description | Required | Default |
+| --- | --- | --- | :---: | --- |
+| `Identity` | String[] | Mailbox identity/identities (UPN, alias, email address, etc). Pipeline accepted. | Yes | - |
+| `IncludeReleased` | Switch | Include messages already released. | No | `False` |
+| `Days` | Int | Days back to search (1-30). Ignored if `-StartReceivedDate` is specified. | No | `15` |
+| `StartReceivedDate` | DateTime | Explicit start of the search window. Overrides `-Days`. | No | - |
+| `EndReceivedDate` | DateTime | Explicit end of the search window. | No | Now |
+
+**Example**
+```powershell
+Get-QuarantineForMailbox -Identity 'alice@contoso.com'
+```
+
+```powershell
+# Look back 30 days instead of the 15-day default
+Get-QuarantineForMailbox -Identity 'alice@contoso.com' -Days 30
+```
+
 ## Get-QuarantineFrom
 List quarantined messages by sender.
 
@@ -61,7 +89,7 @@ Get-QuarantineFrom -SenderAddress <String[]> [-IncludeReleased]
 
 | Parameter | Type | Description | Required | Default |
 | --- | --- | --- | :---: | --- |
-| `SenderAddress` | String[] | Sender address(es). Pipeline accepted. | Yes | - |
+| `SenderAddress` (`Sender`) | String[] | Sender address(es). Pipeline accepted. | Yes | - |
 | `IncludeReleased` | Switch | Include messages already released. | No | `False` |
 
 **Example**
@@ -124,13 +152,17 @@ Unlock-QuarantineFrom -SenderAddress <String[]> [-ReportFalsePositive] [-Confirm
 
 | Parameter | Type | Description | Required | Default |
 | --- | --- | --- | :---: | --- |
-| `SenderAddress` | String[] | Sender address(es). Pipeline accepted. | Yes | - |
+| `SenderAddress` (`Sender`) | String[] | Sender address(es). Pipeline accepted. | Yes | - |
 | `ReportFalsePositive` | Switch | Also report as false positive. | No | `False` |
 
 **Example**
 ```powershell
 Unlock-QuarantineFrom -SenderAddress 'user@contoso.com' -ReportFalsePositive -Confirm:$false
 ```
+
+:::tip
+`Unlock-QuarantineFrom` is also available as `rqf` (alias).
+:::
 
 ## Unlock-QuarantineMessageId
 Bulk-release messages for specific message IDs or identities (to all recipients, with optional false-positive report). Confirmation is controlled by `SupportsShouldProcess`; use `-Confirm:$false` when you want to suppress prompts.
@@ -143,7 +175,7 @@ Unlock-QuarantineMessageId [-MessageId <String[]>] [-Identity <String[]>] [-Repo
 
 | Parameter | Type | Description | Required | Default |
 | --- | --- | --- | :---: | --- |
-| `MessageId` | String[] | MessageId values (with/without angle brackets). Pipeline accepted. | One of MessageId/Identity | - |
+| `MessageId` (`Id`) | String[] | MessageId values (with/without angle brackets). Pipeline accepted. | One of MessageId/Identity | - |
 | `Identity` | String[] | Quarantine Identity values (e.g., GUID\GUID). Pipeline accepted. | One of MessageId/Identity | - |
 | `ReportFalsePositive` | Switch | Also report as false positive. | No | `False` |
 
