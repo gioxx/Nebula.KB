@@ -120,7 +120,7 @@ When you click Run, the GUI:
 6. runs `IntuneWinAppUtil.exe -c "<source>" -s "<setup>" -o "<staging folder>" -q` without a console window and captures its output. While it runs, a progress overlay shows the current step (compressing the source, encrypting, building the package) and an estimated percentage; the window cannot be closed until the run ends;
 7. copies the package (by default `<setup file name>.intunewin`) to the output folder under a temporary name (`~iwa-<guid>.partial`) and renames it to the final filename, or to the source folder name, only when the copy is complete. If a file with that name already exists, `_1`, `_2` and so on are appended instead of overwriting it;
 8. removes the staging folder and the working folder `IntuneWinAppUtil.exe` leaves in `%TEMP%`;
-9. reports the final file name and offers to open the output folder with the package selected.
+9. shows a panel with the package name and folder: **Open folder** (or `Enter`) opens the output folder with the package selected, **Close** (or `Esc`) returns to the form.
 
 If the tool fails, the error message shows its exit code, the matching Windows error text and the last lines of its output. If the package cannot be copied to the output folder, it is kept in the staging folder and the message shows where.
 
