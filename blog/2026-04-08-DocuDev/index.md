@@ -6,6 +6,10 @@ authors: [gioxx]
 tags: [nebula, kb, documentation, dev]
 ---
 
+:::info Update, October 22, 2026
+Nebula.KB-dev has been retired. The documentation for the development versions now lives on kb.gioxx.org as the **Next** version of each module. [Read the announcement](/news/versioned-documentation).
+:::
+
 If you ever check both [Nebula.KB-dev](https://gioxx.github.io/Nebula.KB-dev) and [kb.gioxx.org](https://kb.gioxx.org), there is one simple rule to keep in mind: the `-dev` documentation is usually the most up to date.
 
 {/* truncate */}
