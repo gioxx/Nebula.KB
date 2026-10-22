@@ -20,6 +20,7 @@ Besides filling in the `-c`, `-s` and `-o` switches for you, the GUI downloads a
 ![IntuneWinAppUtil GUI main window](https://raw.githubusercontent.com/gioxx/IntuneWinAppUtilGUI/main/Assets/screenshot.png)
 
 :::tip What's new in 1.1.x
+- **1.1.3**: fixes packaging failing with exit code `-2147024891` (access denied): `IntuneWinAppUtil.exe` now runs without its own console window, which is what triggered the error. Packages are built in a temporary folder and copied to the output folder only when complete, so Dropbox and OneDrive never see a half-written file. A progress overlay shows the packaging step and an estimated percentage. Errors show the last lines of the tool output, and `-Diag` writes a detailed log of every run. See [Troubleshooting](#troubleshooting).
 - **1.1.2**: if one of the module's scripts fails to load, the import now stops with an error naming the file, instead of carrying on with functions missing.
 - **1.1.1**: the module works again in Windows PowerShell 5.1, the PowerShell built into Windows (versions 1.0.7 to 1.1.0 failed to import there). If you use 5.1, update with `Update-Module IntuneWinAppUtilGUI`.
 - **1.1.0**: the **Setup File** field accepts any file type, not only EXE and MSI: PowerShell (`.ps1`), `.bat` and `.cmd` scripts, MSIX packages and so on. See [Packaging scripts and other file types](#packaging-scripts-and-other-file-types). Typing in the **Source Folder** field no longer lags: the folder scan used for auto-detection now waits until you stop typing and runs in the background.
@@ -37,6 +38,7 @@ Besides filling in the `-c`, `-s` and `-o` switches for you, the GUI downloads a
 - PSAppDeployToolkit detection: proposes `Invoke-AppDeployToolkit.exe` as setup file and builds the package name from `AppName`/`AppVersion`, falling back to the MSI `ProductName`/`ProductVersion`.
 - Optional final filename, with invalid characters removed and a collision-safe rename (`_1`, `_2`, ...) so existing packages are never overwritten.
 - Live path-length indicators for the Source and Output folders, plus a check of the longest file path in the source before packaging.
+- Packages built in a temporary folder and copied to the output folder only when complete, so folders synced by Dropbox or OneDrive work reliably; temporary files are cleaned up after each run.
 - Output folder created automatically if it does not exist; when packaging completes, the GUI offers to open the folder with the new package selected.
 - Settings saved in `%APPDATA%\IntuneWinAppUtilGUI\config.json`.
 - Non-blocking update check against the PowerShell Gallery, shown as a banner.
@@ -80,7 +82,7 @@ WPF needs a single-threaded apartment (STA). If the current session is not STA, 
 | --- | --- |
 | `-ShowVersion` | Shows the installed module version and the latest version on the PowerShell Gallery in the header banner. Works even when the update check is disabled in the configuration. |
 | `-ForceUpdateBanner` | Shows a test "update available" banner, useful to check how the notification looks. |
-| `-Diag` | Writes diagnostics (handles, GDI handles, working set) when the GUI starts and after it closes. |
+| `-Diag` | Writes diagnostics (handles, GDI handles, working set) when the GUI starts and after it closes, plus a detailed log of every packaging run in `%APPDATA%\IntuneWinAppUtilGUI\logs`: inputs, tool version, staging folder, exact command, exit code and tool output. When a run fails, the log also lists the files the tool left behind and the processes holding them open. |
 | `-Verbose`, `-Debug` | Standard PowerShell switches; preserved when the GUI relaunches itself in STA mode. |
 
 The **Help** link at the bottom of the window shows the same switches and the keyboard shortcuts.
@@ -114,9 +116,13 @@ When you click Run, the GUI:
 2. creates the output folder if needed;
 3. checks path lengths against the 260-character Windows limit: the source folder, the output folder and the longest file path inside the source. If any of them is too long, it lists them, shows the longest path, and asks whether to continue anyway;
 4. resolves `IntuneWinAppUtil.exe` (field value, then cached copy, then a fresh download);
-5. runs `IntuneWinAppUtil.exe -c "<source>" -s "<setup>" -o "<output>"` in its own console window and waits for it to finish;
-6. renames the generated file (by default `<setup file name>.intunewin`) to the final filename, or to the source folder name. If a file with that name already exists, `_1`, `_2` and so on are appended instead of overwriting it;
-7. reports the final file name and offers to open the output folder with the package selected.
+5. creates a new, empty staging folder under `%TEMP%`. If the temp drive has less free space than about three times the size of the source, the staging folder goes to the root of the output drive instead, outside any Dropbox or OneDrive folder;
+6. runs `IntuneWinAppUtil.exe -c "<source>" -s "<setup>" -o "<staging folder>" -q` without a console window and captures its output. While it runs, a progress overlay shows the current step (compressing the source, encrypting, building the package) and an estimated percentage; the window cannot be closed until the run ends;
+7. copies the package (by default `<setup file name>.intunewin`) to the output folder under a temporary name (`~iwa-<guid>.partial`) and renames it to the final filename, or to the source folder name, only when the copy is complete. If a file with that name already exists, `_1`, `_2` and so on are appended instead of overwriting it;
+8. removes the staging folder and the working folder `IntuneWinAppUtil.exe` leaves in `%TEMP%`;
+9. shows a panel with the package name and folder: **Open folder** (or `Enter`) opens the output folder with the package selected, **Close** (or `Esc`) returns to the form.
+
+If the tool fails, the error message shows its exit code, the matching Windows error text and the last lines of its output. If the package cannot be copied to the output folder, it is kept in the staging folder and the message shows where.
 
 ## Packaging scripts and other file types
 Since version 1.1.0 the Setup File can be any file. The browse dialog offers three filters: **Executable or MSI** (default), **Script files** (`*.ps1`, `*.bat`, `*.cmd`) and **All files**.
@@ -227,9 +233,10 @@ How it behaves:
 | --- | --- |
 | `Setup file not found.` | The setup file must exist as a full path or relative to the source folder. Clear the field and browse to it again. |
 | Path length warning before packaging | A file inside the source folder (shown as "Longest path") or one of the folders is longer than 260 characters. Move the source closer to the drive root or shorten folder names; `IntuneWinAppUtil.exe` can fail with long paths. |
-| `IntuneWinAppUtil exited with code N.` | Read the output in the console window opened by the tool. Common causes: files locked by other processes and paths that are too long. |
-| `Output file not found` | The tool finished but the expected `<setup file name>.intunewin` did not appear in the output folder within 10 seconds. Check the output folder and the tool's console output. |
-| `Renaming failed` | The package was created but could not be renamed, usually because antivirus or indexing still holds the file. The original `.intunewin` stays in the output folder; rename it by hand. |
+| `IntuneWinAppUtil exited with code -2147024891 (0x80070005)` (access denied) | Update to 1.1.3 or later. Earlier versions started the tool in its own console window, and on some machines it then failed while replacing its temporary package. The output folder (Dropbox, OneDrive or local) is not the cause. |
+| `IntuneWinAppUtil exited with code N` | The message includes the Windows error text and the last lines of the tool output. Common causes: files in the source folder locked by other programs and paths that are too long. For the full output, run `Show-IntuneWinAppUtilGUI -Diag` and open the log in `%APPDATA%\IntuneWinAppUtilGUI\logs`. |
+| `IntuneWinAppUtil finished, but the expected package was not created` | The tool exited without errors but `<setup file name>.intunewin` did not appear within 10 seconds. Repeat the run with `-Diag` and check the tool output in the log. |
+| `Moving the package failed` | The package was created but could not be copied to the output folder, usually because the folder is not writable or another program holds the file. The message shows where the package was kept: copy it by hand. |
 | `Download failed` or `IntuneWinAppUtil.exe not found and could not be initialized.` | GitHub is not reachable (proxy, firewall). Download the tool manually and set its path in **IntuneWinAppUtil Path**. |
 | No update banner | The update check may be disabled in `config.json` or the Gallery may be unreachable. Run `Show-IntuneWinAppUtilGUI -ShowVersion` to see the result. |
 

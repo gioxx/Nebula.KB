@@ -1,0 +1,201 @@
+---
+sidebar_position: 2
+title: "Connect to M365"
+description: Establish and tear down Exchange Online and Microsoft Graph sessions with one call.
+hide_title: true
+id: connect-nebula
+tags:
+  - Connect-Nebula
+  - Connect-EOL
+  - Get-NebulaConnections
+  - Update-NebulaConnections
+  - Disconnect-Nebula
+  - Leave-Nebula
+  - Nebula.Core
+---
+
+# Connect and disconnect from Microsoft 365
+
+For full details and examples, run `Get-Help <FunctionName> -Detailed` or `-Examples`.
+
+## Connect-EOL
+Connect to Exchange Online (EXO V3), auto-importing the module and auto-detecting the current user when `-UserPrincipalName` is not supplied.
+By default it tries the standard interactive sign-in flow with WAM. This matters because WAM became the default Exchange Online auth path starting with `ExchangeOnlineManagement` `3.7.0`. If the EXO module fails with a WAM/MSAL broker error, Nebula automatically retries with `-DisableWAM`.
+
+`Connect-ExchangeOnline`'s own cosmetic "Sign in by Web Account Manager (WAM) is enabled by default" notice is hidden on every call unless you pass `-Verbose` — useful when diagnosing WAM/broker issues, otherwise just noise repeated on every sign-in.
+
+**Syntax**
+
+```powershell
+Connect-EOL [-UserPrincipalName <String>] [-DelegatedOrganization <String>] [-DisableWAM] [-Device]
+            [-NoWamFallback] [-PassThru]
+```
+
+| Parameter | Type | Description | Required | Default |
+| --- | --- | --- | :---: | --- |
+| `UserPrincipalName` (`UPN`, `User`) | String | UPN/e-mail for the EXO auth prompt. | No | Current user (`Find-UserConnected`) |
+| `DelegatedOrganization` | String | Target customer tenant (delegated admin). | No | - |
+| `DisableWAM` | Switch | Disable Web Account Manager (WAM) for EXO sign-in. | No | `False` |
+| `Device` | Switch | Use device-code auth for EXO. | No | `False` |
+| `NoWamFallback` | Switch | Do not auto-retry with `-DisableWAM` if the WAM flow fails. | No | `False` |
+| `PassThru` | Switch | Return the `Connect-ExchangeOnline` session object. | No | `False` |
+
+**Example**
+```powershell
+Connect-EOL -UserPrincipalName 'admin@contoso.com'
+```
+
+```powershell
+# Useful after Windows lock/sleep or when EXO fails in RuntimeBroker / WAM
+Connect-EOL -DisableWAM
+```
+
+```powershell
+# Browserless fallback in PowerShell 7+
+Connect-EOL -DisableWAM -Device
+```
+
+:::note[Pinned pre-3.7.2 ExchangeOnlineManagement]
+`-DisableWAM` and `-Device` only exist on `Connect-ExchangeOnline` starting with `ExchangeOnlineManagement` 3.7.2 (the release that made WAM the default). If you've intentionally pinned an older version as a workaround for the Graph/EOL assembly clash, `Connect-EOL` detects this and silently ignores `-DisableWAM` (nothing to disable) or warns and falls back to the standard interactive flow for `-Device`, instead of failing with a parameter-binding error.
+:::
+
+## Connect-Nebula
+One-shot helper that connects Microsoft Graph first and then Exchange Online with WAM disabled. The order and EXO authentication mode are intentional: they let Graph load its dependencies before Exchange Online and avoid the known cross-module assembly and broker conflict. Use `-SkipGraph` when only an EXO session is required and you want the normal EXO WAM flow.
+
+**Syntax**
+
+```powershell
+Connect-Nebula [-UserPrincipalName <String>] [-GraphScopes <String[]>] [-GraphTenantId <String>]
+               [-GraphDeviceCode] [-GraphLoginHint <String>] [-AutoInstall] [-ForceReconnect] [-SkipGraph]
+```
+
+| Parameter | Type | Description | Required | Default |
+| --- | --- | --- | :---: | --- |
+| `UserPrincipalName` | String | UPN for EXO auth. | No | Auto-detected |
+| `GraphScopes` | String[] | Graph delegated scopes to request. | No | `User.Read.All` |
+| `GraphTenantId` | String | Tenant ID/domain for Graph. | No | - |
+| `GraphDeviceCode` | Switch | Use device code instead of browser for Graph. | No | `False` |
+| `GraphLoginHint` | String | UPN passed as `-LoginHint` to `Connect-MgGraph`, so the WAM broker can resolve the target account without repeated prompts. Without it and without `-UserPrincipalName`, an active Graph session keeps its own account; otherwise the Windows identity is used. Needs Microsoft.Graph.Authentication 2.39.0 or later; older versions sign in without the hint. | No | `UserPrincipalName` |
+| `AutoInstall` | Switch | Auto-install missing modules. | No | `False` |
+| `ForceReconnect` | Switch | Skip health checks and reconnect both services. | No | `False` |
+| `SkipGraph` | Switch | Connect only EXO, skip Graph entirely. | No | `False` |
+
+**Example**
+```powershell
+Connect-Nebula -GraphScopes 'User.Read.All','Directory.Read.All' -AutoInstall
+```
+
+:::tip[Repeated Graph auth prompts during bulk operations]
+If a healthy, already-connected Graph session keeps popping a WAM account-picker on individual delegated Graph operations (for example, running many license or group changes in a loop), this is related WAM broker friction from the known Exchange Online/Graph assembly clash, not a normal re-auth. `-GraphDeviceCode` is **not** a reliable workaround for it — in practice it can fail with `Authentication timed out after 120 seconds due to inactivity` instead of prompting a code. Close every PowerShell window (not just disconnect) and re-run plain `Connect-Nebula` in a fresh process instead. Since 1.3.0, Nebula.Core bulk functions send Microsoft Graph requests in batches of 20, so when this happens you get at most one prompt per batch instead of one per item. See [Exchange Online and Microsoft Graph PowerShell assembly clash](https://kb.gioxx.org/news/exchange-online-graph-assembly-clash) for background and unattended/bulk-script alternatives (app-only certificate auth).
+:::
+
+:::note[Automatic update function]
+By default, `Connect-Nebula` checks PowerShell Gallery for updates of `Nebula.*` modules plus the meta modules `ExchangeOnlineManagement` and `Microsoft.Graph`, warning only when updates are available.
+Disable it by setting `CheckUpdatesOnConnect = $false` in your `settings.psd1` and then run `Sync-NebulaConfig`.
+You can also throttle checks by setting `CheckUpdatesIntervalHours` (default is `72`).
+Run `Get-NebulaModuleUpdates` anytime to trigger a manual check.
+:::
+
+## Disconnect-Nebula
+Disconnect EXO and/or Graph.
+
+**Syntax**
+
+```powershell
+Disconnect-Nebula [-ExchangeOnly] [-GraphOnly]
+```
+
+| Parameter | Type | Description | Required | Default |
+| --- | --- | --- | :---: | --- |
+| `ExchangeOnly` | Switch | Disconnect only EXO. | No | `False` |
+| `GraphOnly` | Switch | Disconnect only Graph. | No | `False` |
+
+**Example**
+```powershell
+Disconnect-Nebula -GraphOnly   # keep EXO session alive
+```
+
+:::tip
+`Leave-Nebula` is an alias for `Disconnect-Nebula`.
+:::
+
+## Get-NebulaConnections
+Show current Nebula connection status for Exchange Online and Microsoft Graph.
+By default it runs lightweight health probes (unless `-SkipHealthCheck`) which can also refresh provider-side sessions/tokens.
+
+**Syntax**
+
+```powershell
+Get-NebulaConnections [-SkipHealthCheck]
+```
+
+| Parameter | Type | Description | Required | Default |
+| --- | --- | --- | :---: | --- |
+| `SkipHealthCheck` | Switch | Skip the health probes and only report whether session contexts are present. | No | `False` |
+
+## Update-NebulaConnections
+Explicit refresh entry point for connection status checks. It runs the same health probes as `Get-NebulaConnections` and, unless `-SkipHealthCheck` is used, reconnects any service found disconnected or unhealthy (stale/broken session), reusing the account each session already uses (falling back to the detected Windows identity when there is no session) and, for Microsoft Graph, the scopes already granted to the current session. Use it when your intent is to "refresh/revive" current sessions.
+
+**Syntax**
+
+```powershell
+Update-NebulaConnections [-SkipHealthCheck]
+```
+
+| Parameter | Type | Description | Required | Default |
+| --- | --- | --- | :---: | --- |
+| `SkipHealthCheck` | Switch | Skip probe and repair entirely and only report whether session contexts are present. | No | `False` |
+
+**Returned properties**
+
+| Property | Description |
+| --- | --- |
+| `ExchangeOnlineConnected` | `True` when an EXO session is active. |
+| `ExchangeOnlineHealthy` | `True` when a lightweight EXO probe succeeds (session really usable). |
+| `ExchangeOnlineError` | Last EXO validation error (if any). |
+| `ExchangeOnlineUser` | Connected EXO user (when available). |
+| `ExchangeOnlineTenant` | Connected EXO organization/tenant (when available). |
+| `MicrosoftGraphConnected` | `True` when a Graph context is active. |
+| `MicrosoftGraphHealthy` | `True` when a lightweight Graph probe succeeds (token really usable). |
+| `MicrosoftGraphError` | Last Graph validation error (if any). |
+| `MicrosoftGraphAccount` | Connected Graph account (when available). |
+| `MicrosoftGraphTenantId` | Connected Graph tenant ID (when available). |
+| `MicrosoftGraphScopes` | Scopes present in the active Graph context. |
+
+**Example**
+```powershell
+Connect-Nebula
+Update-NebulaConnections
+Leave-Nebula
+```
+
+## Questions and answers
+
+### Which services does `Connect-Nebula` connect?
+
+Exchange Online always; Microsoft Graph unless you use `-SkipGraph`. Default Graph scopes include `User.Read.All` (extend with `-GraphScopes`).
+
+### Can I operate across multiple tenants?
+
+Yes. Use `Connect-EOL -DelegatedOrganization` for delegated tenants and `Connect-Nebula -GraphTenantId` for Graph. Run `Disconnect-Nebula` before switching contexts.
+
+### How can I check active sessions before disconnecting?
+
+Run `Update-NebulaConnections` (or `Get-NebulaConnections`) and verify `ExchangeOnlineConnected` / `MicrosoftGraphConnected` are `True` or `False`.
+For real usability checks after long idle periods, prefer `ExchangeOnlineHealthy` / `MicrosoftGraphHealthy`.
+
+### What happens if Exchange Online auth breaks after a Windows lock or idle period?
+
+When using `Connect-Nebula`, Microsoft Graph is initialized first and the subsequent EXO login uses `-DisableWAM`, so the Graph/EXO authentication modules do not clash in the same PowerShell process. Direct `Connect-EOL` calls still try the normal WAM-based login first (WAM is the default starting with `ExchangeOnlineManagement` `3.7.0`) and retry with `-DisableWAM` when the broker reports a recognized WAM/MSAL error.
+
+If you want to bypass WAM immediately, use:
+
+```powershell
+Connect-EOL -DisableWAM
+```
+
+or, in PowerShell 7+:
+
+```powershell
+Connect-EOL -DisableWAM -Device
+```

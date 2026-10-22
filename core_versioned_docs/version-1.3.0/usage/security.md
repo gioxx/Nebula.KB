@@ -84,7 +84,7 @@ Edit-ContentFilterPolicy -Identity Contoso -AllowedDomain contoso.com -Remove
 
 ```powershell
 @(
-    [pscustomobject]@{ Identity = 'Contoso'; AllowedSender = 'survey-noreply@lr.surveymonkeyuser.com' },
+    [pscustomobject]@{ Identity = 'Contoso'; AllowedSender = 'surveys-noreply@fabrikam.com' },
     [pscustomobject]@{ Identity = 'Contoso'; BlockedDomain = 'example.com' }
 ) | Edit-ContentFilterPolicy -Remove
 ```
