@@ -1,0 +1,99 @@
+---
+sidebar_position: 1
+title: 'Configuration'
+description: Inspect or reload Nebula.Core configuration without re-importing the module.
+hide_title: true
+id: configuration
+tags:
+  - Get-NebulaConfig
+  - Sync-NebulaConfig
+  - Nebula.Core
+---
+
+# Nebula.Core Configuration
+
+Inspect or reload the active Nebula.Core configuration, including machine and user settings and the license catalog sources.
+
+## Get-NebulaConfig
+Shows effective configuration, including machine/user config files and license catalog sources.
+
+**Syntax**
+
+```powershell
+Get-NebulaConfig
+```
+
+- No parameters.
+- Outputs a summary plus tables for the active config and license sources.
+- For full details and examples, run `Get-Help Get-NebulaConfig -Detailed`.
+
+**Output example**
+```powershell
+PS C:\Users\john.doe\Downloads> Get-NebulaConfig
+
+ModuleRoot          : C:\Users\john.doe\Documents\GitHub\Nebula.Core
+UserConfigPath      : C:\Users\john.doe\.NebulaCore\settings.psd1
+UserConfigExists    : True
+UserConfigLoaded    : True
+MachineConfigPath   : C:\ProgramData\Nebula.Core\settings.psd1
+MachineConfigExists : False
+MachineConfigLoaded : False
+
+Key                   Value
+---                   -----
+CSV_DefaultLimiter    ,
+CSV_Encoding          ISO-8859-15
+CheckUpdatesOnConnect True
+CheckUpdatesIntervalHours 24
+DateTimeString_CSV    yyyyMMdd
+DateTimeString_Full   dd/MM/yyyy HH:mm:ss
+DateTimeTimeZone      Eastern Standard Time
+LicenseCacheDays      7
+LicenseCacheDirectory C:\Users\john.doe\.NebulaCore\Cache
+MaxFieldLength        35
+UsageLocation         US
+UserConfigRoot        C:\Users\john.doe\.NebulaCore
+
+Source  CacheFile                 FileUrl
+------  ---------                 -------
+Custom  M365_licenses_custom.json https://raw.githubusercontent.com/gioxx/Nebula.Core/main/JSON/M365_licenses_custom.json
+Primary M365_licenses.json        https://raw.githubusercontent.com/gioxx/Nebula.Core/main/JSON/M365_licenses.json
+```
+
+## Sync-NebulaConfig
+Reload Nebula.Core configuration in the current session (machine/user PSD1 and environment overrides).
+
+**Syntax**
+
+```powershell
+Sync-NebulaConfig
+```
+
+- No parameters.
+- For full details and examples, run `Get-Help Sync-NebulaConfig -Detailed`.
+
+## Questions and answers
+
+### Where is configuration loaded from?
+
+`Get-NebulaConfig` shows loaded PSD1 files: `C:\ProgramData\Nebula.Core\settings.psd1` (machine) and `%USERPROFILE%\.NebulaCore\settings.psd1` (user), plus any environment overrides. Use `Sync-NebulaConfig` to reload without re-importing the module.
+
+Below is an example of a `settings.psd1` file that you can save in your user folder (i.e., `%USERPROFILE%\.NebulaCore\settings.psd1`) and that will overwrite the default settings of Nebula.Core:
+
+```powershell
+@{
+    CSV_DefaultLimiter  = ","
+    CSV_Encoding        = 'ISO-8859-15'
+    CheckUpdatesOnConnect = $false
+    CheckUpdatesIntervalHours = 24
+    DateTimeString_Full = 'dd/MM/yyyy HH:mm:ss'
+    DateTimeTimeZone    = 'Eastern Standard Time'
+    UsageLocation       = 'IT'
+}
+```
+
+`DateTimeTimeZone` controls the default time zone used for user-facing timestamps. Nebula.Core ships with `Eastern Standard Time` by default to stay aligned with the module's `UsageLocation = US` baseline. You can override it with a Windows time zone ID such as `W. Europe Standard Time`, or a cross-platform ID like `Europe/Rome` if your environment supports it.
+
+### Where is the license catalog stored?
+
+In the directory shown in `LicenseCacheDirectory` (default `%USERPROFILE%\.NebulaCore\Cache`); cached files are refreshed automatically after `LicenseCacheDays` (default `7`). `Update-LicenseCatalog` refreshes it; `-ForceLicenseCatalogRefresh` redownloads during reports.

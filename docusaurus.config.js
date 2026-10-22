@@ -7,6 +7,8 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import path from 'node:path';
 
+const nebulaModules = ['Automations', 'Core', 'Log', 'Tools'];
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Nebula: A family of PowerShell modules that go beyond your workstation',
@@ -65,6 +67,19 @@ const config = {
         sidebarPath: path.resolve('./sidebarsProjects.js'),
       },
     ],
+    // One versioned instance per module: last version = PowerShell Gallery, current = next (in development)
+    ...nebulaModules.map((name) => [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: name.toLowerCase(),
+        path: path.resolve(`./modules/${name}`),
+        routeBasePath: `Nebula/${name}`,
+        sidebarPath: path.resolve('./sidebarsModules.js'),
+        versions: {
+          current: { label: 'Next' },
+        },
+      },
+    ]),
   ],
 
   themeConfig:
@@ -161,6 +176,12 @@ const config = {
             label: 'News',
             position: 'left',
           },
+          // Shown only inside the matching module (see src/theme/NavbarItem/DocsVersionDropdownNavbarItem.js)
+          ...nebulaModules.map((name) => ({
+            type: 'docsVersionDropdown',
+            docsPluginId: name.toLowerCase(),
+            position: 'right',
+          })),
           {
             type: 'search',
             position: 'right',
