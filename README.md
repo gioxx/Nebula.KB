@@ -5,7 +5,7 @@ Official documentation for Nebula, available at **[kb.gioxx.org](https://kb.giox
 
 ## What's inside
 - [Docusaurus](https://docusaurus.io/) with the entire documentation of the Nebula modules and scripts.
-- Managed by GitHub and GitHub Actions, the 'compiled' website is located in the `gh-pages` branch.
+- Built and deployed to GitHub Pages by GitHub Actions (`.github/workflows/deploy.yml`) on every push to `main`.
 - Each module (`modules/<Module>`) has two documentation versions: the stable one (PowerShell Gallery) and `Next` (in development). After a Gallery release, promote `Next` with `.\Publish-ModuleDocs.ps1 -Module Core -Version 1.3.1`.
 
 ## Extra
