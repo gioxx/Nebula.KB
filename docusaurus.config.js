@@ -268,6 +268,7 @@ const config = {
         ],
         // copyright: `Copyright © ${new Date().getFullYear()} Gioxx. Built with Docusaurus.`,
         copyright: `<div style="color:var(--ifm-color-gray-300); padding-bottom: 9px; text-align: left;">All trademarks mentioned belong to their respective owners; third- party trademarks, product names, trade names, corporate names and companies mentioned may be trademarks of their respective owners or registered trademarks of other companies and have been used for explanatory purposes only and for the benefit of the owner, without any intention of infringing on existing copyright laws.</div>
+        <div style="color:var(--ifm-color-gray-300); padding-bottom: 9px; text-align: left;">Documentation licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>, code under the <a href="https://github.com/gioxx/Nebula.KB/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT license</a>. The Nebula name and logos are not covered by either license.</div>
         
         ${new Date().getFullYear()} — Lovingly developed by the usually-on-vacation brain cell of <a href="https://gfsolone.com/#seguimi" target="_blank" rel="noopener noreferrer">Gioxx</a> ❤️ — Flawed by design, just like my code 🚮`
       },

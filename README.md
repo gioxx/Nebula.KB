@@ -68,6 +68,7 @@ Search is provided by Algolia DocSearch.
 
 - **Documentation** (the Markdown content of `docs/`, `modules/`, `*_versioned_docs/`, `Projects/` and `blog/`): [Creative Commons Attribution 4.0 International](LICENSE-docs) (CC BY 4.0). You can reuse and adapt it, also commercially, as long as you credit the source with a link to [kb.gioxx.org](https://kb.gioxx.org).
 - **Code** (site source, scripts, and the code samples within the documentation): [MIT](LICENSE).
+- **Nebula name and logos** (`static/img/Nebula*`): not covered by either license, all rights reserved. Third-party icons and images keep their own licenses.
 
 ## Feedback
 
