@@ -106,7 +106,7 @@ Export-MboxPermission -RecipientType Shared -CsvFolder 'C:\Temp' -CsvPath 'C:\Te
 
 ## Export-MboxAlias
 
-:::warning Deprecated function
+:::warning[Deprecated function]
 `Export-MboxAlias` is deprecated and no longer available as a function. Use [Get-MboxAlias](#get-mboxalias) instead.
 :::
 

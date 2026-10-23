@@ -19,7 +19,7 @@ Besides filling in the `-c`, `-s` and `-o` switches for you, the GUI downloads a
 
 ![IntuneWinAppUtil GUI main window](https://raw.githubusercontent.com/gioxx/IntuneWinAppUtilGUI/main/Assets/screenshot.png)
 
-:::tip What's new in 1.1.x
+:::tip[What's new in 1.1.x]
 - **1.1.3**: fixes packaging failing with exit code `-2147024891` (access denied): `IntuneWinAppUtil.exe` now runs without its own console window, which is what triggered the error. Packages are built in a temporary folder and copied to the output folder only when complete, so Dropbox and OneDrive never see a half-written file. A progress overlay shows the packaging step and an estimated percentage. Errors show the last lines of the tool output, and `-Diag` writes a detailed log of every run. See [Troubleshooting](#troubleshooting).
 - **1.1.2**: if one of the module's scripts fails to load, the import now stops with an error naming the file, instead of carrying on with functions missing.
 - **1.1.1**: the module works again in Windows PowerShell 5.1, the PowerShell built into Windows (versions 1.0.7 to 1.1.0 failed to import there). If you use 5.1, update with `Update-Module IntuneWinAppUtilGUI`.

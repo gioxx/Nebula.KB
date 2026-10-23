@@ -54,7 +54,7 @@ Get-MboxMrmCleanup -AllTenantObjects
 Get-MboxMrmCleanup -Identity 'OneShot_PreCutoff_20250101'
 ```
 
-:::note What the inventory shows
+:::note[What the inventory shows]
 Each row represents a retention policy and includes the linked tag details inline, plus the number of mailboxes currently using that policy.
 :::
 
@@ -93,7 +93,7 @@ Remove-MboxMrmCleanup -PolicyName 'OneShot_PreCutoff_20250101' -RestorePolicyNam
 'user@contoso.com' | Remove-MboxMrmCleanup -Identity 'OneShot_PreCutoff_20250101' -ClearRetentionPolicy
 ```
 
-:::warning Removal safety
+:::warning[Removal safety]
 Before removing a tag or policy, Nebula.Core tries to restore the impacted mailbox assignments first. If a policy is still linked elsewhere, the cmdlet warns you instead of deleting it blindly.
 :::
 
