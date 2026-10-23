@@ -95,7 +95,7 @@ const config = {
         indexName: "NebulaCrawler",
         contextualSearch: true,
         searchPagePath: 'search',
-        insights: false,
+        insights: true,
       },
       docs: {
         sidebar: {
