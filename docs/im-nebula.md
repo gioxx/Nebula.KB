@@ -30,6 +30,8 @@ The purpose of this documentation is to gather information about the features an
 
 **Nebula.Core** and, in general, every Nebula module is an open source project based on the MIT license ([`LICENSE`](https://github.com/gioxx/Nebula.Core/blob/main/LICENSE)). The main project, as well as the documentation and all related tools, are available on GitHub: [Nebula's repositories](https://github.com/gioxx?tab=repositories&q=Nebula).
 
+This documentation is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): you can reuse and adapt it, also commercially, as long as you credit [kb.gioxx.org](https://kb.gioxx.org). The code of this site and the code samples in the documentation are released under the [MIT license](https://github.com/gioxx/Nebula.KB/blob/main/LICENSE). The Nebula name and logos are not covered by either license: please do not reuse them.
+
 All Nebula modules are open to code contributions, including feature requests, bug reports, and pull requests.
 
 ## Support

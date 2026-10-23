@@ -104,3 +104,7 @@ In any case, if you want, you can always perform a complete cleanup of the insta
 Uninstall-Module -Name Nebula.Core -AllVersions -Force
 Install-Module -Name Nebula.Core -Scope CurrentUser -Force
 ```
+
+## License
+
+Nebula.Core is released under the [MIT license](https://github.com/gioxx/Nebula.Core/blob/main/LICENSE). This documentation is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): you can reuse it, as long as you credit [kb.gioxx.org](https://kb.gioxx.org). The Nebula name and logos are not covered by either license.
