@@ -41,6 +41,8 @@ const config = {
         blog: {
           routeBasePath: 'news',
           showReadingTime: true,
+          blogSidebarCount: 'ALL',
+          blogSidebarTitle: 'All posts',
           feedOptions: {
             type: ['rss', 'atom'],
             xslt: true,
