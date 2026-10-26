@@ -1,0 +1,41 @@
+.yearGroup > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.yearGroup > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Same caret as the collapsible categories of the docs sidebar (Infima
+   variables), on the right of the year: points right when collapsed */
+.yearGroup > summary > h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.yearGroup > summary > h3::after {
+  content: '';
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--ifm-menu-link-sublist-icon) 50% / 2rem 2rem;
+  filter: var(--ifm-menu-link-sublist-icon-filter);
+  transform: rotate(90deg);
+  transition: transform var(--ifm-transition-fast) linear;
+}
+
+.yearGroup[open] > summary > h3::after {
+  transform: rotate(180deg);
+}
+
+.yearGroup > summary:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.yearGroup a:hover {
+  color: var(--ifm-color-primary);
+}
