@@ -183,13 +183,16 @@ const config = {
             position: 'right',
           })),
           {
-            type: 'search',
+            href: 'pathname:///news/rss.xml',
             position: 'right',
+            className: 'header-rss-link',
+            'aria-label': 'RSS feed',
           },
           {
             href: 'https://github.com/gioxx?tab=repositories&q=Nebula',
-            className: 'header-github-link',
             position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repositories',
           },
         ],
       },
