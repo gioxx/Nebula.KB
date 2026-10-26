@@ -1,3 +1,9 @@
+/* Room for the sidebar's vertical scrollbar, which Firefox draws over the
+   content: keeps post titles and the caret clear of it */
+.yearGroup {
+  padding-right: 0.75rem;
+}
+
 .yearGroup > summary {
   cursor: pointer;
   list-style: none;
@@ -13,8 +19,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* Keep the caret clear of the sidebar's vertical scrollbar */
-  padding-right: 0.5rem;
 }
 
 .yearGroup > summary > h3::after {
