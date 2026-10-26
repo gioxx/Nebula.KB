@@ -415,3 +415,33 @@ html:not([data-theme='dark']) .nebula-card {
   font-size: small;
   padding-top: 30px;
 }
+
+/* Navbar between the mobile breakpoint (996px) and wide screens: Docusaurus
+   shows the hamburger menu only below 997px, so in this range the items are
+   compacted instead of overlapping. Same block in Nebula.KB and MC-KB. */
+.navbar__link {
+  white-space: nowrap;
+}
+
+@media (min-width: 997px) and (max-width: 1399px) {
+  .navbar {
+    --ifm-navbar-item-padding-horizontal: 0.5rem;
+  }
+
+  .navbar-separator {
+    margin: 0 0.4rem;
+  }
+
+  /* Search shows only its icon; it still opens with Ctrl+K */
+  .navbar .DocSearch-Button-Placeholder,
+  .navbar .DocSearch-Button-Keys {
+    display: none;
+  }
+}
+
+@media (min-width: 997px) and (max-width: 1099px) {
+  /* Logo only, without the site name */
+  .navbar__title {
+    display: none;
+  }
+}

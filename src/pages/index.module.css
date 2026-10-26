@@ -66,3 +66,9 @@
     width: 200px;
   }
 }
+
+/* The module strip breaks out to 100vw, which includes the vertical
+   scrollbar: clip it so the page does not scroll sideways */
+.main {
+  overflow-x: clip;
+}

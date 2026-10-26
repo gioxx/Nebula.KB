@@ -54,7 +54,7 @@ export default function Home() {
       description="Nebula: PowerShell modules that scale beyond your workstation"
     >
       <HomepageHeader />
-      <main>
+      <main className={styles.main}>
         <HomeAlerts />
         <HomepageFeatures />
       </main>
