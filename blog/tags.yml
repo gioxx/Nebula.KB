@@ -33,6 +33,16 @@ log:
   permalink: /log
   description: Updates concerning Nebula.Log
 
+intune:
+  label: Microsoft Intune
+  permalink: /intune
+  description: Microsoft Intune and the tools around it
+
+intunewinapputilgui:
+  label: IntuneWinAppUtil GUI
+  permalink: /intunewinapputilgui
+  description: Releases and updates of IntuneWinAppUtil GUI
+
 microsoft:
   label: Microsoft
   permalink: /microsoft
