@@ -99,7 +99,7 @@ Format-QuotedListFromClipboard -PassThru
 
 ## Get-NebulaModuleUpdates
 
-Checks PowerShell Gallery for updates of installed `Nebula.*` modules plus the meta modules `ExchangeOnlineManagement` and `Microsoft.Graph`, and reports only the modules that have newer versions available.
+Checks PowerShell Gallery for updates of installed `Nebula.*` modules plus the meta modules `ExchangeOnlineManagement` and `Microsoft.Graph`, and reports only the modules that have newer versions available. On PowerShell 7 and later it also reports a newer stable PowerShell release (unless `CheckPowerShellUpdates = $false`).
 
 **Syntax**
 
@@ -108,7 +108,7 @@ Get-NebulaModuleUpdates
 ```
 
 This command always forces a fresh check. The automatic check in `Connect-Nebula` can be disabled with
-`CheckUpdatesOnConnect = $false`, and throttled via `CheckUpdatesIntervalHours` (default `24`) in `settings.psd1`.
+`CheckUpdatesOnConnect = $false`, and throttled via `CheckUpdatesIntervalHours` (default `72`) in `settings.psd1`.
 After edits, run `Sync-NebulaConfig`.
 
 :::tip

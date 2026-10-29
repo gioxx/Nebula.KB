@@ -91,6 +91,7 @@ If a healthy, already-connected Graph session keeps popping a WAM account-picker
 
 :::note[Automatic update function]
 By default, `Connect-Nebula` checks PowerShell Gallery for updates of `Nebula.*` modules plus the meta modules `ExchangeOnlineManagement` and `Microsoft.Graph`, warning only when updates are available.
+On PowerShell 7 and later it also warns when a newer stable PowerShell release is available (PowerShell 7.6.8 no longer shows its own update notice). Turn this part off with `CheckPowerShellUpdates = $false`.
 Disable it by setting `CheckUpdatesOnConnect = $false` in your `settings.psd1` and then run `Sync-NebulaConfig`.
 You can also throttle checks by setting `CheckUpdatesIntervalHours` (default is `72`).
 Run `Get-NebulaModuleUpdates` anytime to trigger a manual check.
