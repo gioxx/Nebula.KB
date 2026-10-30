@@ -1,7 +1,7 @@
 ---
 sidebar_position: 8
 title: "Licenses"
-description: Export tenant license assignments and inspect user licenses with friendly SKU names.
+description: Assign, replace, swap, export, and inspect Microsoft 365 licenses.
 hide_title: true
 id: licenses
 tags:
@@ -13,7 +13,9 @@ tags:
   - Get-UserUsageLocation
   - Move-UserMsolAccountSku
   - Remove-UserMsolAccountSku
+  - Set-UserMsolAccountSku
   - Set-UserUsageLocation
+  - Switch-UserMsolAccountSku
   - Update-LicenseCatalog
   - Nebula.Core
   - Licenses
@@ -359,6 +361,57 @@ Remove-UserMsolAccountSku 'user@contoso.com' -License 'Exchange Online (Plan 2)'
 Remove-UserMsolAccountSku -UserPrincipalName 'user@contoso.com' -All
 ```
 
+## Set-UserMsolAccountSku
+Apply requested license additions and removals for one or more users. Each user's additions and removals are submitted together in one Microsoft Graph request. Rows for the same resolved user are merged before the change is sent.
+
+**Syntax**
+
+```powershell
+Set-UserMsolAccountSku -UserPrincipalName <String> [-AddLicense <String[]>] [-RemoveLicense <String[]>] [-ForceLicenseCatalogRefresh] [-QuietNoChanges] [-WhatIf] [-Confirm]
+Import-Csv -LiteralPath <String> | Set-UserMsolAccountSku [-ForceLicenseCatalogRefresh] [-QuietNoChanges] [-WhatIf] [-Confirm]
+```
+
+| Parameter / CSV column | Type | Description | Required | Default |
+| --- | --- | --- | :---: | --- |
+| `UserPrincipalName` | String | User UPN or object ID. Accepts pipeline input and a CSV column with this exact header. | Yes | - |
+| `AddLicense` | String[] | License(s) to add. Accepts a friendly name, SKU part number, or SKU ID; also accepted from a CSV column with this exact header. | At least one required; both allowed | - |
+| `RemoveLicense` | String[] | License(s) to remove. Accepts a friendly name, SKU part number, or SKU ID; also accepted from a CSV column with this exact header. | At least one required; both allowed | - |
+| `ForceLicenseCatalogRefresh` | Switch | Redownload license catalog cache. | No | `False` |
+| `QuietNoChanges` | Switch | Suppress per-user `No license changes needed for...` messages. The final counters remain visible. | No | `False` |
+| `ShowErrorDetails` | Switch | Kept for compatibility; Graph errors always include details. | No | `False` |
+| `WhatIf` | Switch | Preview planned changes without changing licenses. | No | `False` |
+| `Confirm` | Switch | Ask before changing licenses. | No | Prompted by default (high impact) |
+
+For CSV input, use English headers that match the parameter names. A row can add and remove licenses for the same user:
+
+```csv
+UserPrincipalName,AddLicense,RemoveLicense
+user1@contoso.com,Microsoft 365 E3,Microsoft 365 Business Standard
+user2@contoso.com,Microsoft 365 Business Standard,Exchange Online (Plan 1)
+```
+
+Use one license per cell. For multiple additions or removals for one user, add more rows with the same `UserPrincipalName`; they are merged before the change is sent.
+
+Preview the file before applying it:
+
+```powershell
+Import-Csv -LiteralPath 'C:\Temp\license-changes.csv' | Set-UserMsolAccountSku -WhatIf
+```
+
+The command prints each user's additions and removals, then reports totals for successfully changed, failed, unchanged, and skipped/not executed users. If any user fails, the output also lists that user's UPN and failure reason. Users are processed independently: an error for one user does not roll back successful changes for other users.
+
+:::note[Group-assigned licenses]
+A license inherited only through a group cannot be removed with this command. Remove that license assignment from the group instead.
+:::
+
+:::note[Usage location]
+When adding a license to a user without a usage location, Nebula.Core sets the configured default before assigning the license. If that update fails, the license change is not sent.
+:::
+
+:::note[Use the swap command when seats must be freed first]
+`Set-UserMsolAccountSku` submits each user's additions and removals together, but it does not first remove licenses from multiple users as a coordinated exchange. For a two-user reciprocal exchange that depends on freeing tenant seats before assigning the opposite licenses, use `Switch-UserMsolAccountSku`.
+:::
+
 ## Set-UserUsageLocation
 Update the usage location for one or more users. When `-UsageLocation` is omitted, the configured Nebula.Core default is used (`UsageLocation`, `US` unless overridden). Users already at the target value are skipped. Supports `-WhatIf`/`-Confirm`.
 
@@ -382,6 +435,58 @@ Set-UserUsageLocation -UserPrincipalName user@contoso.com -UsageLocation IT
 ```powershell
 'user1@contoso.com','user2@contoso.com' | Set-UserUsageLocation -UsageLocation DE
 ```
+
+## Switch-UserMsolAccountSku
+Exchange selected direct licenses between two users. To work in tenants without spare license seats, the command removes the selected licenses from both users before assigning them to the other user. Disabled service plans are preserved.
+
+**Syntax**
+
+```powershell
+Switch-UserMsolAccountSku -FirstUserPrincipalName <String> -FirstUserLicense <String[]> -SecondUserPrincipalName <String> -SecondUserLicense <String[]> [-ForceLicenseCatalogRefresh] [-WhatIf] [-Confirm]
+Switch-UserMsolAccountSku -FirstUserPrincipalName <String> -SecondUserPrincipalName <String> -AllLicenses [-ExcludeLicense <String[]>] [-ForceLicenseCatalogRefresh] [-WhatIf] [-Confirm]
+```
+
+| Parameter | Type | Description | Required | Default |
+| --- | --- | --- | :---: | --- |
+| `FirstUserPrincipalName` | String | UPN or object ID of the first user. | Yes | - |
+| `FirstUserLicense` | String[] | License(s) to move from the first user. Accepts a friendly name, SKU part number, or SKU ID. | For explicit selection | - |
+| `SecondUserPrincipalName` | String | UPN or object ID of the second user. | Yes | - |
+| `SecondUserLicense` | String[] | License(s) to move from the second user. Accepts a friendly name, SKU part number, or SKU ID. | For explicit selection | - |
+| `AllLicenses` | Switch | Select all licenses on both users automatically. Only direct assignments can be moved; licenses both users already share remain with both. | One selection mode required | `False` |
+| `ExcludeLicense` | String[] | With `-AllLicenses`, keep these licenses with their current users. Accepts a friendly name, SKU part number, or SKU ID. | No | - |
+| `ForceLicenseCatalogRefresh` | Switch | Redownload license catalog cache. | No | `False` |
+| `WhatIf` | Switch | Preview the planned removal and reciprocal assignment without changing licenses. | No | `False` |
+| `Confirm` | Switch | Ask before removing and assigning licenses. | No | Prompted by default (high impact) |
+
+Use either explicit license selections for both users, or `-AllLicenses`. The two modes cannot be combined. `-ExcludeLicense` is available only with `-AllLicenses`; each user must still have at least one distinct license to swap after exclusions. Licenses assigned through a group cannot be moved; if a selected license is group-assigned, the swap stops.
+
+**Examples**
+
+Preview an explicit swap:
+
+```powershell
+Switch-UserMsolAccountSku `
+  -FirstUserPrincipalName 'user1@contoso.com' `
+  -FirstUserLicense 'Microsoft 365 E3','Microsoft 365 E5 Security' `
+  -SecondUserPrincipalName 'user2@contoso.com' `
+  -SecondUserLicense 'Microsoft 365 Business Premium','Microsoft Defender Suite for Microsoft 365 Business Premium' `
+  -WhatIf
+```
+
+Swap all movable licenses and leave Fabric assigned to its current user:
+
+```powershell
+Switch-UserMsolAccountSku `
+  -FirstUserPrincipalName 'user1@contoso.com' `
+  -SecondUserPrincipalName 'user2@contoso.com' `
+  -AllLicenses `
+  -ExcludeLicense 'Microsoft Fabric (Free)' `
+  -WhatIf
+```
+
+:::warning[Temporary license removal]
+The command removes the selected licenses from both users before assigning them reciprocally. This avoids needing spare tenant seats, but licensed services can be temporarily affected during the swap. If a removal or assignment fails, Nebula.Core attempts to restore the original assignments and reports any recovery that did not complete. On success, it prints one confirmation line per user with the licenses received.
+:::
 
 ## Update-LicenseCatalog
 Refresh the local license catalog cache (download SKU mappings). It always redownloads the primary and custom catalogs, regardless of cache age.
