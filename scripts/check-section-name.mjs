@@ -14,6 +14,9 @@ for (const {label, pages} of sections) {
       continue;
     }
     const html = readFileSync(page, 'utf8');
+    if (!html.match(/<title[^>]*>([^<]*)<\/title>/)?.[1].includes(label)) {
+      errors.push(`${page}: "${label}" missing from the page title`);
+    }
     for (const marker of markers) {
       const tag = html.match(new RegExp(`<a[^>]*${marker}[^>]*>([^<]*)</a>`));
       if (tag?.[1] !== label) {
