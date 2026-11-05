@@ -1,0 +1,22 @@
+name: Build
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+      # Also runs the postbuild check of the theme overrides, so a Docusaurus
+      # upgrade that breaks them shows up here instead of in the deploy.
+      - run: npm ci
+      - run: npm run build
