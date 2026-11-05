@@ -504,3 +504,10 @@ article > .theme-doc-breadcrumbs:has(+ .theme-doc-version-badge) {
 article > .theme-doc-breadcrumbs + .theme-doc-version-badge {
   flex: 0 0 auto;
 }
+
+/* The version dropdown is in the navbar from this width: below it, it's in the mobile menu */
+@media (min-width: 997px) {
+  .theme-doc-version-badge {
+    display: none;
+  }
+}
