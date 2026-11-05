@@ -1,6 +1,6 @@
 ---
 id: intro
-title: 'Projects: introduction'
+title: 'Overview'
 description: Overview of side projects documented in this KB.
 sidebar_position: 1
 ---
