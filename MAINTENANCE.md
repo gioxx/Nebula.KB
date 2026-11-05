@@ -124,6 +124,14 @@ NODE_OPTIONS=--no-deprecation npm run build
 
 ---
 
+### Theme overrides
+
+The section name in the sidebar and breadcrumbs comes from wrappers in `src/theme/`, with names in `src/data/docSections.json`. They live in the repository, so a Docusaurus upgrade does not delete them, but it can stop using them without any error.
+
+`npm run build` runs `scripts/check-section-name.mjs` and fails if that happens: fix the wrappers, do not remove the check.
+
+---
+
 ## 6️⃣ Docusaurus cache cleanup (when things look wrong)
 
 If Docusaurus:

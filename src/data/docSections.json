@@ -1,0 +1,8 @@
+[
+  {"pluginId": "default", "label": "Nebula", "pages": ["Nebula/intro"]},
+  {"pluginId": "projects", "label": "Projects", "pages": ["Projects/intro"]},
+  {"pluginId": "automations", "module": "Automations", "label": "Nebula.Automations", "pages": ["Nebula/Automations/intro", "Nebula/Automations/next/intro"]},
+  {"pluginId": "core", "module": "Core", "label": "Nebula.Core", "pages": ["Nebula/Core/intro", "Nebula/Core/next/intro"]},
+  {"pluginId": "log", "module": "Log", "label": "Nebula.Log", "pages": ["Nebula/Log/intro", "Nebula/Log/next/intro"]},
+  {"pluginId": "tools", "module": "Tools", "label": "Nebula.Tools", "pages": ["Nebula/Tools/intro", "Nebula/Tools/next/intro"]}
+]
