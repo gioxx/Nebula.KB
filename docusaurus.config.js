@@ -6,8 +6,9 @@
 
 import {themes as prismThemes} from 'prism-react-renderer';
 import path from 'node:path';
+import docSections from './src/data/docSections.json';
 
-const nebulaModules = ['Automations', 'Core', 'Log', 'Tools'];
+const nebulaModules = docSections.flatMap(({module}) => module ?? []);
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
