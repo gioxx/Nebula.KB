@@ -1,7 +1,7 @@
 ---
 id: clean-mail-automation
 title: Clean Mail Automation
-description: Dockerized IMAP mailbox cleanup with multi-mailbox support, configurable retention, weekly scheduling, a web status page, and optional Telegram notifications.
+description: Dockerized IMAP mailbox cleanup that deletes emails older than a retention period, with multi-mailbox support, cron scheduling, a web status page and optional Telegram notifications.
 sidebar_position: 2
 tags:
   - Projects
@@ -12,226 +12,215 @@ tags:
 
 # Clean Mail Automation
 
-`clean-mail-automation` is a Docker-first utility that connects to one or more IMAP mailboxes and deletes emails older than a configurable retention period (default: 10 days).
-It executes immediately at container startup, then runs on a cron schedule, and always serves a read-only web status page inside the container.
+`clean-mail-automation` is a Docker-first tool that connects to one or more IMAP mailboxes and **permanently deletes** emails older than a retention period (default: 10 days) from a folder. It runs once when the container starts, then on a cron schedule, and serves a web status page.
 
-## Demo and repository
+It is the companion of [spam-digest](spam-digest): Clean Mail Automation keeps folders you don't need to archive (notifications, reports, alerts) short, spam-digest helps you catch real email that landed in spam.
+
+## Overview
+
+### Links
 - Source code: [github.com/gioxx/clean-mail-automation](https://github.com/gioxx/clean-mail-automation)
 - Docker Hub image: `gfsolone/clean-mail-automation`
 - GHCR image: `ghcr.io/gioxx/clean-mail-automation`
 
-## Key features
-- IMAP over SSL connection with environment-based configuration.
-- Single or multi-mailbox cleanup in the same container run (`MAILBOX_CONFIGS` JSON array).
-- Retention policy by days (`CLEAN_DAYS`, per-mailbox `clean_days`) with per-run CLI override (`--days`).
-- Web status page (`status_server.py`), always available on `WEB_PORT` (default `8080`), showing config and last-run results; auto-refreshes every 60s.
-- Optional Telegram notifications: `always` (per run) or `digest` (accumulated, sent on its own schedule), plus `TELEGRAM_NOTIFY_ONLY_IF_DELETED` to suppress no-op runs.
-- Cron scheduling through the container entrypoint (`SCHEDULE_DAY`, `SCHEDULE_HOUR`, `SCHEDULE_MIN`), with a separate digest schedule when digest mode is used.
-- Logs routed to container stdout/stderr.
+### Key features
+- **Retention by days** (`CLEAN_DAYS`, per-mailbox `clean_days`), with a per-run CLI override (`--days`).
+- **Multi-mailbox**: any number of IMAP accounts and folders in one container (`MAILBOX_CONFIGS`).
+- **Cron scheduling** inside the container, plus an immediate cleanup at every container start.
+- **Web status page** on port `8080`: configuration, schedule, last run per mailbox, and Telegram actions.
+- **Telegram notifications (optional)**: after every run, or as a periodic digest, optionally only when something was deleted.
+- Pure Python standard library, no dependencies. Logs go to the container's stdout.
 
-## Architecture at a glance
-- **Script** (`clean_email.py`): stdlib-only, handles IMAP connection(s), filtering by age, deletion, and optional Telegram notification/digest.
-- **Status server** (`status_server.py`): HTTP server for the read-only web dashboard; started by `entrypoint.sh`, not by the script directly.
-- **Entrypoint** (`entrypoint.sh`): writes cron schedule(s), starts the status server, then runs the first cleanup at startup.
-- **Container** (`Dockerfile`): Python image running the script on schedule.
-
-## Environment variables
-| Name | Used by | Required | Default | Description |
-| --- | --- | --- | --- | --- |
-| `IMAP_SERVER` | script | Yes\* | none | IMAP server hostname or IP. |
-| `IMAP_PORT` | script | No | `993` | IMAP SSL port. |
-| `EMAIL_USER` | script | Yes\* | none | Username for IMAP login. |
-| `EMAIL_PASS` | script | Yes\* | none | Password for IMAP login. |
-| `EMAIL_ADDRESS` | script | No | `EMAIL_USER` | Mailbox label in logs/notifications. |
-| `MAILBOX` | script | No | `INBOX` | IMAP folder to clean. |
-| `CLEAN_DAYS` | script | No | `10` | Delete messages older than this many days. Ignored if `--days` is passed. |
-| `MAILBOX_CONFIGS` | script | No | none | JSON array for multi-mailbox mode; overrides the single-mailbox vars above (see [Multi-Mailbox Mode](#multi-mailbox-mode)). |
-| `SEND_TELEGRAM_NOTIFICATIONS` | script | No | `false` | Enable Telegram notifications (`1`, `true`, `yes`, `on`). |
-| `TELEGRAM_BOT_TOKEN` | script | Conditional | none | Required only if Telegram notifications are enabled. |
-| `CLEAN_EMAIL_TELEGRAM_CHAT_ID` | script | Conditional | none | Preferred chat ID for this app. Has priority over `TELEGRAM_CHAT_ID`. |
-| `TELEGRAM_CHAT_ID` | script | Conditional | none | Fallback chat ID if `CLEAN_EMAIL_TELEGRAM_CHAT_ID` is not set. |
-| `TELEGRAM_TIMEOUT` | script | No | `10` | Telegram API timeout in seconds. |
-| `TELEGRAM_NOTIFY_MODE` | script | No | `always` | `always` sends after every run; `digest` accumulates results and sends on the `DIGEST_SCHEDULE_*` cron instead. |
-| `TELEGRAM_NOTIFY_ONLY_IF_DELETED` | script | No | `false` | Skip notifications for runs where nothing was deleted (either mode). |
-| `SCHEDULE_MIN` | container entrypoint | No | `0` | Cron minute (`0-59`). |
-| `SCHEDULE_HOUR` | container entrypoint | No | `0` | Cron hour (`0-23`). |
-| `SCHEDULE_DAY` | container entrypoint | No | `0` | Cron weekday (`0-7`, where `0`/`7` is Sunday; `*` runs every day). |
-| `DIGEST_SCHEDULE_MIN` | container entrypoint | No | `0` | Digest send cron minute (digest mode only). |
-| `DIGEST_SCHEDULE_HOUR` | container entrypoint | No | `8` | Digest send cron hour (digest mode only). |
-| `DIGEST_SCHEDULE_DAY` | container entrypoint | No | `0` | Digest send cron weekday (digest mode only). |
-| `WEB_PORT` | container entrypoint | No | `8080` | Port the web status page listens on inside the container; always started. |
-| `TZ` | container OS | No | `UTC` | Container timezone; affects timestamps written by the script (last run, digest period, logs). Status page clock uses the browser's local time regardless. |
-
-\* Not required at the top level when `MAILBOX_CONFIGS` supplies per-mailbox credentials instead.
-
-## Multi-Mailbox Mode
-Set `MAILBOX_CONFIGS` to a JSON array to clean multiple mailboxes in one container run. Each entry accepts `imap_server`, `imap_port` (default `993`), `email_user`, `email_pass`, `email_address` (defaults to `email_user`), `mailbox` (default `INBOX`), and `clean_days` (default from `CLEAN_DAYS` or `10`).
-
-```bash
--e MAILBOX_CONFIGS='[
-  {"imap_server":"imap.server.com","email_user":"user1","email_pass":"pass1","email_address":"mail1@example.com","mailbox":"INBOX","clean_days":10},
-  {"imap_server":"imap.server.com","email_user":"user2","email_pass":"pass2","email_address":"mail2@example.com","mailbox":"Archive","clean_days":30}
-]'
-```
-In Docker Compose, keep the value on a single line (or use an `.env` file) — multi-line JSON is not reliably parsed by Compose's env handling.
-
-## Web status page
-Always served at `http://<host>:<port>/` (default `8080`) by the container. Shows configured mailboxes (server, folder, retention — no passwords), the schedule in human-readable form, Telegram notification status, and the last cleanup run's per-mailbox results (status, deleted count, duration, errors). Auto-refreshes every 60 seconds. Not started when running `clean_email.py` directly outside Docker.
+### Architecture at a glance
+- **Script** (`clean_email.py`): IMAP connection(s), search by date, deletion, Telegram notifications and digest.
+- **Status server** (`status_server.py`): web status page. Started by `entrypoint.sh`, not by the script.
+- **Entrypoint** (`entrypoint.sh`): writes the cron schedule(s), starts the status server, runs the first cleanup, then starts cron.
+- **Container** (`Dockerfile`): Python slim image with cron.
 
 ## Quick start
-### Docker (GHCR, recommended)
-```bash
-docker run -d \
-  -e IMAP_SERVER="imap.server.com" \
-  -e IMAP_PORT=993 \
-  -e EMAIL_USER="your_username" \
-  -e EMAIL_PASS="your_password" \
-  -e EMAIL_ADDRESS="mailbox@example.com" \
-  -e CLEAN_DAYS=10 \
-  -e SEND_TELEGRAM_NOTIFICATIONS=true \
-  -e TELEGRAM_BOT_TOKEN="123456:ABCDEF" \
-  -e CLEAN_EMAIL_TELEGRAM_CHAT_ID="987654321" \
-  -e TELEGRAM_CHAT_ID="123456789" \
-  -e SCHEDULE_DAY=1 \
-  -e SCHEDULE_HOUR=1 \
-  -e SCHEDULE_MIN=30 \
-  -p 8080:8080 \
-  --name email_cleaner ghcr.io/gioxx/clean-mail-automation:latest
-```
 
-### Docker (Docker Hub)
-```bash
-docker run -d -p 8080:8080 --name email_cleaner gfsolone/clean-mail-automation:latest
-```
+### Docker Compose: single mailbox
 
-### Docker build locally (optional)
-```bash
-docker build -t email-cleaner .
-```
-
-```bash
-docker run -d \
-  -e IMAP_SERVER="imap.server.com" \
-  -e IMAP_PORT=993 \
-  -e EMAIL_USER="your_username" \
-  -e EMAIL_PASS="your_password" \
-  -e EMAIL_ADDRESS="mailbox@example.com" \
-  -e CLEAN_DAYS=10 \
-  -e SEND_TELEGRAM_NOTIFICATIONS=true \
-  -e TELEGRAM_BOT_TOKEN="123456:ABCDEF" \
-  -e CLEAN_EMAIL_TELEGRAM_CHAT_ID="987654321" \
-  -e TELEGRAM_CHAT_ID="123456789" \
-  -e SCHEDULE_DAY=1 \
-  -e SCHEDULE_HOUR=1 \
-  -e SCHEDULE_MIN=30 \
-  -p 8080:8080 \
-  --name email_cleaner email-cleaner
-```
-
-### Docker Compose — single mailbox
-`compose.yaml`
 ```yaml
 services:
   clean-mail-automation:
     image: ghcr.io/gioxx/clean-mail-automation:latest
     container_name: email_cleaner
     restart: unless-stopped
+    ports:
+      - "8080:8080"
     environment:
-      IMAP_SERVER: "imap.server.com"
-      IMAP_PORT: "993"
-      EMAIL_USER: "your_username"
-      EMAIL_PASS: "your_password"
-      EMAIL_ADDRESS: "mailbox@example.com"
+      TZ: Europe/Rome
+      IMAP_SERVER: imap.example.com
+      EMAIL_USER: you@example.com
+      EMAIL_PASS: your-password
+      MAILBOX: INBOX
       CLEAN_DAYS: "10"
-      SEND_TELEGRAM_NOTIFICATIONS: "true"
-      TELEGRAM_BOT_TOKEN: "123456:ABCDEF"
-      CLEAN_EMAIL_TELEGRAM_CHAT_ID: "987654321"
+      # Every Monday at 01:30
       SCHEDULE_DAY: "1"
       SCHEDULE_HOUR: "1"
       SCHEDULE_MIN: "30"
-    ports:
-      - "8080:8080"
-    # Alternative image:
-    # image: gfsolone/clean-mail-automation:latest
 ```
-Ready-to-use compose files ship in [`examples/`](https://github.com/gioxx/clean-mail-automation/tree/main/examples): `docker-compose.single.yml` and `docker-compose.multi.yml` (weekly digest). To expose the status page on a different host port, remap `ports` (e.g. `"3200:8080"`) — no need to change `WEB_PORT` unless the internal port itself conflicts.
 
-### Docker Compose — multi-mailbox
-```yaml
-services:
-  email-cleaner:
-    image: ghcr.io/gioxx/clean-mail-automation:latest
-    environment:
-      - MAILBOX_CONFIGS=[{"imap_server":"imap.server.com","email_user":"user1@example.com","email_pass":"pass1","email_address":"user1@example.com","mailbox":"INBOX","clean_days":10},{"imap_server":"imap.server.com","email_user":"user2@example.com","email_pass":"pass2","email_address":"user2@example.com","mailbox":"INBOX","clean_days":30},{"imap_server":"imap.other.com","email_user":"user3@example.com","email_pass":"pass3","email_address":"user3@example.com","mailbox":"Archive","clean_days":60}]
-      - SCHEDULE_DAY=1
-      - SCHEDULE_HOUR=1
-      - SCHEDULE_MIN=30
-      - SEND_TELEGRAM_NOTIFICATIONS=true
-      - TELEGRAM_BOT_TOKEN=123456:ABCDEF
-      - TELEGRAM_CHAT_ID=987654321
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
+```bash
+docker compose up -d
 ```
-Prefer keeping credentials in an `.env` file referenced via `env_file` if you don't want them in the compose file directly.
+
+:::warning[The first cleanup runs immediately]
+A cleanup runs as soon as the container starts, not only at the scheduled time. Check `MAILBOX` and `CLEAN_DAYS` before starting it on a mailbox you care about: deletion is permanent.
+:::
+
+Ready-to-use compose files are in [`examples/`](https://github.com/gioxx/clean-mail-automation/tree/main/examples): `docker-compose.single.yml` (one mailbox, Telegram after each run) and `docker-compose.multi.yml` (three mailboxes, weekly Telegram digest, passwords from a `.env` file).
+
+### Docker Compose: multi-mailbox
+
+Set `MAILBOX_CONFIGS` to a JSON array. Keep it on **one line** (or in an `.env` file): multi-line JSON is not reliably parsed by Compose's list syntax.
+
+```yaml
+    environment:
+      - MAILBOX_CONFIGS=[{"imap_server":"imap.contoso.com","email_user":"alerts@contoso.com","email_pass":"${ALERTS_PASS}","mailbox":"INBOX","clean_days":10},{"imap_server":"imap.example.com","email_user":"reports@example.com","email_pass":"${REPORTS_PASS}","mailbox":"Reports","clean_days":30}]
+      - SCHEDULE_DAY=*
+      - SCHEDULE_HOUR=2
+      - SCHEDULE_MIN=0
+```
+
+Fields of each entry:
+
+| Field | Default | Description |
+| --- | --- | --- |
+| `imap_server` | none | IMAP hostname. **Required.** |
+| `imap_port` | `993` | IMAP SSL port. |
+| `email_user` | none | IMAP username. **Required.** |
+| `email_pass` | none | IMAP password. **Required.** |
+| `email_address` | `email_user` | Label in logs, status page and notifications. |
+| `mailbox` | `INBOX` | Folder to clean. |
+| `clean_days` | `CLEAN_DAYS` or `10` | Retention in days for this entry. |
+
+### docker run
+
+```bash
+docker run -d \
+  -e IMAP_SERVER="imap.example.com" \
+  -e EMAIL_USER="you@example.com" \
+  -e EMAIL_PASS="your-password" \
+  -e CLEAN_DAYS=10 \
+  -e SCHEDULE_DAY=1 -e SCHEDULE_HOUR=1 -e SCHEDULE_MIN=30 \
+  -e TZ=Europe/Rome \
+  -p 8080:8080 \
+  --name email_cleaner ghcr.io/gioxx/clean-mail-automation:latest
+```
+
+To build the image yourself: `docker build -t email-cleaner .` in a clone of the repository.
 
 ### Local run (no Docker)
-Prerequisites:
-- Python 3.8+ (stdlib only, no dependencies)
-- Network access to your IMAP server
 
-Export variables and run:
+Python 3.8+, standard library only:
+
 ```bash
-export IMAP_SERVER="imap.server.com"
-export IMAP_PORT="993"
-export EMAIL_USER="your_username"
-export EMAIL_PASS="your_password"
-export EMAIL_ADDRESS="mailbox@example.com"
+export IMAP_SERVER="imap.example.com"
+export EMAIL_USER="you@example.com"
+export EMAIL_PASS="your-password"
 export CLEAN_DAYS="10"
-
 python3 clean_email.py
 ```
 
-Optional retention override via CLI:
-```bash
-python3 clean_email.py --days 30
+Scheduling is up to you (`cron`, systemd timer, Task Scheduler), and the status page is not started.
+
+## Configuration
+
+### Environment variables
+
+| Variable | Default | Description |
+| --- | --- | --- |
+| `IMAP_SERVER` | none | IMAP hostname. **Required** unless `MAILBOX_CONFIGS` is set. |
+| `IMAP_PORT` | `993` | IMAP port. The connection always uses SSL/TLS. |
+| `EMAIL_USER` | none | IMAP username. **Required.** |
+| `EMAIL_PASS` | none | IMAP password. **Required.** |
+| `EMAIL_ADDRESS` | `EMAIL_USER` | Label in logs, status page and notifications. |
+| `MAILBOX` | `INBOX` | Folder to clean. |
+| `CLEAN_DAYS` | `10` | Delete emails older than this many days. `--days` overrides it. |
+| `MAILBOX_CONFIGS` | none | JSON array for multi-mailbox mode. Replaces the single-mailbox variables above: each entry needs its own server and credentials. Only `CLEAN_DAYS` still applies, as the default for entries without `clean_days`. |
+| `SEND_TELEGRAM_NOTIFICATIONS` | `false` | Enable Telegram (`1`, `true`, `yes`, `on`). |
+| `TELEGRAM_BOT_TOKEN` | none | Bot token. Required when Telegram is enabled. |
+| `CLEAN_EMAIL_TELEGRAM_CHAT_ID` | none | Chat ID for this app. Takes priority over `TELEGRAM_CHAT_ID`. |
+| `TELEGRAM_CHAT_ID` | none | Fallback chat ID, handy when several apps share one variable. |
+| `TELEGRAM_TIMEOUT` | `10` | Telegram API timeout, in seconds. |
+| `TELEGRAM_NOTIFY_MODE` | `always` | `always`: a message after every run. `digest`: collect results and send them on the `DIGEST_SCHEDULE_*` cron. |
+| `TELEGRAM_NOTIFY_ONLY_IF_DELETED` | `false` | Skip runs where nothing was deleted (both modes). |
+| `SCHEDULE_MIN` | `0` | Cleanup cron minute. |
+| `SCHEDULE_HOUR` | `0` | Cleanup cron hour. |
+| `SCHEDULE_DAY` | `0` | Cleanup cron weekday: `0`/`7` Sunday … `6` Saturday, `*` every day. |
+| `DIGEST_SCHEDULE_MIN` | `0` | Digest cron minute (digest mode only). |
+| `DIGEST_SCHEDULE_HOUR` | `8` | Digest cron hour (digest mode only). |
+| `DIGEST_SCHEDULE_DAY` | `0` | Digest cron weekday (digest mode only). |
+| `WEB_PORT` | `8080` | Port of the status page inside the container. To use another host port, change the `ports` mapping instead (e.g. `"3200:8080"`). |
+| `TZ` | `UTC` | Container timezone: cron schedule and timestamps. The status page clock uses your browser's time. |
+
+With the defaults the cleanup runs **every Sunday at 00:00**. Cron fields accept digits, `*`, `/`, `,` and `-`; anything else falls back to the default and is logged.
+
+### CLI arguments
+
+| Argument | Description |
+| --- | --- |
+| `--days N` | Retention for this run only; overrides `CLEAN_DAYS` and every `clean_days`. |
+| `--send-digest` | Send the collected Telegram digest, clear it and exit. The digest cron calls this. |
+| `--force` | With `--send-digest`: send even when nothing was collected (a "nothing to report" message). |
+
+Inside the container: `docker exec email_cleaner python3 /app/clean_email.py --days 30`.
+
+## Usage
+
+### What gets deleted
+For each mailbox the script opens the folder, searches for emails received **before** today minus the retention days (IMAP `SEARCH BEFORE`, by the server's received date, with day granularity), flags them `\Deleted` and expunges them. Deletion is **permanent**: nothing is moved to Trash.
+
+With `CLEAN_DAYS=10`, a run on 20 November deletes everything received before 10 November.
+
+### Web status page
+`http://<host>:8080/` shows the configured mailboxes (server, folder, retention; never passwords), the schedule in plain words, the Telegram settings and the last run of each mailbox (status, deleted count, duration, errors). It refreshes every 60 seconds.
+
+When Telegram is configured it also has two buttons:
+- **Test**: sends a test Telegram message.
+- **Send now** (digest mode): sends the collected digest immediately and clears it.
+
+:::warning[No built-in authentication]
+The status page has no login and its buttons work with plain links. Keep port 8080 on a trusted network or behind a reverse proxy with authentication.
+:::
+
+### Telegram notifications
+- Disabled by default: set `SEND_TELEGRAM_NOTIFICATIONS=true`, `TELEGRAM_BOT_TOKEN` and a chat ID.
+- **`always` mode**: one message per mailbox after each cleanup, with mailbox, folder, retention, deleted count and duration (and the error, on failure).
+- **`digest` mode**: results are collected and sent together on the `DIGEST_SCHEDULE_*` cron, grouped per mailbox with totals and errors. Useful when cleanup runs daily and you want one weekly summary:
+
+```yaml
+- TELEGRAM_NOTIFY_MODE=digest
+- DIGEST_SCHEDULE_DAY=0
+- DIGEST_SCHEDULE_HOUR=8
+- DIGEST_SCHEDULE_MIN=0
 ```
 
-The web status page is **not** started when running the script directly — it only runs inside the container via `entrypoint.sh`. For recurring runs without Docker, schedule `python3 clean_email.py` using your platform scheduler (`cron`, `systemd timer`, Windows Task Scheduler).
+- `TELEGRAM_NOTIFY_ONLY_IF_DELETED=true` keeps quiet runs out of both modes.
 
-## Telegram notifications
-- Disabled by default; enable with `SEND_TELEGRAM_NOTIFICATIONS=true`.
-- Requires `TELEGRAM_BOT_TOKEN` and a chat ID when enabled. Chat ID priority: `CLEAN_EMAIL_TELEGRAM_CHAT_ID` first, then `TELEGRAM_CHAT_ID`.
-- Success messages include mailbox address, folder, retention days, deleted count, and duration; failure messages include the same plus error details.
-- In multi-mailbox mode, one notification is sent per mailbox after each cleanup (in `always` mode) or bundled into the digest.
-- `TELEGRAM_NOTIFY_MODE=digest` accumulates results locally and sends them together on the `DIGEST_SCHEDULE_*` cron — useful when cleanup runs frequently but you only want a single periodic summary. `--send-digest` (called automatically by the container's digest cron) sends the accumulated digest and clears it.
-- `TELEGRAM_NOTIFY_ONLY_IF_DELETED=true` suppresses notifications for quiet runs, in either mode.
+### Logs
+Everything goes to the container output: `docker logs -f email_cleaner`, or the container logs view in Portainer.
 
-## Repository structure
-```text
-clean-mail-automation/
-|- clean_email.py       # Core script: IMAP connection(s), deletion, notifications
-|- status_server.py     # Web status page HTTP server (started by entrypoint.sh)
-|- entrypoint.sh         # Cron setup, starts status server, runs first cleanup
-|- Dockerfile
-|- examples/             # Ready-to-use docker-compose files
-|- README.md
-`- LICENSE
-```
+## Troubleshooting
 
-## Operational notes
-- `entrypoint.sh` writes cron configuration(s), starts the status server, and executes a first immediate cleanup.
-- `SCHEDULE_DAY=1`, `SCHEDULE_HOUR=1`, `SCHEDULE_MIN=30` means every Monday at 01:30.
-- `--days` (CLI) overrides `CLEAN_DAYS` for that run.
-- Container logs are available with `docker logs email_cleaner`, or monitored live via Portainer's container logs UI.
+### "Error searching for emails" for a mailbox
+The folder in `MAILBOX` / `mailbox` probably doesn't exist or has a different name on the server (e.g. `INBOX.Archive` instead of `Archive`). Check the exact name in your mail client. Folder names with spaces may not be accepted.
 
-## Customization
-- Set `CLEAN_DAYS` (or pass `--days`) to change the deletion threshold.
-- Adjust `SCHEDULE_DAY`/`SCHEDULE_HOUR`/`SCHEDULE_MIN` for a different cron schedule.
-- Use `MAILBOX_CONFIGS` to clean multiple mailboxes in a single container run.
+### Connection errors
+The connection always uses IMAP over SSL/TLS (port `993` by default). Servers that only offer plain IMAP or STARTTLS on port `143` are not supported.
 
-## Contribution
-Contributions, issues, and feature requests are welcome — fork the repository and submit pull requests.
+### The status page shows no last run, or the digest lost its data
+The last-run state and the collected digest are stored in `/tmp` inside the container, so they are lost when the container is recreated (for example after an image update). The next cleanup run fills the status page again; results collected for a digest before the restart are not sent.
 
-## License
-MIT License. See `LICENSE` in the repository.
+### Nothing is deleted
+- Retention counts from the received date on the server: emails moved or imported recently may have a recent received date even if they are old.
+- With `--days` set, it overrides every per-mailbox `clean_days`.
+- Check the logs for the number of emails found: `Mailbox ... : N emails to delete.`
+
+### The schedule runs at the wrong time
+Set `TZ` (e.g. `Europe/Rome`): without it cron uses UTC.
+
+### Telegram messages don't arrive
+Use **Test** on the status page. Check the bot token and the chat ID (`CLEAN_EMAIL_TELEGRAM_CHAT_ID` wins over `TELEGRAM_CHAT_ID`), and that the bot has been started in, or added to, that chat.
