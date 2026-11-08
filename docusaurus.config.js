@@ -145,7 +145,7 @@ const config = {
             items: [
               { label: 'Overview', to: '/Projects/intro' },
               { label: 'Clean Mail Automation', to: '/Projects/clean-mail-automation' },
-              { label: 'spam-digest', to: '/Projects/spam-digest' },
+              { label: 'Spam-Digest', to: '/Projects/spam-digest' },
               { label: 'IntuneWinAppUtil GUI', to: '/Projects/M365/intunewinapputilgui' },
               { label: 'Microsoft 365 Tenant Checker', to: '/Projects/M365/m365-tenant-checker' },
             ],

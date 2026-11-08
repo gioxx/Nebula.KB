@@ -14,7 +14,7 @@ tags:
 
 `clean-mail-automation` is a Docker-first tool that connects to one or more IMAP mailboxes and **permanently deletes** emails older than a retention period (default: 10 days) from a folder. It runs once when the container starts, then on a cron schedule, and serves a web status page.
 
-It is the companion of [spam-digest](spam-digest): Clean Mail Automation keeps folders you don't need to archive (notifications, reports, alerts) short, spam-digest helps you catch real email that landed in spam.
+It is the companion of [Spam-Digest](spam-digest): Clean Mail Automation keeps folders you don't need to archive (notifications, reports, alerts) short, Spam-Digest helps you catch real email that landed in spam.
 
 ## Overview
 
