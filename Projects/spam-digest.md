@@ -44,7 +44,7 @@ It is the companion of [Clean Mail Automation](clean-mail-automation): Spam-Dige
 - **Digest** (`spam_digest.py`): IMAP fetch, blocklist/allowlist rules, AI classification, digest HTML, email delivery, state file. Run by cron.
 - **Web server** (`status_server.py`): dashboard and the signed pages (`/review`, `/filters`, `/action/delete-spam`). Started by `entrypoint.sh`.
 - **Shared module** (`shared.py`): link signing and rotation, rules and allowlist storage, email delivery, file locking.
-- **Entrypoint** (`entrypoint.sh`): writes the cron schedule, starts the web server, optionally runs a digest at startup (`RUN_ON_START`).
+- **Entrypoint** (`entrypoint.sh`): writes the cron schedule, starts the web server, optionally runs a digest at startup (`RUN_ON_START`). Only `cron` runs as root: the digest and the web server run as the unprivileged `app` user (uid 10001).
 - **Data volume** (`/data`): last-run state, signing secret, link nonces, rules, allowlist and the actions log. Mount it as a volume so links and rules survive container updates.
 
 ## Quick start
@@ -179,8 +179,10 @@ docker run -d --env-file .env -p 8080:8080 -v spam_digest_data:/data spam-digest
 | `SCHEDULE_DAY` | `*` | Cron weekday: `*` every day, `0` Sunday … `6` Saturday. Ranges and lists (`1-5`, `1,3`) work too. |
 | `RUN_ON_START` | `false` | Also run a digest when the container starts. |
 | `TZ` | `UTC` | Container timezone, used by the schedule and timestamps. |
-| `WEB_PORT` | `8080` | Port of the dashboard inside the container. |
+| `WEB_PORT` | `8080` | Port of the dashboard inside the container. Must be 1024 or higher (the web server doesn't run as root); change the host port with the `ports` mapping instead. |
 | `WEB_BASE_URL` | none | Public address of the dashboard, e.g. `https://spamdigest.example.com`. Without it the digest has no review, filters or delete links. |
+| `DASHBOARD_PASS` | none | Turns on an HTTP Basic login for the dashboard and its buttons. The review, filters and delete pages keep working from the digest links without it. |
+| `DASHBOARD_USER` | `admin` | Username for the dashboard login (used only with `DASHBOARD_PASS`). |
 
 ## Email delivery
 
@@ -268,6 +270,7 @@ The button in the digest opens a **confirmation page**: nothing is deleted until
 
 ### Limits and safety
 - Web actions only touch the emails listed in the last digest, never other messages in the mailbox.
+- Before moving or deleting, spam-digest checks the folder's `UIDVALIDITY` against the value saved with the digest. If the folder was recreated or the server reset its IDs, the action is refused and nothing changes.
 - Signed routes are rate-limited (30 requests per minute per IP) and every action is logged as JSON lines in `/data/actions.log`.
 - Pages are sent with `Referrer-Policy: no-referrer` and can't be framed, so links don't leak to other sites.
 
@@ -280,8 +283,8 @@ The button in the digest opens a **confirmation page**: nothing is deleted until
 - **Run** (per mailbox): send a digest for that mailbox now;
 - **Filters** (per mailbox, needs `WEB_BASE_URL` and email delivery): rotate the filters link and email it to the mailbox's digest recipient. Links are never shown on the dashboard.
 
-:::warning[No built-in authentication]
-The dashboard has no login. Keep port 8080 on a trusted network or behind a reverse proxy with authentication. Its actions only accept POST requests and reject requests coming from other websites, but anyone who can reach the port can use them.
+:::warning[Protect the dashboard]
+The dashboard has no login by default: set `DASHBOARD_PASS` (and optionally `DASHBOARD_USER`, default `admin`) to require one. After 10 wrong passwords in 5 minutes an IP is blocked, even with the right password, until the window expires. Basic auth sends the password with every request, so serve the dashboard over HTTPS (reverse proxy) or keep it on a trusted network. Its actions only accept POST requests and reject requests coming from other websites.
 :::
 
 ## CLI
@@ -322,6 +325,12 @@ Links rotate with every digest. Use the most recent digest email, or rotate the 
 
 ### Links stopped working after an update
 The signing secret and the link nonces live in `/data`. Without a volume they are recreated at every container update, which invalidates old links. Mount `/data` as a volume.
+
+### "The mailbox changed since the last digest"
+The spam folder's `UIDVALIDITY` changed (folder recreated, server migration) or the digest was made by a version before 0.8.0, so the stored email IDs could point to other messages. Nothing was changed. Wait for the next digest and use its links.
+
+### Permission errors on `/data` after upgrading
+Since 0.8.0 the app runs as the `app` user. At start, the container hands `/data` over to it (`chown`), including volumes created by older images. If you bind-mount a host folder on a filesystem that doesn't support `chown` (some NAS or network shares), give uid/gid `10001` write access to it.
 
 ### A run failed and the review list is empty
 When a mailbox can't be read (IMAP error), its review and delete lists are cleared on purpose: the previous email IDs can't be verified against the mailbox. The next successful run fills them again.
