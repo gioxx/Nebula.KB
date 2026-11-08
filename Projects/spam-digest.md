@@ -167,7 +167,7 @@ docker run -d --env-file .env -p 8080:8080 -v spam_digest_data:/data spam-digest
 | --- | --- | --- |
 | `AI_PROVIDER` | `none` | `anthropic` to enable AI triage. |
 | `AI_API_KEY` | none | Anthropic API key. **Required** with `anthropic`. |
-| `AI_MODEL` | `claude-haiku-4-5-20251001` | Claude model used for classification. |
+| `AI_MODEL` | `claude-haiku-5-5` | Claude model used for classification. |
 | `AI_MAX_EMAILS` | `50` | Maximum emails sent to the AI per run, across all mailboxes. The rest appear as *Not classified*. |
 
 ### Schedule and web
@@ -278,7 +278,7 @@ The button in the digest opens a **confirmation page**: nothing is deleted until
 
 ![Spam-Digest dashboard](https://raw.githubusercontent.com/gioxx/spam-digest/main/docs/img/dashboard.webp)
 
-`http://<host>:8080/` shows the schedule, the configuration status (AI, email provider), the configured mailboxes and the last run of each (status, emails found, duration, digest sent, errors). It refreshes every 60 seconds. From here you can:
+`http://<host>:8080/` shows the schedule, the configuration status (AI, email provider), the configured mailboxes and the last run of each (status, emails found, duration, digest sent, errors). It refreshes every 60 seconds. The **Active configuration** panel lists the environment variables set for the container, with their values (secrets shown as `set (hidden)`, `MAILBOX_CONFIGS` as the number of mailboxes); anything not listed uses its default. From here you can:
 - **Run all**: send a digest for every mailbox now (even if a spam folder is empty);
 - **Run** (per mailbox): send a digest for that mailbox now;
 - **Filters** (per mailbox, needs `WEB_BASE_URL` and email delivery): rotate the filters link and email it to the mailbox's digest recipient. Links are never shown on the dashboard.
@@ -312,7 +312,7 @@ The configured `SPAM_FOLDER` and all the common names failed. Check the folder's
 The server doesn't offer SSL/TLS on that port. Use `IMAP_USE_SSL=false` (or `"imap_use_ssl": false` in `MAILBOX_CONFIGS`) together with the right port, usually `143`.
 
 ### The digest is not sent
-- Check the container logs: `docker logs spam-digest`.
+- Check the container logs: `docker logs spam-digest`. At startup the `[config]` lines show the configuration actually in use (mailboxes, email provider, AI model, digest links, dashboard login), and `[entrypoint]` says whether `/data` had to be migrated.
 - With an empty spam folder, no digest is sent unless `SEND_IF_EMPTY=true` (or you use **Run** on the dashboard).
 - SMTP: port `465` uses implicit SSL, any other port STARTTLS; check `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS`.
 - Resend: `DIGEST_FROM` must be on a verified domain.

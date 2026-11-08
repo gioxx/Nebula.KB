@@ -178,6 +178,8 @@ With `CLEAN_DAYS=10`, a run on 20 November deletes everything received before 10
 ### Web status page
 `http://<host>:8080/` shows the configured mailboxes (server, folder, retention; never passwords), the schedule in plain words, the Telegram settings and the last run of each mailbox (status, deleted count, duration, errors). It refreshes every 60 seconds.
 
+The **Active configuration** panel lists the environment variables set for the container, with their values (`EMAIL_PASS` and `TELEGRAM_BOT_TOKEN` shown as `set (hidden)`); anything not listed uses its default. At startup the container log shows the configuration in use as `[config]` lines.
+
 When Telegram is configured it also has two buttons:
 - **Test**: sends a test Telegram message.
 - **Send now** (digest mode): sends the collected digest immediately and clears it.
