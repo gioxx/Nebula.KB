@@ -1,6 +1,6 @@
 ---
 id: spam-digest
-title: spam-digest
+title: Spam-Digest
 description: Dockerized daily digest of IMAP spam folders, with optional AI triage, blocklist/allowlist rules and web pages to rescue, trust or delete emails.
 sidebar_position: 3
 tags:
@@ -11,13 +11,13 @@ tags:
   - AI
 ---
 
-# spam-digest
+# Spam-Digest
 
-`spam-digest` is a Docker-first tool that reads the spam folder of one or more IMAP mailboxes and emails you an HTML digest of what landed there. An optional AI step (Anthropic Claude) labels each email **probably legitimate**, **uncertain** or **spam**, and signed links in the digest let you rescue, trust or delete emails from a web page, without opening a mail client.
+Spam-Digest is a Docker-first tool that reads the spam folder of one or more IMAP mailboxes and emails you an HTML digest of what landed there. An optional AI step (Anthropic Claude) labels each email **probably legitimate**, **uncertain** or **spam**, and signed links in the digest let you rescue, trust or delete emails from a web page, without opening a mail client.
 
-It is the companion of [Clean Mail Automation](clean-mail-automation): spam-digest helps you catch real email wrongly flagged as spam, Clean Mail Automation deletes old email from folders you don't need to keep.
+It is the companion of [Clean Mail Automation](clean-mail-automation): Spam-Digest helps you catch real email wrongly flagged as spam, Clean Mail Automation deletes old email from folders you don't need to keep.
 
-![spam-digest review page](https://raw.githubusercontent.com/gioxx/spam-digest/main/docs/img/review.webp)
+![Spam-Digest review page](https://raw.githubusercontent.com/gioxx/spam-digest/main/docs/img/review.webp)
 
 ## Overview
 
@@ -209,7 +209,7 @@ DIGEST_FROM=Spam Digest <digest@yourdomain.com>
 
 ## AI classification
 
-With `AI_PROVIDER=anthropic`, spam-digest sends Claude **only the sender and subject** of each email (never the body) and gets back a label and a short reason:
+With `AI_PROVIDER=anthropic`, Spam-Digest sends Claude **only the sender and subject** of each email (never the body) and gets back a label and a short reason:
 
 | Label | Digest section | Meaning |
 | --- | --- | --- |
@@ -223,7 +223,7 @@ Cost is very low: one request per run with a short prompt. With Claude Haiku and
 
 ## The digest email
 
-![spam-digest digest email](https://raw.githubusercontent.com/gioxx/spam-digest/main/docs/img/digest.webp)
+![Spam-Digest digest email](https://raw.githubusercontent.com/gioxx/spam-digest/main/docs/img/digest.webp)
 
 Each mailbox gets its own digest with:
 - A summary of totals per label.
@@ -251,7 +251,7 @@ Every action asks for confirmation. The link rotates with every digest: the one 
 
 ### Filters page (`/filters`)
 
-![spam-digest filters page](https://raw.githubusercontent.com/gioxx/spam-digest/main/docs/img/filters.webp)
+![Spam-Digest filters page](https://raw.githubusercontent.com/gioxx/spam-digest/main/docs/img/filters.webp)
 
 Manage two rule lists for the mailbox. Rule types: `sender_exact` (full address), `sender_domain`, `subject_contains` (case-insensitive).
 - **Blocklist**: matching emails are **deleted** at the next digest run.
@@ -273,7 +273,7 @@ The button in the digest opens a **confirmation page**: nothing is deleted until
 
 ## Dashboard
 
-![spam-digest dashboard](https://raw.githubusercontent.com/gioxx/spam-digest/main/docs/img/dashboard.webp)
+![Spam-Digest dashboard](https://raw.githubusercontent.com/gioxx/spam-digest/main/docs/img/dashboard.webp)
 
 `http://<host>:8080/` shows the schedule, the configuration status (AI, email provider), the configured mailboxes and the last run of each (status, emails found, duration, digest sent, errors). It refreshes every 60 seconds. From here you can:
 - **Run all**: send a digest for every mailbox now (even if a spam folder is empty);

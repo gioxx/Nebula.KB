@@ -18,7 +18,7 @@ More projects will be added here as soon as their documentation is ready.
 ## Available projects
 ### Mail tools
 - [Clean Mail Automation](clean-mail-automation): Docker-first IMAP cleanup that deletes emails older than a retention period, with cron scheduling, a status page and optional Telegram notifications.
-- [spam-digest](spam-digest): daily digest of IMAP spam folders with optional AI triage, blocklist/allowlist rules and web pages to rescue, trust or delete emails.
+- [Spam-Digest](spam-digest): daily digest of IMAP spam folders with optional AI triage, blocklist/allowlist rules and web pages to rescue, trust or delete emails.
 
 ### Microsoft 365
 - [IntuneWinAppUtil GUI](M365/intunewinapputilgui) — WPF/PowerShell GUI wrapper to package Win32 apps for Intune.
