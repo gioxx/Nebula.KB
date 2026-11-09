@@ -442,9 +442,11 @@ Exchange selected direct licenses between two users. To work in tenants without 
 **Syntax**
 
 ```powershell
-Switch-UserMsolAccountSku -FirstUserPrincipalName <String> -FirstUserLicense <String[]> -SecondUserPrincipalName <String> -SecondUserLicense <String[]> [-ForceLicenseCatalogRefresh] [-WhatIf] [-Confirm]
-Switch-UserMsolAccountSku -FirstUserPrincipalName <String> -SecondUserPrincipalName <String> -AllLicenses [-ExcludeLicense <String[]>] [-ForceLicenseCatalogRefresh] [-WhatIf] [-Confirm]
+Switch-UserMsolAccountSku [-FirstUserPrincipalName] <String> [-SecondUserPrincipalName] <String> -FirstUserLicense <String[]> -SecondUserLicense <String[]> [-ForceLicenseCatalogRefresh] [-WhatIf] [-Confirm]
+Switch-UserMsolAccountSku [-FirstUserPrincipalName] <String> [-SecondUserPrincipalName] <String> -AllLicenses [-ExcludeLicense <String[]>] [-ForceLicenseCatalogRefresh] [-WhatIf] [-Confirm]
 ```
+
+The two users can be passed by position (first and second); the license parameters must be named.
 
 | Parameter | Type | Description | Required | Default |
 | --- | --- | --- | :---: | --- |
@@ -452,13 +454,15 @@ Switch-UserMsolAccountSku -FirstUserPrincipalName <String> -SecondUserPrincipalN
 | `FirstUserLicense` | String[] | License(s) to move from the first user. Accepts a friendly name, SKU part number, or SKU ID. | For explicit selection | - |
 | `SecondUserPrincipalName` | String | UPN or object ID of the second user. | Yes | - |
 | `SecondUserLicense` | String[] | License(s) to move from the second user. Accepts a friendly name, SKU part number, or SKU ID. | For explicit selection | - |
-| `AllLicenses` | Switch | Select all licenses on both users automatically. Only direct assignments can be moved; licenses both users already share remain with both. | One selection mode required | `False` |
-| `ExcludeLicense` | String[] | With `-AllLicenses`, keep these licenses with their current users. Accepts a friendly name, SKU part number, or SKU ID. | No | - |
+| `AllLicenses` | Switch | Select all licenses on both users automatically. Only direct assignments can be moved; licenses both users already share are given back to both after the swap. | One selection mode required | `False` |
+| `ExcludeLicense` | String[] | With `-AllLicenses`, give these licenses back to their current users after the swap. Accepts a friendly name, SKU part number, or SKU ID. | No | - |
 | `ForceLicenseCatalogRefresh` | Switch | Redownload license catalog cache. | No | `False` |
 | `WhatIf` | Switch | Preview the planned removal and reciprocal assignment without changing licenses. | No | `False` |
 | `Confirm` | Switch | Ask before removing and assigning licenses. | No | Prompted by default (high impact) |
 
 Use either explicit license selections for both users, or `-AllLicenses`. The two modes cannot be combined. `-ExcludeLicense` is available only with `-AllLicenses`; each user must still have at least one distinct license to swap after exclusions. Licenses assigned through a group cannot be moved; if a selected license is group-assigned, the swap stops.
+
+With `-AllLicenses`, excluded licenses and licenses shared by both users are removed together with the swapped ones, so both users are emptied, and then assigned again to the same user (with the same disabled service plans) in the reciprocal step. Leaving them in place would make the removal fail when one of their service plans depends on a swapped plan (for example, Power Automate Free needs an Exchange Online plan). Group-assigned excluded licenses stay where they are.
 
 **Examples**
 
@@ -473,12 +477,10 @@ Switch-UserMsolAccountSku `
   -WhatIf
 ```
 
-Swap all movable licenses and leave Fabric assigned to its current user:
+Swap all movable licenses and give Fabric back to its current user:
 
 ```powershell
-Switch-UserMsolAccountSku `
-  -FirstUserPrincipalName 'user1@contoso.com' `
-  -SecondUserPrincipalName 'user2@contoso.com' `
+Switch-UserMsolAccountSku 'user1@contoso.com' 'user2@contoso.com' `
   -AllLicenses `
   -ExcludeLicense 'Microsoft Fabric (Free)' `
   -WhatIf
