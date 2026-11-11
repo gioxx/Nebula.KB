@@ -35,6 +35,7 @@ const moduleCards = [
   },
   {
     name: 'Core',
+    featured: true,
     blurb: 'A PowerShell module that goes beyond your workstation. It will make your Microsoft 365 life easier.',
     icon: require('@site/static/img/Nebula.Core.png').default,
   },
@@ -159,11 +160,12 @@ function ModulesBand() {
           <p>Install with one command. Designed to mix Core, Automations, Log and Tools where needed. Ready to go out of the box, or adapt to your needs.</p>
         </div>
         <div className={styles.fourColumns}>
-          {moduleCards.map(({name, blurb, icon}) => (
-            <article key={name} className={styles.moduleCard}>
+          {moduleCards.map(({name, blurb, icon, featured}) => (
+            <article key={name} className={featured ? `${styles.moduleCard} ${styles.featuredCard}` : styles.moduleCard}>
               <div className={styles.moduleTitle}>
                 <img src={icon} alt="" className={styles.moduleLogo} />
                 <Heading as="h3">{name}</Heading>
+                {featured && <span className={styles.featuredBadge}>Flagship</span>}
               </div>
               <Link to={`https://www.powershellgallery.com/packages/Nebula.${name}`} className={styles.badge}>
                 <img

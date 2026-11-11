@@ -1,8 +1,20 @@
 /* Home page sections below the hero and the alerts:
-   modules (dark band), projects (page background), utilities + blog (tinted band). */
+   modules (dark band), projects (light band), utilities + blog (tinted band).
+   All three share the same blue/lilac glows, so they read as one page. */
 
 .section {
   padding: 3.5rem 0;
+  background:
+    radial-gradient(900px 380px at 88% 0%, rgba(138, 173, 244, 0.14), transparent 70%),
+    radial-gradient(800px 380px at 8% 100%, rgba(198, 160, 246, 0.10), transparent 70%),
+    var(--ifm-background-color);
+}
+
+[data-theme='dark'] .section {
+  background:
+    radial-gradient(900px 380px at 88% 0%, rgba(138, 173, 244, 0.10), transparent 70%),
+    radial-gradient(800px 380px at 8% 100%, rgba(198, 160, 246, 0.08), transparent 70%),
+    var(--ifm-background-color);
 }
 
 .section h2,
@@ -90,6 +102,25 @@
   margin: 0;
   color: #ffffff;
   font-size: 1.4rem;
+}
+
+/* Core, the flagship module: brighter frame and a badge */
+.featuredCard {
+  background: rgba(138, 173, 244, 0.14);
+  border-color: rgba(138, 173, 244, 0.55);
+  box-shadow: 0 0 0 1px rgba(138, 173, 244, 0.25), 0 12px 32px rgba(138, 173, 244, 0.18);
+}
+
+.featuredBadge {
+  margin-left: auto;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: #8aadf4;
+  color: #101828;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .moduleLogo {
@@ -323,11 +354,17 @@
 
 .tintBand {
   padding: 3.5rem 0;
-  background: #eef2fb;
+  background:
+    radial-gradient(900px 380px at 10% 0%, rgba(138, 173, 244, 0.22), transparent 70%),
+    radial-gradient(800px 380px at 92% 100%, rgba(198, 160, 246, 0.20), transparent 70%),
+    #eef2fb;
 }
 
 [data-theme='dark'] .tintBand {
-  background: rgba(255, 255, 255, 0.03);
+  background:
+    radial-gradient(900px 380px at 10% 0%, rgba(138, 173, 244, 0.12), transparent 70%),
+    radial-gradient(800px 380px at 92% 100%, rgba(198, 160, 246, 0.10), transparent 70%),
+    #181825;
 }
 
 .split {
@@ -336,14 +373,21 @@
   gap: 2rem 3rem;
 }
 
+/* Side by side, both columns are as tall as the taller one; the blog list
+   stretches its rows so its last line ends level with the last utility card. */
+.utilities,
+.blog {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .utilities {
   flex: 1 1 300px;
-  min-width: 0;
 }
 
 .blog {
   flex: 2 1 460px;
-  min-width: 0;
 }
 
 .plainList,
@@ -399,12 +443,17 @@
 }
 
 .postList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   border-top: 1px solid var(--ifm-color-emphasis-300);
 }
 
 .postList li {
+  flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 0.15rem;
   padding: 0.85rem 0;
   border-bottom: 1px solid var(--ifm-color-emphasis-300);
