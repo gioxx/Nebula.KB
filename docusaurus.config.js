@@ -70,7 +70,7 @@ const config = {
         sidebarPath: path.resolve('./sidebarsProjects.js'),
       },
     ],
-    // Old URLs: projects before each got its own section, blog posts before /news became /blog.
+    // Old URLs: projects before each got its own section, blog posts before /news became /blog (posts only, not the feeds).
     [
       '@docusaurus/plugin-client-redirects',
       {
