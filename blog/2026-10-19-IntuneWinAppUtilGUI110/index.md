@@ -23,7 +23,7 @@ Update-Module IntuneWinAppUtilGUI
 ```
 
 :::warning[Windows PowerShell 5.1]
-This version does not import correctly in Windows PowerShell 5.1. Use [1.1.1](/news/intunewinapputilgui-1-1-1) or later.
+This version does not import correctly in Windows PowerShell 5.1. Use [1.1.1](/blog/intunewinapputilgui-1-1-1) or later.
 :::
 
 :::note

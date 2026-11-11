@@ -10,7 +10,7 @@ The site is built with [Docusaurus](https://docusaurus.io/) and covers:
 - **Nebula.Scripts** and general pages (introduction, requirements).
 - **Projects**: other tools, such as Clean Mail Automation, IntuneWinAppUtil GUI and Microsoft 365 Tenant Checker.
 - **Utilities**: browser-only tools (E-mail Header Analyzer, PSADT Log Viewer, Quarantine E-mail Analyzer).
-- **News**: announcements and articles.
+- **Blog**: announcements and articles.
 
 ## Repository layout
 
@@ -20,7 +20,7 @@ The site is built with [Docusaurus](https://docusaurus.io/) and covers:
 | `modules/<Module>/` | Module documentation, **Next** version (in development) | `/Nebula/<Module>/next/...` |
 | `<module>_versioned_docs/` | Module documentation, **stable** version (PowerShell Gallery) | `/Nebula/<Module>/...` |
 | `Projects/` | Project pages | `/Projects/...` |
-| `blog/` | News posts (`YYYY-MM-DD-Name/index.md`) | `/news/...` |
+| `blog/` | Blog posts (`YYYY-MM-DD-Name/index.md`) | `/blog/...` |
 | `src/pages/` | Home page and browser utilities | `/`, `/message-header-analyzer`, ... |
 | `static/` | Images and static files | `/img/...` |
 

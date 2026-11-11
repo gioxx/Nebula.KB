@@ -24,7 +24,7 @@ The length shown for the source folder is indicative: the full check runs when p
 The GUI checks the PowerShell Gallery for a newer version and shows a banner when there is one. The `-ShowVersion` and `-ForceUpdateBanner` switches let you test the banner.
 
 :::warning[Windows PowerShell 5.1]
-Versions 1.0.7 to 1.1.0 do not import correctly in Windows PowerShell 5.1. The problem was found and fixed in [1.1.1](/news/intunewinapputilgui-1-1-1): if you use 5.1, update to the latest version.
+Versions 1.0.7 to 1.1.0 do not import correctly in Windows PowerShell 5.1. The problem was found and fixed in [1.1.1](/blog/intunewinapputilgui-1-1-1): if you use 5.1, update to the latest version.
 :::
 
 :::note

@@ -4,7 +4,7 @@
   "variant": "info",
   "title": "Exchange Online authentication change postponed",
   "message": "Microsoft moved the -Credential retirement to module releases starting December 2026.",
-  "linkHref": "/news/MC1248389#impact-on-nebula-modules-starting-december-2026",
+  "linkHref": "/blog/MC1248389#impact-on-nebula-modules-starting-december-2026",
   "linkLabel": "Read the updated timeline",
   "isDismissible": true,
   "startDate": "2026-03-12"

@@ -58,7 +58,7 @@ The current Nebula connection implementation does **not** pass `-Credential` to 
 :::
 
 :::note
-The [Exchange Online and Microsoft Graph PowerShell assembly clash](/news/exchange-online-graph-assembly-clash) observed with recent module versions is a separate issue. It affects modern authentication dependencies and is not caused by MC1248389.
+The [Exchange Online and Microsoft Graph PowerShell assembly clash](/blog/exchange-online-graph-assembly-clash) observed with recent module versions is a separate issue. It affects modern authentication dependencies and is not caused by MC1248389.
 :::
 
 ### What you can do to prepare

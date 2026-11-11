@@ -6,7 +6,7 @@ authors: [gioxx]
 tags: [intune, intunewinapputilgui, powershell]
 ---
 
-IntuneWinAppUtil GUI 1.0.5 is an emergency fix for [1.0.4](/news/intunewinapputilgui-1-0-4), which shipped without the `Show-IntuneWinAppUtilGui` command. 1.0.4 has been removed from the PowerShell Gallery.
+IntuneWinAppUtil GUI 1.0.5 is an emergency fix for [1.0.4](/blog/intunewinapputilgui-1-0-4), which shipped without the `Show-IntuneWinAppUtilGui` command. 1.0.4 has been removed from the PowerShell Gallery.
 
 ```powershell
 Update-Module IntuneWinAppUtilGUI

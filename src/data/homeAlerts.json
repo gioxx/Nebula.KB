@@ -5,7 +5,7 @@
     "severity": "high",
     "title": "PowerShell regression: Exchange Online and Microsoft Graph assembly clash",
     "message": "ExchangeOnlineManagement 3.10.x and Microsoft.Graph 2.38.x can fail when authenticating in the same PowerShell 7 session. A temporary connection sequence is available.",
-    "href": "/news/exchange-online-graph-assembly-clash",
+    "href": "/blog/exchange-online-graph-assembly-clash",
     "publishedAt": "2026-07-27",
     "startDate": "2026-07-27"
   },
@@ -15,7 +15,7 @@
     "severity": "medium",
     "title": "Exchange Online: -Credential retirement moved to December 2026",
     "message": "Microsoft postponed the client-side removal of -Credential. The retirement now applies to Exchange Online PowerShell module releases starting in December 2026.",
-    "href": "/news/MC1248389#impact-on-nebula-modules-starting-december-2026",
+    "href": "/blog/MC1248389#impact-on-nebula-modules-starting-december-2026",
     "publishedAt": "2026-07-16",
     "startDate": "2026-07-16"
   },
@@ -25,7 +25,7 @@
     "severity": "info",
     "title": "Nebula news feed is live",
     "message": "A new section has been enabled to highlight urgent changes, release notes, and internal KB updates.",
-    "href": "/news",
+    "href": "/blog",
     "publishedAt": "2026-03-11",
     "startDate": "2026-03-11"
   }

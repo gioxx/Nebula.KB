@@ -16,7 +16,7 @@ Update-Module IntuneWinAppUtilGUI
 
 ## Copy path
 
-The panel that appears when a package is ready, introduced in [1.1.3](/news/intunewinapputilgui-1-1-3), now has a **Copy path** button next to **Open folder**. It copies the full path of the new `.intunewin` file to the clipboard, ready to paste into the Intune admin center upload dialog or into a script. The button shows **Copied!** for a moment to confirm.
+The panel that appears when a package is ready, introduced in [1.1.3](/blog/intunewinapputilgui-1-1-3), now has a **Copy path** button next to **Open folder**. It copies the full path of the new `.intunewin` file to the clipboard, ready to paste into the Intune admin center upload dialog or into a script. The button shows **Copied!** for a moment to confirm.
 
 ## Recent output folders
 
