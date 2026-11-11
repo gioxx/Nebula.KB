@@ -114,9 +114,18 @@
   font-weight: 600;
 }
 
-.moduleLinks a,
-.scriptsLine a {
+/* Light links on the dark band, in both themes: more specific than the
+   global light-mode rule html:not([data-theme='dark']) a (custom.css) */
+.modulesBand .moduleLinks a,
+.modulesBand .scriptsLine a {
   color: var(--ifm-color-primary-light);
+}
+
+.modulesBand .moduleLinks a:hover,
+.modulesBand .moduleLinks a:focus-visible,
+.modulesBand .scriptsLine a:hover,
+.modulesBand .scriptsLine a:focus-visible {
+  color: #ffffff;
 }
 
 .scriptsLine {
