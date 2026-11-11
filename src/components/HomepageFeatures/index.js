@@ -4,6 +4,29 @@ import Link from '@docusaurus/Link';
 import {usePluginData} from '@docusaurus/useGlobalData';
 import styles from './styles.module.css';
 
+// Stroke icons (Lucide shapes, ISC license), drawn inline: no icon package needed.
+const iconPaths = {
+  mail: ['M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z', 'm22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'],
+  fileSearch: ['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z', 'M14 2v6h6', 'M11.5 12a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z', 'M13.3 16.3 15 18'],
+  shieldAlert: ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', 'M12 8v4', 'M12 16h.01'],
+  trash: ['M3 6h18', 'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6', 'M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2', 'M10 11v6', 'M14 11v6'],
+  package: ['M16.5 9.4 7.55 4.24', 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z', 'M3.27 6.96 12 12.01l8.73-5.05', 'M12 22.08V12'],
+  globe: ['M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z', 'M2 12h20', 'M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'],
+  filter: ['M22 3H2l8 9.46V19l4 2v-8.54L22 3z'],
+  wrench: ['M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z'],
+  newspaper: ['M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2', 'M18 14h-8', 'M15 18h-5', 'M10 6h8v4h-8V6z'],
+};
+
+function Icon({name, className}) {
+  return (
+    <span className={className ?? styles.iconTile} aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        {iconPaths[name].map((d) => <path key={d} d={d} />)}
+      </svg>
+    </span>
+  );
+}
+
 const moduleCards = [
   {
     name: 'Automations',
@@ -31,6 +54,7 @@ const projects = [
   {
     name: 'Clean Mail Automation',
     slug: 'clean-mail-automation',
+    icon: 'trash',
     tech: 'Docker',
     blurb: 'IMAP mailbox cleanup that deletes emails older than a retention period, with multi-mailbox support, cron scheduling, a web status page and optional Telegram notifications.',
     pages: [
@@ -43,6 +67,7 @@ const projects = [
   {
     name: 'IntuneWinAppUtil GUI',
     slug: 'intunewinapputilgui',
+    icon: 'package',
     tech: 'PowerShell · WPF',
     blurb: "GUI around Microsoft's IntuneWinAppUtil.exe for packaging Win32 apps, with PSAppDeployToolkit/MSI auto-detection and Intune detection-rule helpers.",
     pages: [
@@ -56,6 +81,7 @@ const projects = [
   {
     name: 'Microsoft 365 Tenant Checker',
     slug: 'm365-tenant-checker',
+    icon: 'globe',
     tech: 'Flask',
     blurb: 'Quickly verify whether a domain belongs to a Microsoft 365 tenant, via API and a minimal web UI.',
     pages: [
@@ -66,6 +92,7 @@ const projects = [
   {
     name: 'Spam-Digest',
     slug: 'spam-digest',
+    icon: 'filter',
     tech: 'Docker',
     blurb: 'Daily digest of IMAP spam folders, with optional AI triage, blocklist/allowlist rules and web pages to rescue, trust or delete emails.',
     pages: [
@@ -79,9 +106,9 @@ const projects = [
 ];
 
 const utilities = [
-  {name: 'E-mail Header Analyzer', to: '/message-header-analyzer', blurb: 'Inspect message headers entirely in your browser.'},
-  {name: 'PSADT Log Viewer', to: '/psadt-log-viewer', blurb: 'Inspect, filter and analyze PSADT style logs.'},
-  {name: 'Quarantine E-mail Analyzer', to: '/quarantine-email-analyzer', blurb: 'Analyze quarantine email CSV files in the browser.'},
+  {name: 'E-mail Header Analyzer', to: '/message-header-analyzer', icon: 'mail', blurb: 'Inspect message headers entirely in your browser.'},
+  {name: 'PSADT Log Viewer', to: '/psadt-log-viewer', icon: 'fileSearch', blurb: 'Inspect, filter and analyze PSADT style logs.'},
+  {name: 'Quarantine E-mail Analyzer', to: '/quarantine-email-analyzer', icon: 'shieldAlert', blurb: 'Analyze quarantine email CSV files in the browser.'},
 ];
 
 // UTC, so the server-rendered date matches the one rendered in the browser.
@@ -170,10 +197,11 @@ function ProjectsSection() {
         <Heading as="h2">Beyond the modules</Heading>
         <p className={styles.lead}>Side projects with their own documentation in this KB. Open source, like everything else here.</p>
         <div className={styles.twoColumns}>
-          {projects.map(({name, slug, tech, blurb, pages}) => (
+          {projects.map(({name, slug, icon, tech, blurb, pages}) => (
             <article key={slug} className={styles.projectCard}>
               <div className={styles.projectTitle}>
                 <Heading as="h3">
+                  <Icon name={icon} />
                   <Link to={`/Projects/${slug}`}>{name}</Link>
                 </Heading>
                 <span className={styles.tech}>{tech}</span>
@@ -201,13 +229,19 @@ function UtilitiesAndBlog() {
     <section className={styles.tintBand}>
       <div className={`container ${styles.split}`}>
         <div className={styles.utilities}>
-          <Heading as="h2">Utilities in the browser</Heading>
+          <Heading as="h2" className={styles.iconHeading}>
+            <Icon name="wrench" className={styles.headingIcon} />
+            Utilities in the browser
+          </Heading>
           <ul className={styles.plainList}>
-            {utilities.map(({name, to, blurb}) => (
+            {utilities.map(({name, to, icon, blurb}) => (
               <li key={to}>
                 <Link to={to} className={styles.utilityCard}>
-                  <strong>{name}</strong>
-                  <span>{blurb}</span>
+                  <Icon name={icon} />
+                  <div className={styles.utilityText}>
+                    <strong>{name}</strong>
+                    <span>{blurb}</span>
+                  </div>
                 </Link>
               </li>
             ))}
@@ -215,7 +249,10 @@ function UtilitiesAndBlog() {
         </div>
         <div className={styles.blog}>
           <div className={styles.blogHeader}>
-            <Heading as="h2">From the blog</Heading>
+            <Heading as="h2" className={styles.iconHeading}>
+              <Icon name="newspaper" className={styles.headingIcon} />
+              From the blog
+            </Heading>
             <Link to="/blog">All posts →</Link>
           </div>
           <ul className={styles.postList}>

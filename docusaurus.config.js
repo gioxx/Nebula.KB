@@ -233,7 +233,7 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Modules',
+            title: 'Nebula',
             items: [
               {
                 label: 'Nebula.Automations',
@@ -252,15 +252,15 @@ const config = {
                 label: 'Nebula.Tools',
                 to: '/Nebula/Tools/intro',
               },
+              {
+                label: 'Nebula.Scripts',
+                to: '/Nebula/Scripts',
+              },
             ],
           },
           {
             title: 'Extras',
             items: [
-              {
-                label: 'Nebula.Scripts',
-                to: '/Nebula/Scripts',
-              },
               { label: 'Clean Mail Automation', to: '/Projects/clean-mail-automation' },
               { label: 'IntuneWinAppUtil GUI', to: '/Projects/intunewinapputilgui' },
               { label: 'Microsoft 365 Tenant Checker', to: '/Projects/m365-tenant-checker' },
@@ -290,7 +290,8 @@ const config = {
               {
                 html: [
                   '<small>Microsoft, for the <a href="https://commons.wikimedia.org/wiki/File:PowerShell-Avatar_128.svg">PowerShell Avatar</a>, ',
-                  '<a href="https://tabler.io/icons">Tabler Icons</a> and ',
+                  '<a href="https://tabler.io/icons">Tabler Icons</a>, ',
+                  '<a href="https://lucide.dev/">Lucide</a> and ',
                   '<a href="https://techicons.dev/">tech icons</a> for icons and SVG files.<br />',
                   'A final big thank you to the guys at <strong>Catppuccin</strong> for the <a href="https://github.com/catppuccin/windows-terminal/blob/main/macchiato.json">Catpuccin Macchiato</a> theme, which inspired the basic colors used in this website.</small>',
                 ].join('')
