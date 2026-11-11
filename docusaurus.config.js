@@ -10,6 +10,23 @@ import docSections from './src/data/docSections.json';
 
 const nebulaModules = docSections.flatMap(({module}) => module ?? []);
 
+// Exposes the three newest blog posts to the home page (usePluginData('latest-blog-posts')).
+function latestBlogPosts() {
+  return {
+    name: 'latest-blog-posts',
+    async allContentLoaded({allContent, actions}) {
+      const blogPosts = allContent['docusaurus-plugin-content-blog']?.default?.blogPosts ?? [];
+      actions.setGlobalData({
+        // Unlisted posts stay in blogPosts (Docusaurus hides them only from its own listings).
+        posts: blogPosts
+          .filter(({metadata}) => !metadata.unlisted)
+          .slice(0, 3)
+          .map(({metadata: {title, permalink, date}}) => ({title, permalink, date})),
+      });
+    },
+  };
+}
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Nebula: A family of PowerShell modules that go beyond your workstation',
@@ -61,6 +78,7 @@ const config = {
   ],
 
   plugins: [
+    latestBlogPosts,
     [
       '@docusaurus/plugin-content-docs',
       {
@@ -218,10 +236,6 @@ const config = {
             title: 'Modules',
             items: [
               {
-                label: 'Introduction',
-                to: '/Nebula/im-nebula',
-              },
-              {
                 label: 'Nebula.Automations',
                 to: '/Nebula/Automations/intro',
               },
@@ -247,10 +261,10 @@ const config = {
                 label: 'Nebula.Scripts',
                 to: '/Nebula/Scripts',
               },
-              {
-                label: 'Projects',
-                to: '/Projects/intro',
-              },
+              { label: 'Clean Mail Automation', to: '/Projects/clean-mail-automation' },
+              { label: 'IntuneWinAppUtil GUI', to: '/Projects/intunewinapputilgui' },
+              { label: 'Microsoft 365 Tenant Checker', to: '/Projects/m365-tenant-checker' },
+              { label: 'Spam-Digest', to: '/Projects/spam-digest' },
             ],
           },
           {

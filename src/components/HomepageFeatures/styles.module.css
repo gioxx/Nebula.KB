@@ -1,248 +1,316 @@
-.titleWithIcon {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+/* Home page sections below the hero and the alerts:
+   modules (dark band), projects (page background), utilities + blog (tinted band). */
+
+.section {
+  padding: 3.5rem 0;
+}
+
+.section h2,
+.tintBand h2 {
   margin-bottom: 0.5rem;
 }
 
-/* Icon next to the title */
-.titleIcon {
-  width: 24px;
-  height: 24px;
-  color: var(--ifm-color-primary);
-  flex-shrink: 0;
-  /* Prevent it from shrinking with long titles */
+.lead {
+  font-size: 1.1rem;
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 1.5rem;
 }
 
-/* Title style tweak (optional) */
-.featureTitle {
-  margin: 0;
-  line-height: 1.2;
-}
-
-.playbookGrid {
+/* Two cards per row; one per row when there is no room for two */
+.twoColumns {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
 }
 
-.playbookTitle {
-  margin: 0 0 0.25rem;
-}
+/* --- Modules: dark band, also in light mode --- */
 
-.playbookSubtitle {
-  margin: 0 0 0.5rem;
-  color: var(--ifm-color-emphasis-600);
-}
-
-.playbookList {
-  padding-left: 1.25rem;
-  margin: 0;
-  display: grid;
-  gap: 0.35rem;
-}
-
-.moduleShowcase {
-  display: none;
-}
-
-.moduleStrip {
+.modulesBand {
   background:
     linear-gradient(180deg, rgba(10, 17, 30, 0.82), rgba(10, 17, 30, 0.9)),
     url('/img/Nebula-Strip.jpg') center center / cover no-repeat;
   color: #f7fbff;
-  padding: 3rem 0;
-  overflow: hidden;
-  margin-top: 2rem;
+  padding: 3.5rem 0;
 }
 
-.fullWidthBreakout {
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-}
-
-.moduleStripInner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.moduleStripHeader {
+.modulesHeader {
   text-align: center;
-  max-width: 100%;
-  margin: 0 auto 2rem;
+  margin-bottom: 2rem;
 }
 
-.moduleStripHeader h2 {
+.modulesHeader h2 {
+  color: #ffffff;
   margin-bottom: 0.5rem;
 }
 
-.moduleStripHeader p {
+.modulesHeader p {
   margin: 0;
   color: rgba(247, 251, 255, 0.85);
 }
 
-.moduleStripGrid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-.moduleStripCard {
+.moduleCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  padding: 1rem;
   backdrop-filter: blur(6px);
-  display: grid;
-  grid-template-rows: auto 24px 1fr;
-  gap: 0.5rem;
 }
 
-.moduleStripTitle {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin: 0;
-}
-
-.moduleLogo {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-}
-
-.moduleName {
-  margin: 0;
-}
-
-.moduleStripBlurb {
-  margin: 0;
-  color: rgba(247, 251, 255, 0.82);
-}
-
-.moduleStripFooter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.moduleVersion {
-  font-size: 0.9rem;
-  color: rgba(247, 251, 255, 0.75);
-  display: inline-flex;
-  align-items: center;
-  height: 24px;
-}
-
-.moduleVersion img {
-  display: block;
-  height: 20px;
-  width: auto;
-}
-
-.moduleLink {
-  color: #bfe3ff;
-  font-weight: 400;
-  text-decoration: none;
-}
-
-.moduleLink:hover {
-  font-weight: 600;
-}
-
-.moduleDot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--ifm-color-primary);
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--ifm-color-primary) 20%, transparent);
-}
-
-.sectionHeading {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.headingIcon {
-  color: var(--ifm-color-primary);
-  width: 32px;
-  height: 32px;
-  display: block;
-}
-
-.sectionHeading h2 {
-  margin: 0;
-  line-height: 1.1;
-}
-
-.psWindow {
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  background: #0c1222;
-}
-
-.psTitlebar {
+.moduleTitle {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background: linear-gradient(90deg, #0d1b36, #0b254f);
-  color: #dbe9ff;
 }
 
-.psDots {
+.moduleTitle h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.4rem;
+}
+
+.moduleLogo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.badge {
+  display: inline-flex;
+  align-self: flex-start;
+  height: 20px;
+}
+
+.badge img {
+  display: block;
+  height: 20px;
+}
+
+.moduleBlurb {
+  margin: 0;
+  color: rgba(247, 251, 255, 0.85);
+}
+
+.install {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(10, 17, 30, 0.7);
+  color: #cad3f5;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.moduleLinks,
+.scriptsLine {
   display: flex;
-  gap: 0.4rem;
-}
-
-.psDots span {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-.psDotRed {
-  background: #ff5f56;
-}
-
-.psDotAmber {
-  background: #ffbd2e;
-}
-
-.psDotGreen {
-  background: #27c93f;
-}
-
-.psTitle {
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: auto;
   font-weight: 600;
 }
 
-.psTitleHint {
-  margin-left: auto;
-  color: rgba(219, 233, 255, 0.75);
-  font-size: 0.9rem;
+/* Light links on the dark band, in both themes: more specific than the
+   global light-mode rule html:not([data-theme='dark']) a (custom.css) */
+.modulesBand .moduleLinks a,
+.modulesBand .scriptsLine a {
+  color: var(--ifm-color-primary-light);
 }
 
-.psBody {
+.modulesBand .moduleLinks a:hover,
+.modulesBand .moduleLinks a:focus-visible,
+.modulesBand .scriptsLine a:hover,
+.modulesBand .scriptsLine a:focus-visible {
+  color: #ffffff;
+}
+
+.scriptsLine {
+  display: block;
+  margin: 1.75rem 0 0;
+  text-align: center;
+  font-weight: 400;
+  color: rgba(247, 251, 255, 0.85);
+}
+
+.scriptsLine a {
+  font-weight: 600;
+}
+
+/* --- Projects: page background --- */
+
+.projectCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme='dark'] .projectCard {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.projectCard p {
   margin: 0;
-  padding: 1rem;
-  background: #0c1222;
-  color: #cdd7ff;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 0.95rem;
+  color: var(--ifm-color-emphasis-700);
 }
 
-/* Optional: center-align on mobile */
-@media (max-width: 768px) {
-  .titleWithIcon {
-    justify-content: center;
-    text-align: center;
-  }
+.projectTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.projectTitle h3 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.projectTitle h3 a {
+  color: inherit;
+}
+
+.tech {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.15rem 0.65rem;
+  border-radius: 999px;
+  background: var(--ifm-color-primary-lightest);
+  color: #24387a;
+}
+
+[data-theme='dark'] .tech {
+  background: rgba(138, 173, 244, 0.18);
+  color: var(--ifm-color-primary-lighter);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chips a {
+  display: inline-block;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  color: var(--ifm-font-color-base);
+}
+
+.chips a:hover {
+  border-color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+.readMore {
+  margin-top: auto;
+  font-weight: 600;
+}
+
+/* --- Utilities and blog: tinted band --- */
+
+.tintBand {
+  padding: 3.5rem 0;
+  background: #eef2fb;
+}
+
+[data-theme='dark'] .tintBand {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.split {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 3rem;
+}
+
+.utilities {
+  flex: 1 1 300px;
+  min-width: 0;
+}
+
+.blog {
+  flex: 2 1 460px;
+  min-width: 0;
+}
+
+.plainList,
+.postList {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.plainList li + li {
+  margin-top: 0.75rem;
+}
+
+.utilityCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: 12px;
+  background: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
+}
+
+.utilityCard span {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.utilityCard:hover {
+  border-color: var(--ifm-color-primary);
+  text-decoration: none;
+  color: var(--ifm-font-color-base);
+}
+
+.blogHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.blogHeader a {
+  font-weight: 600;
+}
+
+.postList {
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.postList li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.postList time {
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.postList a {
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
 }
