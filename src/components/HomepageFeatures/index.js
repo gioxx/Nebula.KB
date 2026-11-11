@@ -273,10 +273,10 @@ function UtilitiesAndBlog() {
 
 export default function HomepageFeatures() {
   return (
-    <>
+    <div className={styles.homeSections}>
       <ModulesBand />
       <ProjectsSection />
       <UtilitiesAndBlog />
-    </>
+    </div>
   );
 }

@@ -1,20 +1,25 @@
-/* Home page sections below the hero and the alerts:
-   modules (dark band), projects (light band), utilities + blog (tinted band).
-   All three share the same blue/lilac glows, so they read as one page. */
+/* Home page sections below the hero and the alerts: modules, projects, utilities + blog.
+   One background for all three (soft blue/lilac glows), so nothing breaks between them;
+   the hero stays the only dark block. */
 
-.section {
-  padding: 3.5rem 0;
+.homeSections {
   background:
-    radial-gradient(900px 380px at 88% 0%, rgba(138, 173, 244, 0.14), transparent 70%),
-    radial-gradient(800px 380px at 8% 100%, rgba(198, 160, 246, 0.10), transparent 70%),
+    radial-gradient(1100px 520px at 12% 0%, rgba(138, 173, 244, 0.20), transparent 70%),
+    radial-gradient(1000px 520px at 92% 50%, rgba(198, 160, 246, 0.16), transparent 70%),
+    radial-gradient(1000px 520px at 15% 100%, rgba(138, 173, 244, 0.14), transparent 70%),
+    #f4f6fc;
+}
+
+[data-theme='dark'] .homeSections {
+  background:
+    radial-gradient(1100px 520px at 12% 0%, rgba(138, 173, 244, 0.12), transparent 70%),
+    radial-gradient(1000px 520px at 92% 50%, rgba(198, 160, 246, 0.09), transparent 70%),
+    radial-gradient(1000px 520px at 15% 100%, rgba(138, 173, 244, 0.08), transparent 70%),
     var(--ifm-background-color);
 }
 
-[data-theme='dark'] .section {
-  background:
-    radial-gradient(900px 380px at 88% 0%, rgba(138, 173, 244, 0.10), transparent 70%),
-    radial-gradient(800px 380px at 8% 100%, rgba(198, 160, 246, 0.08), transparent 70%),
-    var(--ifm-background-color);
+.section {
+  padding: 3.5rem 0;
 }
 
 .section h2,
@@ -54,15 +59,9 @@
   }
 }
 
-/* --- Modules: dark band, also in light mode --- */
+/* --- Modules --- */
 
-/* Not the hero image: two different bands one above the other would look like one. */
 .modulesBand {
-  background:
-    radial-gradient(900px 420px at 12% 0%, rgba(138, 173, 244, 0.22), transparent 70%),
-    radial-gradient(800px 420px at 92% 100%, rgba(198, 160, 246, 0.18), transparent 70%),
-    #101828;
-  color: #f7fbff;
   padding: 3.5rem 0;
 }
 
@@ -72,13 +71,12 @@
 }
 
 .modulesHeader h2 {
-  color: #ffffff;
   margin-bottom: 0.5rem;
 }
 
 .modulesHeader p {
   margin: 0;
-  color: rgba(247, 251, 255, 0.85);
+  color: var(--ifm-color-emphasis-700);
 }
 
 .moduleCard {
@@ -87,9 +85,15 @@
   gap: 0.75rem;
   padding: 1.25rem;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(6px);
+  background: #ffffff;
+  border: 1px solid rgba(16, 24, 40, 0.10);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+[data-theme='dark'] .moduleCard {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow: none;
 }
 
 .moduleTitle {
@@ -100,15 +104,20 @@
 
 .moduleTitle h3 {
   margin: 0;
-  color: #ffffff;
   font-size: 1.4rem;
 }
 
-/* Core, the flagship module: brighter frame and a badge */
+/* Core, the flagship module: blue frame and a badge */
 .featuredCard {
-  background: rgba(138, 173, 244, 0.14);
+  background: #f5f8ff;
+  border-color: #8aadf4;
+  box-shadow: 0 0 0 1px rgba(138, 173, 244, 0.35), 0 12px 32px rgba(138, 173, 244, 0.22);
+}
+
+[data-theme='dark'] .featuredCard {
+  background: rgba(138, 173, 244, 0.12);
   border-color: rgba(138, 173, 244, 0.55);
-  box-shadow: 0 0 0 1px rgba(138, 173, 244, 0.25), 0 12px 32px rgba(138, 173, 244, 0.18);
+  box-shadow: 0 0 0 1px rgba(138, 173, 244, 0.25), 0 12px 32px rgba(138, 173, 244, 0.14);
 }
 
 .featuredBadge {
@@ -142,7 +151,7 @@
 
 .moduleBlurb {
   margin: 0;
-  color: rgba(247, 251, 255, 0.85);
+  color: var(--ifm-color-emphasis-700);
 }
 
 .install {
@@ -152,7 +161,11 @@
   gap: 0.5rem;
   padding: 0.5rem 0.5rem 0.5rem 0.75rem;
   border-radius: 8px;
-  background: rgba(10, 17, 30, 0.7);
+  background: #1f2433;
+}
+
+[data-theme='dark'] .install {
+  background: rgba(0, 0, 0, 0.35);
 }
 
 /* Wraps at spaces in narrow cards; the copied text is always the full one-line command */
@@ -200,26 +213,12 @@
   font-weight: 600;
 }
 
-/* Light links on the dark band, in both themes: more specific than the
-   global light-mode rule html:not([data-theme='dark']) a (custom.css) */
-.modulesBand .moduleLinks a,
-.modulesBand .scriptsLine a {
-  color: var(--ifm-color-primary-light);
-}
-
-.modulesBand .moduleLinks a:hover,
-.modulesBand .moduleLinks a:focus-visible,
-.modulesBand .scriptsLine a:hover,
-.modulesBand .scriptsLine a:focus-visible {
-  color: #ffffff;
-}
-
 .scriptsLine {
   display: block;
   margin: 1.75rem 0 0;
   text-align: center;
   font-weight: 400;
-  color: rgba(247, 251, 255, 0.85);
+  color: var(--ifm-color-emphasis-700);
 }
 
 .scriptsLine a {
@@ -274,8 +273,8 @@
   gap: 0.75rem;
   padding: 1.5rem;
   border-radius: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(16, 24, 40, 0.08);
+  background: rgba(255, 255, 255, 0.75);
 }
 
 [data-theme='dark'] .projectCard {
@@ -350,21 +349,10 @@
   font-weight: 600;
 }
 
-/* --- Utilities and blog: tinted band --- */
+/* --- Utilities and blog --- */
 
 .tintBand {
   padding: 3.5rem 0;
-  background:
-    radial-gradient(900px 380px at 10% 0%, rgba(138, 173, 244, 0.22), transparent 70%),
-    radial-gradient(800px 380px at 92% 100%, rgba(198, 160, 246, 0.20), transparent 70%),
-    #eef2fb;
-}
-
-[data-theme='dark'] .tintBand {
-  background:
-    radial-gradient(900px 380px at 10% 0%, rgba(138, 173, 244, 0.12), transparent 70%),
-    radial-gradient(800px 380px at 92% 100%, rgba(198, 160, 246, 0.10), transparent 70%),
-    #181825;
 }
 
 .split {
