@@ -60,6 +60,7 @@ Besides filling in the `-c`, `-s` and `-o` switches for you, the GUI downloads a
 - [Configuration](./configuration.md): IntuneWinAppUtil.exe download and cache, config.json, update check and keyboard shortcuts.
 - [Detection helpers](./detection-helpers.md): Get-IntuneFileVersion and the ready-to-adapt Intune detection script.
 - [Troubleshooting](./troubleshooting.md): Common errors and how to fix them.
+- [IntuneWinAppUtil.exe versions](./tool-versions.mdx): Every release of the Microsoft tool and the FileVersion of its executable.
 
 ## Repository structure
 ```text
