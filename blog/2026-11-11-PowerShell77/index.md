@@ -30,7 +30,7 @@ PowerShell no longer tells you at start-up that a new release is available: the 
 
 Read these before you update scripts that run unattended.
 
-- **`New-Guid` creates version 7 UUIDs.** They are time-sortable instead of fully random; the format does not change. If you need a random GUID (for example as a secret or a token), use `[guid]::NewGuid()`.
+- **`New-Guid` creates version 7 UUIDs.** They are time-sortable instead of fully random; the format does not change. If a script needs a random (version 4) GUID, use `[guid]::NewGuid()`. Neither is meant for secrets or tokens: for those, use random bytes from `[System.Security.Cryptography.RandomNumberGenerator]::GetBytes(32)`.
 - **`-NoTypeInformation` is obsolete** on `Export-Csv` and `ConvertTo-Csv`. It does nothing (PowerShell 7 has not written type information by default for years), but now every use prints a warning:
 
   ```text
