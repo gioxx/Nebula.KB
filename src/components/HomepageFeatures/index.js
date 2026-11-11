@@ -1,4 +1,5 @@
 import Heading from '@theme/Heading';
+import {useEffect, useRef, useState} from 'react';
 import Link from '@docusaurus/Link';
 import {usePluginData} from '@docusaurus/useGlobalData';
 import styles from './styles.module.css';
@@ -87,6 +88,41 @@ const utilities = [
 const formatDate = (date) =>
   new Date(date).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC'});
 
+function InstallCommand({command}) {
+  const [copied, setCopied] = useState(false);
+  const timer = useRef(null);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const copy = () => {
+    navigator.clipboard?.writeText(command).then(() => {
+      setCopied(true);
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), 1500);
+    }, () => {});
+  };
+  return (
+    <div className={styles.install}>
+      {/* One nowrap span per word: lines break only between words, never at the hyphens */}
+      <code>
+        {command.split(' ').map((word, i) => (
+          <span key={i}>{i > 0 && ' '}<span className={styles.nowrap}>{word}</span></span>
+        ))}
+      </code>
+      <button
+        type="button"
+        className={styles.copyButton}
+        onClick={copy}
+        aria-label={copied ? 'Copied' : `Copy: ${command}`}
+        title={copied ? 'Copied' : 'Copy'}>
+        {copied ? (
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" /></svg>
+        ) : (
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z" /></svg>
+        )}
+      </button>
+    </div>
+  );
+}
+
 function ModulesBand() {
   return (
     <section className={styles.modulesBand}>
@@ -95,7 +131,7 @@ function ModulesBand() {
           <Heading as="h2">Nebula is available on PowerShell Gallery</Heading>
           <p>Install with one command. Designed to mix Core, Automations, Log and Tools where needed. Ready to go out of the box, or adapt to your needs.</p>
         </div>
-        <div className={styles.twoColumns}>
+        <div className={styles.fourColumns}>
           {moduleCards.map(({name, blurb, icon}) => (
             <article key={name} className={styles.moduleCard}>
               <div className={styles.moduleTitle}>
@@ -110,7 +146,7 @@ function ModulesBand() {
                 />
               </Link>
               <p className={styles.moduleBlurb}>{blurb}</p>
-              <code className={styles.install}>{`Install-Module Nebula.${name} -Scope CurrentUser`}</code>
+              <InstallCommand command={`Install-Module Nebula.${name} -Scope CurrentUser`} />
               <div className={styles.moduleLinks}>
                 <Link to={`/Nebula/${name}/intro`}>Docs</Link>
                 <Link to={`https://www.powershellgallery.com/packages/Nebula.${name}`}>Gallery</Link>

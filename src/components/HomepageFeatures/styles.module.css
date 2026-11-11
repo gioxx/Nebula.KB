@@ -23,6 +23,25 @@
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
 }
 
+/* Modules: four in a row, two on tablets, one on phones */
+.fourColumns {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1100px) {
+  .fourColumns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .fourColumns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 /* --- Modules: dark band, also in light mode --- */
 
 .modulesBand {
@@ -52,7 +71,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding: 1.5rem;
+  padding: 1.25rem;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -94,15 +113,50 @@
 }
 
 .install {
-  display: block;
-  padding: 0.5rem 0.75rem;
-  border: 0;
+  margin-top: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.75rem;
   border-radius: 8px;
   background: rgba(10, 17, 30, 0.7);
+}
+
+/* Wraps at spaces in narrow cards; the copied text is always the full one-line command */
+.install code {
+  flex: 1;
+  padding: 0;
+  border: 0;
+  background: none;
   color: #cad3f5;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+}
+
+.nowrap {
   white-space: nowrap;
-  overflow-x: auto;
+}
+
+.copyButton {
+  flex: none;
+  display: inline-flex;
+  padding: 0.25rem;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: rgba(247, 251, 255, 0.7);
+  cursor: pointer;
+}
+
+.copyButton:hover,
+.copyButton:focus-visible {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.copyButton svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
 }
 
 .moduleLinks,
@@ -110,7 +164,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1.25rem;
-  margin-top: auto;
   font-weight: 600;
 }
 
