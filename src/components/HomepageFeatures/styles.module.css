@@ -44,10 +44,12 @@
 
 /* --- Modules: dark band, also in light mode --- */
 
+/* Not the hero image: two different bands one above the other would look like one. */
 .modulesBand {
   background:
-    linear-gradient(180deg, rgba(10, 17, 30, 0.82), rgba(10, 17, 30, 0.9)),
-    url('/img/Nebula-Strip.jpg') center center / cover no-repeat;
+    radial-gradient(900px 420px at 12% 0%, rgba(138, 173, 244, 0.22), transparent 70%),
+    radial-gradient(800px 420px at 92% 100%, rgba(198, 160, 246, 0.18), transparent 70%),
+    #101828;
   color: #f7fbff;
   padding: 3.5rem 0;
 }
@@ -193,6 +195,46 @@
   font-weight: 600;
 }
 
+/* --- Icons: tinted tile in cards, plain glyph before section titles --- */
+
+.iconTile {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--ifm-color-primary-lightest);
+  color: #24387a;
+}
+
+[data-theme='dark'] .iconTile {
+  background: rgba(138, 173, 244, 0.16);
+  color: var(--ifm-color-primary-lighter);
+}
+
+.iconTile svg {
+  width: 22px;
+  height: 22px;
+}
+
+.iconHeading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.headingIcon {
+  display: inline-flex;
+  color: var(--ifm-color-primary);
+}
+
+.headingIcon svg {
+  width: 26px;
+  height: 26px;
+}
+
 /* --- Projects: page background --- */
 
 .projectCard {
@@ -224,6 +266,9 @@
 }
 
 .projectTitle h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   margin: 0;
   font-size: 1.35rem;
 }
@@ -314,8 +359,8 @@
 
 .utilityCard {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  align-items: center;
+  gap: 0.9rem;
   padding: 0.9rem 1.1rem;
   border-radius: 12px;
   background: var(--ifm-background-color);
@@ -323,7 +368,14 @@
   color: var(--ifm-font-color-base);
 }
 
-.utilityCard span {
+.utilityText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.utilityText span {
   font-size: 0.9rem;
   color: var(--ifm-color-emphasis-700);
 }

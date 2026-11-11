@@ -233,7 +233,7 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Modules',
+            title: 'Nebula',
             items: [
               {
                 label: 'Nebula.Automations',
@@ -252,15 +252,15 @@ const config = {
                 label: 'Nebula.Tools',
                 to: '/Nebula/Tools/intro',
               },
+              {
+                label: 'Nebula.Scripts',
+                to: '/Nebula/Scripts',
+              },
             ],
           },
           {
             title: 'Extras',
             items: [
-              {
-                label: 'Nebula.Scripts',
-                to: '/Nebula/Scripts',
-              },
               { label: 'Clean Mail Automation', to: '/Projects/clean-mail-automation' },
               { label: 'IntuneWinAppUtil GUI', to: '/Projects/intunewinapputilgui' },
               { label: 'Microsoft 365 Tenant Checker', to: '/Projects/m365-tenant-checker' },
