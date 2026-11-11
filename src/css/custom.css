@@ -251,6 +251,13 @@ table td {
   table-layout: auto;
 }
 
+/* Parameter/switch names in the first column never wrap; the description column takes the rest */
+@media screen and (min-width: 768px) {
+  .markdown td:first-child:has(> code:first-child) {
+    white-space: nowrap;
+  }
+}
+
 /* Responsive tables */
 @media screen and (max-width: 767px) {
   table {
