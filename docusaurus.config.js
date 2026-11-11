@@ -155,9 +155,9 @@ const config = {
             items: [
               { label: 'Overview', to: '/Projects/intro' },
               { label: 'Clean Mail Automation', to: '/Projects/clean-mail-automation' },
-              { label: 'Spam-Digest', to: '/Projects/spam-digest' },
               { label: 'IntuneWinAppUtil GUI', to: '/Projects/intunewinapputilgui' },
               { label: 'Microsoft 365 Tenant Checker', to: '/Projects/m365-tenant-checker' },
+              { label: 'Spam-Digest', to: '/Projects/spam-digest' },
             ],
           },
           {
@@ -181,13 +181,8 @@ const config = {
             position: 'left'
           },
           {
-            to: 'https://gioxx.org',
-            label: 'Blog',
-            target: '_self',
-          },
-          {
             to: '/news',
-            label: 'News',
+            label: 'Blog',
             position: 'left',
           },
           // Shown only inside the matching module (see src/theme/NavbarItem/DocsVersionDropdownNavbarItem.js)

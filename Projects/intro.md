@@ -16,10 +16,7 @@ More projects will be added here as soon as their documentation is ready.
 :::
 
 ## Available projects
-### Mail tools
 - [Clean Mail Automation](clean-mail-automation/index.md): Docker-first IMAP cleanup that deletes emails older than a retention period, with cron scheduling, a status page and optional Telegram notifications.
-- [Spam-Digest](spam-digest/index.md): daily digest of IMAP spam folders with optional AI triage, blocklist/allowlist rules and web pages to rescue, trust or delete emails.
-
-### Microsoft 365
-- [IntuneWinAppUtil GUI](intunewinapputilgui/index.md) — WPF/PowerShell GUI wrapper to package Win32 apps for Intune.
-- [Microsoft 365 Tenant Checker](m365-tenant-checker/index.md) — Flask-based utility and minimal web UI to verify if a domain is registered with Microsoft 365.
+- [IntuneWinAppUtil GUI](intunewinapputilgui/index.md): WPF/PowerShell GUI wrapper to package Win32 apps for Intune.
+- [Microsoft 365 Tenant Checker](m365-tenant-checker/index.md): Flask-based utility and minimal web UI to verify if a domain is registered with Microsoft 365.
+- [Spam-Digest](spam-digest/index.md): Daily digest of IMAP spam folders with optional AI triage, blocklist/allowlist rules and web pages to rescue, trust or delete emails.
