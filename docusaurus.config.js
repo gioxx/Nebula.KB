@@ -17,7 +17,11 @@ function latestBlogPosts() {
     async allContentLoaded({allContent, actions}) {
       const blogPosts = allContent['docusaurus-plugin-content-blog']?.default?.blogPosts ?? [];
       actions.setGlobalData({
-        posts: blogPosts.slice(0, 3).map(({metadata: {title, permalink, date}}) => ({title, permalink, date})),
+        // Unlisted posts stay in blogPosts (Docusaurus hides them only from its own listings).
+        posts: blogPosts
+          .filter(({metadata}) => !metadata.unlisted)
+          .slice(0, 3)
+          .map(({metadata: {title, permalink, date}}) => ({title, permalink, date})),
       });
     },
   };
