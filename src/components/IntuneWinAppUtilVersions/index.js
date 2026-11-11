@@ -3,6 +3,8 @@ import {useEffect, useState} from 'react';
 // Kept up to date by a weekly workflow of the IntuneWinAppUtilGUI repository; the GUI reads the same file.
 const SOURCE = 'https://raw.githubusercontent.com/gioxx/IntuneWinAppUtilGUI/main/Tools/IntuneWinAppUtilVersions.json';
 const GITHUB_COPY = 'https://github.com/gioxx/IntuneWinAppUtilGUI/blob/main/Tools/IntuneWinAppUtilVersions.md';
+// Fixed here rather than taken from the JSON, so the file can only change the text of the links.
+const RELEASES = 'https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/releases/tag/';
 
 export default function IntuneWinAppUtilVersions() {
   const [state, setState] = useState({status: 'loading'});
@@ -39,7 +41,11 @@ export default function IntuneWinAppUtilVersions() {
   }
 
   const {data} = state;
-  const updated = data.updated ? new Date(data.updated).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC'}) : null;
+  const updatedDate = data.updated ? new Date(data.updated) : null;
+  const updated = updatedDate && !Number.isNaN(updatedDate.getTime())
+    ? updatedDate.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC'})
+    : null;
+  const latest = data.latest?.release ?? data.releases[0].release;
   return (
     <>
       <table>
@@ -50,11 +56,11 @@ export default function IntuneWinAppUtilVersions() {
           </tr>
         </thead>
         <tbody>
-          {data.releases.map(({release, fileVersion}, index) => (
+          {data.releases.map(({release, fileVersion}) => (
             <tr key={release}>
               <td>
-                <a href={`${data.source}/releases/tag/${release}`}>{release}</a>
-                {index === 0 && <strong> (latest)</strong>}
+                <a href={RELEASES + encodeURIComponent(release)}>{release}</a>
+                {release === latest && <strong> (latest)</strong>}
               </td>
               <td>
                 <code>{fileVersion}</code>
