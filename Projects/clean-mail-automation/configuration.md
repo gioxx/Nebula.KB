@@ -37,10 +37,14 @@ With the defaults the cleanup runs **every Sunday at 00:00**. Cron fields accept
 
 ## CLI arguments
 
+<div className="param-table">
+
 | Argument | Description |
 | --- | --- |
 | `--days N` | Retention for this run only; overrides `CLEAN_DAYS` and every `clean_days`. |
 | `--send-digest` | Send the collected Telegram digest, clear it and exit. The digest cron calls this. |
 | `--force` | With `--send-digest`: send even when nothing was collected (a "nothing to report" message). |
+
+</div>
 
 Inside the container: `docker exec email_cleaner python3 /app/clean_email.py --days 30`.
