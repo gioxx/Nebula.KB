@@ -10,7 +10,7 @@ Nebula.KB-dev is gone. The documentation for the development versions of the Neb
 
 {/* truncate */}
 
-Until today there were two sites: kb.gioxx.org for the versions published on the PowerShell Gallery, and Nebula.KB-dev for what was coming next (I explained the difference [in this post](/news/DocuDev)). Keeping two copies of the same documentation in sync was getting harder than it was worth, so I merged them.
+Until today there were two sites: kb.gioxx.org for the versions published on the PowerShell Gallery, and Nebula.KB-dev for what was coming next (I explained the difference [in this post](/blog/DocuDev)). Keeping two copies of the same documentation in sync was getting harder than it was worth, so I merged them.
 
 Every module (Automations, Core, Log and Tools) now has two versions of its documentation:
 

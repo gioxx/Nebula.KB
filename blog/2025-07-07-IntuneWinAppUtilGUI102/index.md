@@ -12,7 +12,7 @@ IntuneWinAppUtil GUI 1.0.2 fixes the rename of the generated package when a file
 
 `IntuneWinAppUtil.exe` names the package after the setup file, and the GUI then renames it to the name you chose. If a file with that name already existed, the rename failed. Now the GUI appends an incremental suffix (`_1`, `_2` and so on) and never overwrites an existing package.
 
-The release also includes the loading fix from [1.0.1](/news/intunewinapputilgui-1-0-1).
+The release also includes the loading fix from [1.0.1](/blog/intunewinapputilgui-1-0-1).
 
 ```powershell
 Update-Module IntuneWinAppUtilGUI

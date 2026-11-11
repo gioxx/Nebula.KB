@@ -40,7 +40,7 @@ const config = {
           routeBasePath: 'Nebula',
         },
         blog: {
-          routeBasePath: 'news',
+          routeBasePath: 'blog',
           showReadingTime: true,
           blogSidebarCount: 'ALL',
           blogSidebarTitle: 'All posts',
@@ -70,7 +70,7 @@ const config = {
         sidebarPath: path.resolve('./sidebarsProjects.js'),
       },
     ],
-    // Old URLs from before each project got its own section (links in READMEs and posts).
+    // Old URLs: projects before each got its own section, blog posts before /news became /blog.
     [
       '@docusaurus/plugin-client-redirects',
       {
@@ -78,6 +78,12 @@ const config = {
           { from: '/Projects/M365/intunewinapputilgui', to: '/Projects/intunewinapputilgui' },
           { from: '/Projects/M365/m365-tenant-checker', to: '/Projects/m365-tenant-checker' },
         ],
+        createRedirects(existingPath) {
+          if (existingPath === '/blog' || existingPath.startsWith('/blog/')) {
+            return existingPath.replace(/^\/blog/, '/news');
+          }
+          return undefined;
+        },
       },
     ],
     // One versioned instance per module: last version = PowerShell Gallery, current = next (in development)
@@ -181,7 +187,7 @@ const config = {
             position: 'left'
           },
           {
-            to: '/news',
+            to: '/blog',
             label: 'Blog',
             position: 'left',
           },
@@ -192,7 +198,7 @@ const config = {
             position: 'right',
           })),
           {
-            href: 'pathname:///news/rss.xml',
+            href: 'pathname:///blog/rss.xml',
             position: 'right',
             className: 'header-rss-link',
             'aria-label': 'RSS feed',

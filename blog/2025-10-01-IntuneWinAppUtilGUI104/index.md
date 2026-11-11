@@ -6,7 +6,7 @@ authors: [gioxx]
 tags: [intune, intunewinapputilgui, powershell]
 ---
 
-IntuneWinAppUtil GUI 1.0.4 brought a round of input checks and a code cleanup. It was withdrawn from the PowerShell Gallery the same day: the package did not export `Show-IntuneWinAppUtilGui`, so the GUI could not be started. [1.0.5](/news/intunewinapputilgui-1-0-5) replaced it about twenty minutes later with the same changes.
+IntuneWinAppUtil GUI 1.0.4 brought a round of input checks and a code cleanup. It was withdrawn from the PowerShell Gallery the same day: the package did not export `Show-IntuneWinAppUtilGui`, so the GUI could not be started. [1.0.5](/blog/intunewinapputilgui-1-0-5) replaced it about twenty minutes later with the same changes.
 
 {/* truncate */}
 

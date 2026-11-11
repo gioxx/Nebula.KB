@@ -352,7 +352,7 @@ Trade-offs to weigh before pinning down:
 
 ## This is not MC1248389
 
-[MC1248389](/news/MC1248389) concerns the future removal of the `-Credential` parameter from `Connect-ExchangeOnline` and `Connect-IppsSession`. Microsoft postponed that client-side removal to ExchangeOnlineManagement releases starting in **December 2026**.
+[MC1248389](/blog/MC1248389) concerns the future removal of the `-Credential` parameter from `Connect-ExchangeOnline` and `Connect-IppsSession`. Microsoft postponed that client-side removal to ExchangeOnlineManagement releases starting in **December 2026**.
 
 Nebula's current interactive connection path does not pass `-Credential`. The assembly clash described here is a separate regression caused by incompatible authentication dependencies and can occur even when using supported modern authentication.
 

@@ -10,7 +10,7 @@ IntuneWinAppUtil GUI 1.0.6 fixes the package name proposed for PSAppDeployToolki
 
 {/* truncate */}
 
-The release also includes everything from [1.0.5](/news/intunewinapputilgui-1-0-5).
+The release also includes everything from [1.0.5](/blog/intunewinapputilgui-1-0-5).
 
 ```powershell
 Update-Module IntuneWinAppUtilGUI
