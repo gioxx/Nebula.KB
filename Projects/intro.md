@@ -10,10 +10,7 @@ sidebar_position: 1
 This area hosts documentation for small, self-contained projects that live outside the Nebula PowerShell modules. Often, though, they’re still projects connected to the Microsoft 365 world.  
 Each project has its own section, split into pages on how to run, deploy, configure and troubleshoot it.
 
-:::note[Work in Progress 🚧]
-More projects will be added here as soon as their documentation is ready.  
-**Remember**: many of the projects available on GitHub, but not yet documented in this KB, often already have a `README.md` file that explains everything you need to know.
-:::
+More projects will join this area as their documentation is ready. Until then, the projects on [GitHub](https://github.com/gioxx?tab=repositories) that are not documented here usually have a `README.md` that explains how to use them.
 
 ## Available projects
 - [Clean Mail Automation](clean-mail-automation/index.md): Docker-first IMAP cleanup that deletes emails older than a retention period, with cron scheduling, a status page and optional Telegram notifications.
