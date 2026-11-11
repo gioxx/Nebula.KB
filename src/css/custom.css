@@ -251,9 +251,9 @@ table td {
   table-layout: auto;
 }
 
-/* Parameter/switch names in the first column never wrap; the description column takes the rest */
+/* Tables wrapped in <div className="param-table">: switch names never wrap, the description takes the rest */
 @media screen and (min-width: 768px) {
-  .markdown td:first-child:has(> code:first-child) {
+  .param-table td:first-child {
     white-space: nowrap;
   }
 }

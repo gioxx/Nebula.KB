@@ -63,11 +63,15 @@ The dashboard has no login by default: set `DASHBOARD_PASS` (and optionally `DAS
 
 Inside the container (`docker exec -it spam-digest python3 /app/spam_digest.py ...`) or with the variables exported in your shell:
 
+<div className="param-table">
+
 | Option | Description |
 | --- | --- |
 | `--dry-run` | Fetch and classify, build the digest and save it to `/tmp/spam_digest_dry_run_<recipient>.html`, without sending. Nothing changes: rules are evaluated but no email is deleted or moved, links are not rotated, the state file is not updated. |
 | `--force-send` | Send the digest even when the spam folder is empty (overrides `SEND_IF_EMPTY=false`). |
 | `--only EMAIL` | Run only for the mailbox with this address. |
+
+</div>
 
 Outside Docker the script needs Python 3 and a writable `/data` directory. Scheduling is up to you (cron, systemd timer), and the web server is not started.
 
