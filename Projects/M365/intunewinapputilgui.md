@@ -20,6 +20,7 @@ Besides filling in the `-c`, `-s` and `-o` switches for you, the GUI downloads a
 ![IntuneWinAppUtil GUI main window](https://raw.githubusercontent.com/gioxx/IntuneWinAppUtilGUI/main/Assets/screenshot.png)
 
 :::tip[What's new in 1.1.x]
+- **1.1.4**: the result panel has a **Copy path** button that copies the full path of the new `.intunewin` file. The **Output Folder** field remembers the last 10 folders used for a successful package in a drop-down; **Clear recent** empties the list.
 - **1.1.3**: fixes packaging failing with exit code `-2147024891` (access denied): `IntuneWinAppUtil.exe` now runs without its own console window, which is what triggered the error. Packages are built in a temporary folder and copied to the output folder only when complete, so Dropbox and OneDrive never see a half-written file. A progress overlay shows the packaging step and an estimated percentage. Errors show the last lines of the tool output, and `-Diag` writes a detailed log of every run. See [Troubleshooting](#troubleshooting).
 - **1.1.2**: if one of the module's scripts fails to load, the import now stops with an error naming the file, instead of carrying on with functions missing.
 - **1.1.1**: the module works again in Windows PowerShell 5.1, the PowerShell built into Windows (versions 1.0.7 to 1.1.0 failed to import there). If you use 5.1, update with `Update-Module IntuneWinAppUtilGUI`.
@@ -39,7 +40,8 @@ Besides filling in the `-c`, `-s` and `-o` switches for you, the GUI downloads a
 - Optional final filename, with invalid characters removed and a collision-safe rename (`_1`, `_2`, ...) so existing packages are never overwritten.
 - Live path-length indicators for the Source and Output folders, plus a check of the longest file path in the source before packaging.
 - Packages built in a temporary folder and copied to the output folder only when complete, so folders synced by Dropbox or OneDrive work reliably; temporary files are cleaned up after each run.
-- Output folder created automatically if it does not exist; when packaging completes, the GUI offers to open the folder with the new package selected.
+- Output folder created automatically if it does not exist, and the last 10 output folders remembered in a drop-down.
+- When packaging completes, the GUI offers to open the folder with the new package selected or to copy the package path.
 - Settings saved in `%APPDATA%\IntuneWinAppUtilGUI\config.json`.
 - Non-blocking update check against the PowerShell Gallery, shown as a banner.
 - `Get-IntuneFileVersion` command to read the FileVersion used by Intune detection rules.
@@ -94,14 +96,14 @@ The window has two sections, **Package source** and **Tool and output**, followe
 | --- | :---: | --- |
 | Source Folder (`-c`) | Yes | Root folder with everything that goes into the package. A path-length counter appears under the field. Typing or pasting a path starts the PSADT/MSI auto-detection. |
 | Setup File (`-s`) | Yes | The file Intune will run: EXE, MSI or any other file type. Shown relative to the source folder when it lives inside it, otherwise as a full path. |
-| Output Folder (`-o`) | Yes | Where the `.intunewin` file is written. Created automatically if missing. Has its own path-length counter. |
+| Output Folder (`-o`) | Yes | Where the `.intunewin` file is written. Created automatically if missing. Has its own path-length counter. The drop-down lists the last 10 folders used for a successful package, most recent first; **Clear recent** empties it. |
 | IntuneWinAppUtil Path | No | Path to `IntuneWinAppUtil.exe`. Leave it empty and the GUI uses its cached copy, or downloads the latest one. The detected tool version is shown under the field, with a link to the [version history](https://github.com/gioxx/IntuneWinAppUtilGUI/blob/main/Tools/IntuneWinAppUtilVersions.md). |
 | Final filename | No | Name of the generated package. If empty, the package is named after the source folder. A trailing `.intunewin` is optional; invalid filename characters are removed. |
 
 Buttons:
 - **Run**: validates the fields and starts packaging (also with `Enter`).
 - **Clear**: empties Source Folder, Setup File, Output Folder and Final filename; the tool path is kept.
-- **Exit (ESC)**: closes the window. Pressing `Esc` asks for confirmation first, because the field values are not kept (only the tool path is saved).
+- **Exit (ESC)**: closes the window. Pressing `Esc` asks for confirmation first, because the field values are not kept (only the tool path and the recent output folders are saved).
 - **Force download**: downloads the latest `IntuneWinAppUtil.exe` again, replacing the cached copy (asks for confirmation).
 
 ## Packaging step by step
@@ -120,7 +122,7 @@ When you click Run, the GUI:
 6. runs `IntuneWinAppUtil.exe -c "<source>" -s "<setup>" -o "<staging folder>" -q` without a console window and captures its output. While it runs, a progress overlay shows the current step (compressing the source, encrypting, building the package) and an estimated percentage; the window cannot be closed until the run ends;
 7. copies the package (by default `<setup file name>.intunewin`) to the output folder under a temporary name (`~iwa-<guid>.partial`) and renames it to the final filename, or to the source folder name, only when the copy is complete. When the staging folder is on the output drive, the package is moved with a rename instead of copied. If a file with that name already exists, `_1`, `_2` and so on are appended instead of overwriting it;
 8. removes the staging folder and the working folder `IntuneWinAppUtil.exe` leaves in `%TEMP%`;
-9. plays the Windows success sound and shows a panel with the package name and folder: **Open folder** (or `Enter`) opens the output folder with the package selected, **Close** (or `Esc`) returns to the form.
+9. adds the output folder to the top of the recent folders list, plays the Windows success sound and shows a panel with the package name and folder: **Open folder** (or `Enter`) opens the output folder with the package selected, **Copy path** copies the full path of the package to the clipboard, **Close** (or `Esc`) returns to the form.
 
 If the tool fails, the error message shows its exit code, the matching Windows error text and the last lines of its output. If the package cannot be copied to the output folder, it is kept in the staging folder and the message shows where.
 
@@ -163,12 +165,16 @@ The download takes the current `master` branch of [microsoft/Microsoft-Win32-Con
 The FileVersion shown under the field tells you which release you have; the [version history table](https://github.com/gioxx/IntuneWinAppUtilGUI/blob/main/Tools/IntuneWinAppUtilVersions.md) maps FileVersions to upstream releases and is refreshed weekly by a GitHub Actions workflow.
 
 ## Configuration file
-Settings are stored in `%APPDATA%\IntuneWinAppUtilGUI\config.json` and written when the window closes:
+Settings are stored in `%APPDATA%\IntuneWinAppUtilGUI\config.json`. The file is written when the window closes, after each successful package and when you click **Clear recent**:
 
 ```json
 {
   "ToolPath": "C:\\Users\\alice\\AppData\\Roaming\\IntuneWinAppUtilGUI\\bin\\IntuneWinAppUtil.exe",
-  "UpdateCheckEnabled": true
+  "UpdateCheckEnabled": true,
+  "RecentOutputFolders": [
+    "D:\\Packages\\Contoso",
+    "D:\\Packages"
+  ]
 }
 ```
 
@@ -176,8 +182,9 @@ Settings are stored in `%APPDATA%\IntuneWinAppUtilGUI\config.json` and written w
 | --- | --- |
 | `ToolPath` | Path loaded into the IntuneWinAppUtil Path field at startup, if the file still exists. |
 | `UpdateCheckEnabled` | `true` (default) checks the PowerShell Gallery for a newer module version at startup. Set it to `false` to turn the check off, for example on machines without internet access. |
+| `RecentOutputFolders` | The last 10 output folders used for a successful package, most recent first (1.1.4 and later). They fill the Output Folder drop-down. |
 
-Field values other than the tool path are not saved.
+Other field values are not saved.
 
 ## Update check
 At startup the GUI asks the PowerShell Gallery for the latest version of the module, in the background and with a 10-second timeout, so the window opens straight away. It uses `Find-Module` and falls back to the Gallery API if needed. When a newer version exists, a banner suggests running:
