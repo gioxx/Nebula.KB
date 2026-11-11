@@ -6,7 +6,7 @@ authors: [gioxx]
 tags: [intune, intunewinapputilgui, powershell]
 ---
 
-[IntuneWinAppUtil GUI](/Projects/M365/intunewinapputilgui) 1.1.3 is out on the PowerShell Gallery. It fixes a packaging failure that showed up on some machines as exit code `-2147024891` (`0x80070005`, access denied). It also changes what you see while a package is being built.
+[IntuneWinAppUtil GUI](/Projects/intunewinapputilgui) 1.1.3 is out on the PowerShell Gallery. It fixes a packaging failure that showed up on some machines as exit code `-2147024891` (`0x80070005`, access denied). It also changes what you see while a package is being built.
 
 ```powershell
 Update-Module IntuneWinAppUtilGUI
@@ -49,4 +49,4 @@ Show-IntuneWinAppUtilGUI -Diag
 
 Each packaging run then writes a detailed log to `%APPDATA%\IntuneWinAppUtilGUI\logs`: inputs, tool version, temporary folder, exact command, exit code and tool output. When a run fails, the log also lists the files the tool left behind and the processes holding them open. If you open an issue on [GitHub](https://github.com/gioxx/IntuneWinAppUtilGUI/issues), attach that log.
 
-The full list of changes is in the [release notes](https://github.com/gioxx/IntuneWinAppUtilGUI/releases/tag/v1.1.3). The [documentation](/Projects/M365/intunewinapputilgui) describes each step of a packaging run and has a troubleshooting table for the most common errors.
+The full list of changes is in the [release notes](https://github.com/gioxx/IntuneWinAppUtilGUI/releases/tag/v1.1.3). The [documentation](/Projects/intunewinapputilgui) describes each step of a packaging run and has a troubleshooting table for the most common errors.

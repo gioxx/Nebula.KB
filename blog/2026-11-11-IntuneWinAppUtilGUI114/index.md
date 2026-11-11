@@ -6,7 +6,7 @@ authors: [gioxx]
 tags: [intune, intunewinapputilgui, powershell]
 ---
 
-[IntuneWinAppUtil GUI](/Projects/M365/intunewinapputilgui) 1.1.4 is out on the PowerShell Gallery. It is a small release with two additions that save a few clicks every time you build a package.
+[IntuneWinAppUtil GUI](/Projects/intunewinapputilgui) 1.1.4 is out on the PowerShell Gallery. It is a small release with two additions that save a few clicks every time you build a package.
 
 ```powershell
 Update-Module IntuneWinAppUtilGUI
