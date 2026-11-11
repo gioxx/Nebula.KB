@@ -12,7 +12,7 @@ IntuneWinAppUtil GUI 1.1.0 accepts any file type as the setup file, not only EXE
 
 ## Any file as setup file
 
-You can now point the **Setup File** field at a PowerShell script (`.ps1`), a `.bat` or `.cmd` script, an MSIX package and so on. The browse dialog offers EXE/MSI (the default), script files and all files. When you pick something other than an EXE or MSI, a hint under the field reminds you to set a matching install command in Intune. The [documentation](/Projects/M365/intunewinapputilgui#packaging-scripts-and-other-file-types) has examples.
+You can now point the **Setup File** field at a PowerShell script (`.ps1`), a `.bat` or `.cmd` script, an MSIX package and so on. The browse dialog offers EXE/MSI (the default), script files and all files. When you pick something other than an EXE or MSI, a hint under the field reminds you to set a matching install command in Intune. The [documentation](/Projects/intunewinapputilgui/packaging#packaging-scripts-and-other-file-types) has examples.
 
 ## No more lag in Source Folder
 

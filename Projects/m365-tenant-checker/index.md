@@ -1,12 +1,12 @@
 ---
-id: m365-tenant-checker
 title: Microsoft 365 Tenant Checker
 description: Quickly verify whether a domain belongs to a Microsoft 365 tenant, via API and minimal web UI.
-sidebar_position: 2
 tags:
   - Projects
   - Microsoft 365
   - Tenant Checker
+slug: /m365-tenant-checker
+sidebar_position: 1
 ---
 
 # Microsoft 365 Tenant Checker
@@ -30,70 +30,10 @@ Small Flask-based utility that queries Microsoft's Autodiscover endpoint to dete
 - **Container** (`Dockerfile`): Python slim image, installs `Flask`, `requests`, `flask-cors`, `gunicorn`; exposes `:5000` and starts `gunicorn backend.app:app`.
 - **Procfile**: `web: gunicorn backend.app:app` for Render.com.
 
-## API
-- **Endpoint**: `GET /check?domain=<domain>`
-- **Parameter**: `domain` (required). Missing parameter → `400 Bad Request`.
-- **Typical responses**
+## In this section
 
-| HTTP | found | message                                                                   |
-| ---: | :---: | ------------------------------------------------------------------------- |
-| 200  | true  | Domain associated with M365; redirect URL returned when available.        |
-| 200  | true  | Domain replied 200 but without URL / invalid JSON.                        |
-| 404  | false | Domain is not associated with Microsoft 365.                              |
-| 400  | null  | Protocol error (missing `Protocol=Autodiscoverv1`) or malformed request.  |
-| 500  | null  | Internal error / timeout toward Autodiscover.                             |
-
-**Example**
-```bash
-curl "http://localhost:5000/check?domain=contoso.com"
-```
-```json
-{
-  "domain": "contoso.com",
-  "status": 200,
-  "found": true,
-  "message": "Domain is associated with Microsoft 365. Redirect URL: https://outlook.office365.com/autodiscover/autodiscover.xml"
-}
-```
-
-## Quick start
-### Docker (recommended)
-```bash
-docker pull ghcr.io/gioxx/m365-tenant-checker:latest
-docker run -p 5000:5000 ghcr.io/gioxx/m365-tenant-checker:latest
-```
-Open `http://localhost:5000` for the UI, or call `/check`.
-
-### Docker Compose (single service)
-`compose.yaml`
-```yaml
-services:
-  m365-tenant-checker:
-    image: ghcr.io/gioxx/m365-tenant-checker:latest
-    ports:
-      - "5000:5000"
-    restart: unless-stopped
-```
-Run it:
-```bash
-docker compose up -d
-```
-Browse `http://localhost:5000`.
-
-### Local run (no Docker)
-```bash
-python -m venv .venv
-source .venv/bin/activate  # on Windows: .venv\Scripts\activate
-pip install -r backend/requirements.txt
-gunicorn backend.app:app --bind 0.0.0.0:5000
-# dev alternative: flask --app backend.app run --host 0.0.0.0 --port 5000
-```
-
-### Render.com
-1. Create a **Web Service**.
-2. Connect the GitHub repo.
-3. Set: Build Command empty; Start Command `gunicorn backend.app:app`; Runtime Python 3; Instance Type *Free*.
-4. Deploy.
+- [API](./api.md): Endpoints, parameters and responses.
+- [Deployment](./deployment.md): Run it with Docker, Docker Compose, locally or on Render.com.
 
 ## Repository structure
 ```

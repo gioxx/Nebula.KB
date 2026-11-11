@@ -26,7 +26,7 @@ Show-IntuneWinAppUtilGui
 
 It is built with WPF (XAML) and PowerShell only, with no external dependencies, and needs Windows 10 or later and PowerShell 5.1 or later.
 
-The [documentation](/Projects/M365/intunewinapputilgui) covers installation and every field of the window.
+The [documentation](/Projects/intunewinapputilgui) covers installation and every field of the window.
 
 :::note
 Written in October 2026 from the release notes, to keep the history of every IntuneWinAppUtil GUI release on this site.

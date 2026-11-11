@@ -70,6 +70,16 @@ const config = {
         sidebarPath: path.resolve('./sidebarsProjects.js'),
       },
     ],
+    // Old URLs from before each project got its own section (links in READMEs and posts).
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          { from: '/Projects/M365/intunewinapputilgui', to: '/Projects/intunewinapputilgui' },
+          { from: '/Projects/M365/m365-tenant-checker', to: '/Projects/m365-tenant-checker' },
+        ],
+      },
+    ],
     // One versioned instance per module: last version = PowerShell Gallery, current = next (in development)
     ...nebulaModules.map((name) => [
       '@docusaurus/plugin-content-docs',
@@ -146,8 +156,8 @@ const config = {
               { label: 'Overview', to: '/Projects/intro' },
               { label: 'Clean Mail Automation', to: '/Projects/clean-mail-automation' },
               { label: 'Spam-Digest', to: '/Projects/spam-digest' },
-              { label: 'IntuneWinAppUtil GUI', to: '/Projects/M365/intunewinapputilgui' },
-              { label: 'Microsoft 365 Tenant Checker', to: '/Projects/M365/m365-tenant-checker' },
+              { label: 'IntuneWinAppUtil GUI', to: '/Projects/intunewinapputilgui' },
+              { label: 'Microsoft 365 Tenant Checker', to: '/Projects/m365-tenant-checker' },
             ],
           },
           {
