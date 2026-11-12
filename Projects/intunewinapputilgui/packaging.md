@@ -6,21 +6,21 @@ sidebar_position: 3
 ---
 
 ## The window at a glance
-The window has two sections, **Package source** and **Tool and output**, followed by the Run, Clear and Exit buttons. Fields marked with `*` are required.
+The **Package** tab has two sections, **Package source** and **Tool and output**, followed by the Run, Clear and Exit buttons. Fields marked with `*` are required. The **Publish to Intune** tab next to it is described in [Publish to Intune](./publish-to-intune.md).
 
 | Field | Required | Notes |
 | --- | :---: | --- |
 | Source Folder (`-c`) | Yes | Root folder with everything that goes into the package. A path-length counter appears under the field. Typing or pasting a path starts the PSADT/MSI auto-detection. |
 | Setup File (`-s`) | Yes | The file Intune will run: EXE, MSI or any other file type. Shown relative to the source folder when it lives inside it, otherwise as a full path. |
 | Output Folder (`-o`) | Yes | Where the `.intunewin` file is written. Created automatically if missing. Has its own path-length counter. The drop-down lists the last 10 folders used for a successful package, most recent first; **Clear recent** empties it. |
-| IntuneWinAppUtil Path | No | Path to `IntuneWinAppUtil.exe`. Leave it empty and the GUI uses its cached copy, or downloads the latest one. The detected tool version is shown under the field, with a link to the [version history](https://github.com/gioxx/IntuneWinAppUtilGUI/blob/main/Tools/IntuneWinAppUtilVersions.md). |
+| IntuneWinAppUtil Path | No | Path to `IntuneWinAppUtil.exe`. Leave it empty and the GUI uses its cached copy, or downloads the latest one. The detected tool version is shown under the field, with **Check for updates** and **Version history** (the [list of releases](./tool-versions.mdx)). |
 | Final filename | No | Name of the generated package. If empty, the package is named after the source folder. A trailing `.intunewin` is optional; invalid filename characters are removed. |
 
 Buttons:
 - **Run**: validates the fields and starts packaging (also with `Enter`).
 - **Clear**: empties Source Folder, Setup File, Output Folder and Final filename; the tool path is kept.
 - **Exit (ESC)**: closes the window. Pressing `Esc` asks for confirmation first, because the field values are not kept (only the tool path and the recent output folders are saved).
-- **Force download**: downloads the latest `IntuneWinAppUtil.exe` again, replacing the cached copy (asks for confirmation).
+- **Force download**: downloads the latest `IntuneWinAppUtil.exe` again, replacing the cached copy (asks for confirmation). **Check for updates** downloads only when a newer release exists; see [Configuration](./configuration.md#intunewinapputilexe-download-and-cache).
 
 ## Packaging step by step
 1. Pick the **Source Folder**. If it contains a PSAppDeployToolkit package or an MSI, the Setup File and Final filename are filled in for you (see [Auto-detection](#auto-detection-psappdeploytoolkit-and-msi)).

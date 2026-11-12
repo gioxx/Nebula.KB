@@ -43,4 +43,4 @@ WPF needs a single-threaded apartment (STA). If the current session is not STA, 
 
 </div>
 
-The **Help** link at the bottom of the window shows the same switches and the keyboard shortcuts.
+The **Help** link at the bottom of the window opens a panel with the same switches and the keyboard shortcuts.
