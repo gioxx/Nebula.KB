@@ -61,7 +61,7 @@ Besides filling in the `-c`, `-s` and `-o` switches for you, the GUI downloads a
 - PowerShell 7 recommended; Windows PowerShell 5.1 is supported (use version 1.1.1 or later).
 - .NET Framework 4.7.2 or later (usually already present on supported systems).
 - Internet access to GitHub only if you let the GUI download `IntuneWinAppUtil.exe`, and to the PowerShell Gallery for the update check.
-- For Publish to Intune only: the `Microsoft.Graph.Authentication` module (the tab offers to install it) and an account that can manage Intune apps.
+- For Publish to Intune only: the `Microsoft.Graph.Authentication` module (the tab offers to install it), an account that can manage Intune apps, and network access to the sign-in, Microsoft Graph and Azure Storage endpoints listed in [Publish to Intune](./publish-to-intune.md#network-access).
 
 ## In this section
 
