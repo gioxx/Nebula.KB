@@ -23,9 +23,9 @@ Behind a proxy or a firewall that filters outbound traffic, the PC that publishe
 | `login.microsoftonline.com` | Signing in. |
 | `graph.microsoft.com` | Creating, reading and updating the app in Intune. |
 | `*.blob.core.windows.net` | Uploading the package content to the Azure Storage location Intune hands out for each upload. |
-| `www.powershellgallery.com` | Installing `Microsoft.Graph.Authentication`, only the first time. |
+| `www.powershellgallery.com`, `cdn.powershellgallery.com`, `cdn.oneget.org` | Installing `Microsoft.Graph.Authentication` with **Install now**, only the first time. |
 
-Microsoft keeps the full, current list in [Network endpoints for Microsoft Intune](https://learn.microsoft.com/intune/intune-service/fundamentals/intune-endpoints).
+Microsoft keeps the full, current lists in [Network endpoints for Microsoft Intune](https://learn.microsoft.com/intune/intune-service/fundamentals/intune-endpoints) and [Network access to the PowerShell Gallery](https://learn.microsoft.com/powershell/gallery/getting-started#network-access-to-the-powershell-gallery).
 
 ## Signing in
 The block at the top right of the tab shows who is signed in, with which app, and the **Sign in** / **Sign out** button.
