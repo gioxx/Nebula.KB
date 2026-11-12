@@ -18,8 +18,8 @@ The **Package** tab has two sections, **Package source** and **Tool and output**
 
 Buttons:
 - **Run**: validates the fields and starts packaging (also with `Enter`).
-- **Clear**: empties Source Folder, Setup File, Output Folder and Final filename; the tool path is kept.
-- **Exit (ESC)**: closes the window. Pressing `Esc` asks for confirmation first, because the field values are not kept (only the tool path and the recent output folders are saved).
+- **Clear**: empties Source Folder, Setup File, Output Folder and Final filename, and the Publish to Intune tab; the tool path and the Intune sign-in are kept. Not available while an upload to Intune runs.
+- **Exit (ESC)**: closes the window. Pressing `Esc` asks for confirmation first, because the field values are not kept (only the tool path, the recent output folders and the Publish to Intune sign-in settings are saved). If an upload to Intune is running, closing asks whether to stop it.
 - **Force download**: downloads the latest `IntuneWinAppUtil.exe` again, replacing the cached copy (asks for confirmation). **Check for updates** downloads only when a newer release exists; see [Configuration](./configuration.md#intunewinapputilexe-download-and-cache).
 
 ## Packaging step by step
@@ -38,7 +38,7 @@ When you click Run, the GUI:
 6. runs `IntuneWinAppUtil.exe -c "<source>" -s "<setup>" -o "<staging folder>" -q` without a console window and captures its output. While it runs, a progress overlay shows the current step (compressing the source, encrypting, building the package) and an estimated percentage; the window cannot be closed until the run ends;
 7. copies the package (by default `<setup file name>.intunewin`) to the output folder under a temporary name (`~iwa-<guid>.partial`) and renames it to the final filename, or to the source folder name, only when the copy is complete. When the staging folder is on the output drive, the package is moved with a rename instead of copied. If a file with that name already exists, `_1`, `_2` and so on are appended instead of overwriting it;
 8. removes the staging folder and the working folder `IntuneWinAppUtil.exe` leaves in `%TEMP%`;
-9. adds the output folder to the top of the recent folders list, plays the Windows success sound and shows a panel with the package name and folder: **Open folder** (or `Enter`) opens the output folder with the package selected, **Copy path** copies the full path of the package to the clipboard, **Close** (or `Esc`) returns to the form.
+9. adds the output folder to the top of the recent folders list, plays the Windows success sound and shows a panel with the package name and folder: **Open folder** (or `Enter`) opens the output folder with the package selected, **Copy path** copies the full path of the package to the clipboard, **Upload to Intune...** opens the [Publish to Intune](./publish-to-intune.md) tab with the package, **Close** (or `Esc`) returns to the form.
 
 If the tool fails, the error message shows its exit code, the matching Windows error text and the last lines of its output. If the package cannot be copied to the output folder, it is kept in the staging folder and the message shows where.
 

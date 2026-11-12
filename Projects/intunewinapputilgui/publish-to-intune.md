@@ -10,7 +10,7 @@ From version 2.0.0, IntuneWinAppUtil GUI can create a Win32 app in Intune, or up
 ## Opening the tab
 **Publish to Intune** is the second tab of the main window, next to **Package**. `Ctrl+Tab` switches between them.
 
-- After packaging, **Upload to Intune...** in the *Package created* panel opens the tab with the package you just built, already loaded as a new app. Name, version and publisher come from the same PSAppDeployToolkit or MSI data the Package tab uses.
+- After packaging, **Upload to Intune...** in the *Package created* panel opens the tab with the package you just built, already loaded as a new app. Name, version and publisher come from the same PSAppDeployToolkit or MSI data the Package tab uses; without them, the version is the setup file's FileVersion.
 - Any other `.intunewin` can be picked with **Browse** in the tab.
 
 Switching tab by hand never changes what you filled in.
@@ -30,10 +30,10 @@ Microsoft keeps the full, current lists in [Network endpoints for Microsoft Intu
 ## Signing in
 The block at the top right of the tab shows who is signed in, with which app, and the **Sign in** / **Sign out** button.
 
-- **Sign in** uses your **Microsoft account**, through Microsoft's own *Microsoft Graph Command Line Tools* app. This is the recommended way. The blue chip under the account says so.
+- **Sign in** uses your **Microsoft account**, through Microsoft's own *Microsoft Graph Command Line Tools* app. This is the recommended way. The blue chip under the account shows **Microsoft account**.
 - The arrow next to the button opens the sign-in method: **Microsoft account** or **App registration** (alpha), plus **App registration settings...**.
 
-The first time, the tab checks for the `Microsoft.Graph.Authentication` module. If it is missing, **Install now** installs it for the current user (`Install-Module Microsoft.Graph.Authentication -Scope CurrentUser`).
+The first time, the tab checks for the `Microsoft.Graph.Authentication` module. If it is missing, **Install now** installs it for the current user (`Install-Module Microsoft.Graph.Authentication -Scope CurrentUser`). It is installed for the PowerShell edition that runs the GUI: PowerShell 7 and Windows PowerShell 5.1 keep separate user module folders. The tab uses the Microsoft Graph **beta** endpoint.
 
 The account needs permission to manage Intune apps, and the app it signs in with needs consent for `DeviceManagementApps.ReadWrite.All` in your tenant. If the sign-in asks for admin consent, a tenant administrator has to grant it once.
 
@@ -42,7 +42,7 @@ Start the GUI from a PowerShell console window (Windows Terminal or the PowerShe
 :::
 
 ### App registration (alpha)
-If your tenant blocks the *Microsoft Graph Command Line Tools* app, or requires its own app registration, choose **App registration** from the arrow and fill in **App registration settings...**:
+If your tenant blocks the *Microsoft Graph Command Line Tools* app, or requires its own app registration, choose **App registration** from the arrow and fill in **App registration settings...** (the *Connection settings* panel):
 
 | Field | Value |
 | --- | --- |
@@ -64,10 +64,12 @@ Signing in with your own app registration is still being worked on and has not b
 With **New app** selected, the form is prefilled from the package:
 
 - **Name**, **Publisher**, **Version** and **Description**: from PSAppDeployToolkit (`AppName`, `AppVendor`, `AppVersion`) or from the MSI.
-- **Install** and **Uninstall command**: `msiexec /i` and `msiexec /x {ProductCode}` for MSI packages; for anything else the install command is the setup file and the uninstall command is up to you.
-- **Install behavior** (System or User), **Device restart behavior**, **Max run time**.
-- **Requirements**: architectures (x64, x86, arm64) and the minimum Windows release.
+- **Install** and **Uninstall command**: `msiexec /i "<setup>" /qn` and `msiexec /x {ProductCode} /qn` for MSI packages; for anything else the install command is `"<setup file>"` and the uninstall command is up to you.
+- **Install behavior** (default **System**), **Device restart behavior** (default **Determine behavior based on return codes**), **Max run time** (default 60 minutes).
+- **Requirements**: architectures (x64, x86, arm64; default x64) and the minimum Windows release (default Windows 10 1607).
 - **Detection rules**: an MSI product code rule is added for MSI packages.
+
+Required: Name, Publisher, Description, both commands, a max run time between 1 and 1440 minutes, at least one architecture and at least one detection rule. An EXE package without PSAppDeployToolkit data has no publisher, uninstall command or rule yet: fill them in.
 
 **Upload** creates the app, uploads the package content and commits it. Intune shows the package with the `.intunewin` name chosen when packaging. New apps get the same default return codes as the Intune portal (0, 1707, 3010, 1641, 1618).
 
@@ -77,7 +79,7 @@ With **New app** selected, the form is prefilled from the package:
 3. Change what you need. Leave **Upload the package content** checked to replace the content with the selected package, or uncheck it to change the settings only.
 4. Select **Upload**.
 
-When you upload new content, the **Version** becomes the one of the package being uploaded. The other fields stay as they are in Intune.
+When you upload new content, the **Version** becomes the package's version (from PSAppDeployToolkit, the MSI or the setup file's FileVersion), when it has one. The other fields stay as they are in Intune. After a successful update, **Upload the package content** is unchecked.
 
 The settings and the new content are applied together, only after the upload has been committed. If anything fails, the app in Intune stays as it was.
 
@@ -92,12 +94,12 @@ A few things are kept exactly as Intune has them:
 | MSI product code | The MSI product code is installed. |
 | File or folder | A file or folder exists, optionally with a minimum version. |
 | Registry | A key or value exists, optionally with a string or a minimum version. |
-| PowerShell script | A `.ps1` detection script (up to 200 KB), optionally run as 32-bit and with signature check. |
+| PowerShell script | A `.ps1` detection script saved as UTF-8 (with or without BOM; UTF-16 and ANSI are rejected), up to 200 KB, optionally run as 32-bit and with signature check. |
 
 For the version used by file rules, see [Get-IntuneFileVersion](./detection-helpers.md#get-intunefileversion).
 
 ## After the upload
-The *App created in Intune* (or *App updated*) panel offers **Open in Intune**, which opens the app in the Intune admin center, and **Start over**, which clears both tabs and goes back to Package for the next app. **Clear**, on either tab, does the same without leaving the tab. You stay signed in. After a new app is created, the tab switches to that app, so further changes update it instead of creating a second one.
+The *App created in Intune* (or *App updated in Intune*) panel offers **Open in Intune**, which opens the app in the Intune admin center, **Close**, and **Start over**, which clears both tabs and goes back to Package for the next app. **Clear**, on either tab, does the same without leaving the tab. You stay signed in. After a new app is created, the tab switches to that app, so further changes update it instead of creating a second one.
 
 If a create fails after the app was made in Intune, the tab switches to that app and offers **Retry upload** to send the package to it.
 

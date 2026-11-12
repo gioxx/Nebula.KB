@@ -19,7 +19,7 @@ The download takes [microsoft/Microsoft-Win32-Content-Prep-Tool](https://github.
 The FileVersion shown under the field tells you which release you have; [IntuneWinAppUtil.exe versions](./tool-versions.mdx) maps FileVersions to Microsoft's releases (**Version history** in the window opens it).
 
 ## Configuration file
-Settings are stored in `%APPDATA%\IntuneWinAppUtilGUI\config.json`. The file is written when the window closes, after each successful package, when you click **Clear recent** and when you change the Intune sign-in method:
+Settings are stored in `%APPDATA%\IntuneWinAppUtilGUI\config.json`. The file is written when the window closes, after each successful package, when you click **Clear recent**, when you choose a sign-in method and when you save **App registration settings...**:
 
 ```json
 {
@@ -46,7 +46,7 @@ Settings are stored in `%APPDATA%\IntuneWinAppUtilGUI\config.json`. The file is 
 Other field values are not saved.
 
 ## Update check
-At startup the GUI asks the PowerShell Gallery for the latest version of the module, in the background and with a 10-second timeout, so the window opens straight away. It uses `Find-Module` and falls back to the Gallery API if needed. When a newer version exists, a banner suggests running:
+At startup the GUI asks the PowerShell Gallery for the latest version of the module, in the background, so the window opens straight away. It uses `Find-Module` and falls back to the Gallery API, which has a 10-second timeout. When a newer version exists, a banner suggests running:
 
 ```powershell
 Update-Module IntuneWinAppUtilGUI
@@ -59,4 +59,4 @@ If the Gallery cannot be reached, nothing is shown. Use `-ShowVersion` to see bo
 | --- | --- |
 | `Enter` | Run packaging (Package tab only). |
 | `Esc` | Close the open panel, or close the window after confirmation. During an upload to Intune it asks whether to stop it. |
-| `Ctrl+Tab` | Switch between the Package and Publish to Intune tabs. |
+| `Ctrl+Tab` | Switch between the Package and Publish to Intune tabs. Not while packaging or while a panel is open. |

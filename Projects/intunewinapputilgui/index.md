@@ -13,7 +13,7 @@ sidebar_position: 1
 
 # IntuneWinAppUtil GUI
 
-PowerShell module with a WPF front-end that wraps Microsoft's `IntuneWinAppUtil.exe` (the [Microsoft Win32 Content Prep Tool](https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool)), making it quicker and less error-prone to package Win32 apps for Intune. It is built with WPF (XAML) and PowerShell only, with no external dependencies.
+PowerShell module with a WPF front-end that wraps Microsoft's `IntuneWinAppUtil.exe` (the [Microsoft Win32 Content Prep Tool](https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool)), making it quicker and less error-prone to package Win32 apps for Intune. It is built with WPF (XAML) and PowerShell only: packaging needs no other module. Publish to Intune also needs `Microsoft.Graph.Authentication`, which the tab offers to install the first time.
 
 Besides filling in the `-c`, `-s` and `-o` switches for you, the GUI downloads and caches the prep tool, recognises PSAppDeployToolkit and MSI packages to propose the setup file and package name, warns about paths that are too long, renames the generated `.intunewin` file and remembers your settings. From version 2.0.0 it can also create or update the Win32 app in Intune with the package, from the **Publish to Intune** tab. The module also ships a FileVersion helper and a ready-to-adapt Intune detection script.
 
@@ -60,7 +60,7 @@ Besides filling in the `-c`, `-s` and `-o` switches for you, the GUI downloads a
 - Windows 10 or later (Windows 11 recommended).
 - PowerShell 7 recommended; Windows PowerShell 5.1 is supported (use version 1.1.1 or later).
 - .NET Framework 4.7.2 or later (usually already present on supported systems).
-- Internet access to GitHub only if you let the GUI download `IntuneWinAppUtil.exe`, and to the PowerShell Gallery for the update check.
+- Internet access to `github.com` and `codeload.github.com` only if you let the GUI download `IntuneWinAppUtil.exe`, to `raw.githubusercontent.com` for **Check for updates**, and to `www.powershellgallery.com` for the module update check.
 - For Publish to Intune only: the `Microsoft.Graph.Authentication` module (the tab offers to install it), an account that can manage Intune apps, and network access to the sign-in, Microsoft Graph and Azure Storage endpoints listed in [Publish to Intune](./publish-to-intune.md#network-access).
 
 ## In this section
@@ -83,7 +83,14 @@ IntuneWinAppUtilGUI/
 |- Private/IWAPG-Hlp-Tool.ps1                # Tool download, cache and version
 |- Private/IWAPG-Hlp-PathLength.ps1          # Path-length checks
 |- Private/IWAPG-Hlp-UpdateCheck.ps1         # PowerShell Gallery version check
+|- Private/IWAPG-Hlp-RecentFolders.ps1       # Recent output folders
+|- Private/IWAPG-Hlp-Debug.ps1               # -Diag log
+|- Private/IWAPG-Hlp-IntuneWindow.ps1        # Publish to Intune tab
+|- Private/IWAPG-Hlp-IntuneApp.ps1           # Publish to Intune: form, app body, validation
+|- Private/IWAPG-Hlp-IntuneGraph.ps1         # Publish to Intune: sign-in, Graph, upload
+|- Private/IWAPG-Hlp-IntunePackage.ps1       # Publish to Intune: .intunewin metadata
 |- UI/UI.xaml                                # WPF window
+|- UI/IntunePanel.xaml                       # Publish to Intune tab
 |- Assets/                                   # Icons and screenshot
 |- Scripts/Intune_CheckAppInstallation.ps1   # Detection script template
 |- Tools/                                    # Upstream version table and maintenance scripts
