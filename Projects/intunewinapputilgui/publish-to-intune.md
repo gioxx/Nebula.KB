@@ -99,7 +99,7 @@ A few things are kept exactly as Intune has them:
 For the version used by file rules, see [Get-IntuneFileVersion](./detection-helpers.md#get-intunefileversion).
 
 ## After the upload
-The *App created in Intune* (or *App updated in Intune*) panel offers **Open in Intune**, which opens the app in the Intune admin center, **Close**, and **Start over**, which clears both tabs and goes back to Package for the next app. **Clear**, on either tab, does the same without leaving the tab. You stay signed in. After a new app is created, the tab switches to that app, so further changes update it instead of creating a second one.
+The *App created in Intune* (or *App updated in Intune*) panel offers **Open in Intune**, which opens the app in the Intune admin center, **Close**, and **Start over**, which clears both tabs and goes back to Package for the next app. **Clear**, on either tab, does the same without leaving the tab. You stay signed in. **Exit (ESC)** is on both tabs too; during an upload it asks whether to stop it. After a new app is created, the tab switches to that app, so further changes update it instead of creating a second one.
 
 If a create fails after the app was made in Intune, the tab switches to that app and offers **Retry upload** to send the package to it.
 
