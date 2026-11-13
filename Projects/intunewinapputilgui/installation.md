@@ -37,10 +37,10 @@ WPF needs a single-threaded apartment (STA). If the current session is not STA, 
 | Switch | What it does |
 | --- | --- |
 | `-ShowVersion` | Shows the installed module version and the latest version on the PowerShell Gallery in the header banner. Works even when the update check is disabled in the configuration. |
-| `-ForceUpdateBanner` | Shows a test "update available" banner, useful to check how the notification looks. |
+| `-ForceUpdateBanner` | Shows a test "update available" banner, useful to check how the notification looks. Shown only when the update check is enabled, or together with `-ShowVersion`. |
 | `-Diag` | Writes diagnostics (handles, GDI handles, working set) when the GUI starts and after it closes, plus a detailed log of every packaging run in `%APPDATA%\IntuneWinAppUtilGUI\logs`: inputs, tool version, staging folder, exact command, exit code and tool output. When a run fails, the log also lists the files the tool left behind and the processes holding them open. |
 | `-Verbose`, `-Debug` | Standard PowerShell switches; preserved when the GUI relaunches itself in STA mode. |
 
 </div>
 
-The **Help** link at the bottom of the window shows the same switches and the keyboard shortcuts.
+The **Help** link at the bottom of the window opens a panel with the same switches and the keyboard shortcuts.
