@@ -46,7 +46,7 @@ New-RandomPassword -Count 5 -PasswordLength 16 -Clipboard
 ## Keep PowerShell 7 current
 
 ```powershell
-Update-PS7   # launches the official MSI-based installer
+Update-PS7   # launches the official MSI-based installer (latest 7.6 LTS)
 ```
 
 ## Remove old versions for one module
