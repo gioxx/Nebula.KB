@@ -97,7 +97,7 @@ Update-CSVDelimiter -FilePath 'C:\path\to\file.csv' -Encoding 'UTF8' -ToSemicolo
 
 ## Update-PS7
 
-`Update-PS7` runs the official Microsoft helper script to install or upgrade PowerShell 7 via MSI, always fetching the latest stable release.
+`Update-PS7` runs the official Microsoft helper script to install or upgrade PowerShell 7 via MSI. Since PowerShell 7.7 ships no MSI package, this means the latest **7.6 LTS** release.
 
 **Syntax**
 
@@ -106,11 +106,12 @@ Update-PS7 [-Force]
 ```
 
 :::note
-- Queries the GitHub Releases API (`api.github.com/repos/PowerShell/PowerShell/releases/latest`) for the latest version, since the `aka.ms/install-powershell.ps1` buildinfo endpoint can lag behind real releases. This is used only to decide whether an install is needed.
-- Runs the installer with `-UseMSI`. The upstream `install-powershell.ps1` script no longer accepts a `-Version` parameter, so it always installs the latest stable release; version pinning isn't possible.
-- If the installed version already matches the latest release, it warns and skips the install; use `-Force` to reinstall anyway.
-- If the GitHub API lookup fails, it falls back to running the installer directly.
-- Ideal for keeping managed endpoints on the latest stable PowerShell release.
+- Reads PowerShell's [`tools/metadata.json`](https://github.com/PowerShell/PowerShell/blob/master/tools/metadata.json), the same file the upstream `install-powershell.ps1` script reads. With `-UseMSI` the script installs the release in `ReleaseTag` (the latest 7.6 LTS), so `Update-PS7` compares your version against that one.
+- Runs the installer with `-UseMSI`. The upstream script no longer accepts a `-Version` parameter, so version pinning isn't possible.
+- If the installed version already matches that release, it warns and skips the install; use `-Force` to reinstall anyway.
+- If a newer stable release exists without an MSI package (for example 7.7), it warns you: install it by hand if you need it.
+- If the metadata can't be read, it falls back to running the installer directly.
+- Ideal for keeping servers and managed endpoints on the latest PowerShell 7.6 LTS, installed machine-wide.
 - The installer UI appears; run from an elevated session for system-wide upgrades.
 - On Windows PowerShell 5.1, the function enforces TLS 1.2 before downloading.
 :::
@@ -123,4 +124,8 @@ No. It downloads and runs the official Microsoft script with the interactive MSI
 
 ### What if I'm already on the latest version?
 
-`Update-PS7` compares your running version against the latest GitHub release and skips the install with a warning. Pass `-Force` to reinstall regardless.
+`Update-PS7` compares your running version against the latest MSI release (7.6 LTS) and skips the install with a warning. Pass `-Force` to reinstall regardless.
+
+### Why doesn't `Update-PS7` install PowerShell 7.7?
+
+Microsoft no longer publishes MSI packages from PowerShell 7.7 on, only ZIP and MSIX. `Update-PS7` stays on 7.6 LTS, which is supported until November 14, 2028. The reasons are in [this post](/blog/powershell-7-7-no-msi).
