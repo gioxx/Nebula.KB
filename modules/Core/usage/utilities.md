@@ -99,7 +99,7 @@ Format-QuotedListFromClipboard -PassThru
 
 ## Get-NebulaModuleUpdates
 
-Checks PowerShell Gallery for updates of installed `Nebula.*` modules plus the meta modules `ExchangeOnlineManagement` and `Microsoft.Graph`, and reports only the modules that have newer versions available. On PowerShell 7 and later it also reports a newer stable PowerShell release (unless `CheckPowerShellUpdates = $false`).
+Checks PowerShell Gallery for updates of installed `Nebula.*` modules plus the meta modules `ExchangeOnlineManagement` and `Microsoft.Graph`, and reports only the modules that have newer versions available. On PowerShell 7 and later it also reports a newer PowerShell release: the latest LTS one on 7.6 LTS or older, the latest stable one on 7.7 and later (unless `CheckPowerShellUpdates = $false`).
 
 **Syntax**
 
