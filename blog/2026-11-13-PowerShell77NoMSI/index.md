@@ -65,3 +65,12 @@ Update-Module Nebula.Tools
 ```
 
 The details are in the [Update-PS7](/Nebula/Tools/usage/utilities#update-ps7) documentation, and the changes in the [1.0.8 release](https://github.com/gioxx/Nebula.Tools/releases/tag/v1.0.8).
+
+## Nebula.Core 1.3.1
+
+The [PowerShell update check](/blog/powershell-update-notice-removed) coming with Nebula.Core 1.3.1 had the same problem: on a server with 7.6.10 it would have reported `7.6.10 -> 7.7.0` every time, an update you cannot install with the MSI. [SWUpdates-Alert](https://github.com/gioxx/SWUpdates-Alert) now also tracks the latest LTS release, and Nebula.Core uses it:
+
+- on 7.6 (the LTS line) or older, it tells you about the latest **7.6** release;
+- on 7.7 and later, it tells you about the latest **stable** release.
+
+The details are in the [configuration](/Nebula/Core/next/usage/configuration) page of the upcoming version.

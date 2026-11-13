@@ -96,7 +96,12 @@ Below is an example of a `settings.psd1` file that you can save in your user fol
 
 `DateTimeTimeZone` controls the default time zone used for user-facing timestamps. Nebula.Core ships with `Eastern Standard Time` by default to stay aligned with the module's `UsageLocation = US` baseline. You can override it with a Windows time zone ID such as `W. Europe Standard Time`, or a cross-platform ID like `Europe/Rome` if your environment supports it.
 
-`CheckPowerShellUpdates` (default `$true`) adds the PowerShell release to the update check run by `Connect-Nebula` and `Get-NebulaModuleUpdates`. It applies to PowerShell 7 and later only and reads the latest stable version from [SWUpdates-Alert](https://github.com/gioxx/SWUpdates-Alert).
+`CheckPowerShellUpdates` (default `$true`) adds the PowerShell release to the update check run by `Connect-Nebula` and `Get-NebulaModuleUpdates`. It applies to PowerShell 7 and later only and reads the latest versions from [SWUpdates-Alert](https://github.com/gioxx/SWUpdates-Alert):
+
+- on the LTS line (today 7.6) or an older release, it compares with the latest **LTS** release, so on 7.6.x you are told about new 7.6 updates, not about 7.7;
+- on a newer line (7.7 and later), it compares with the latest **stable** release.
+
+This keeps servers on 7.6 LTS quiet: PowerShell 7.7 ships no MSI, as explained in [this post](/blog/powershell-7-7-no-msi).
 
 ### Where is the license catalog stored?
 

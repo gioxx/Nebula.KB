@@ -52,7 +52,8 @@ Update available for PowerShell: 7.6.8 -> 7.6.9
 ```
 
 - It runs only on **PowerShell 7 and later**. On Windows PowerShell 5.1 it is skipped.
-- The latest stable version comes from [SWUpdates-Alert](https://github.com/gioxx/SWUpdates-Alert), a small project of mine that already tracks new releases of several tools and now tracks PowerShell too. Preview builds are never reported as outdated.
+- The latest version comes from [SWUpdates-Alert](https://github.com/gioxx/SWUpdates-Alert), a small project of mine that already tracks new releases of several tools and now tracks PowerShell too. Preview builds are never reported as outdated.
+- On 7.6 (the LTS line) or older, only the latest LTS release counts, so servers that stay on 7.6 are not told about 7.7, which ships no MSI ([details](/blog/powershell-7-7-no-msi)).
 - It follows the same rules as the module check: it runs on `Connect-Nebula` when `CheckUpdatesOnConnect` is on, at most once every `CheckUpdatesIntervalHours`, and `Get-NebulaModuleUpdates` always runs it right away.
 - If the latest version cannot be read (no network, GitHub unreachable), Nebula prints a warning and goes on with the rest.
 - It only tells you. Nebula never updates PowerShell for you.
