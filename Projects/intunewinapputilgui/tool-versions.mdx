@@ -15,7 +15,7 @@ Microsoft publishes `IntuneWinAppUtil.exe` in the [Microsoft Win32 Content Prep 
 
 A GitHub workflow of the IntuneWinAppUtilGUI repository checks Microsoft's repository every week. When a new release comes out, it downloads every release, reads the FileVersion of each `IntuneWinAppUtil.exe` and saves the list as `Tools/IntuneWinAppUtilVersions.json` (and as a Markdown table next to it). This page reads that file when you open it, so it shows a new release as soon as the workflow has run.
 
-From IntuneWinAppUtil GUI 1.2.0, **Check for updates**, next to the tool version, reads the same file: it compares the FileVersion of the selected `IntuneWinAppUtil.exe` with the latest one and offers the download only when yours is older. **Force download** downloads the tool again in any case.
+From IntuneWinAppUtil GUI 2.0.0, **Check for updates**, next to the tool version, reads the same file: it compares the FileVersion of the selected `IntuneWinAppUtil.exe` with the latest one and offers the download only when yours is older. **Force download** downloads the tool again in any case.
 
 :::note
 Release `v1.8` reports FileVersion `1.0.4.1407`, lower than the releases before it. That is the number Microsoft put in that executable, not an error in the list.
