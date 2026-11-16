@@ -92,9 +92,13 @@ A few things are kept exactly as Intune has them:
 | Rule | What it checks |
 | --- | --- |
 | MSI product code | The MSI product code is installed. |
-| File or folder | A file or folder exists, optionally with a minimum version. |
-| Registry | A key or value exists, optionally with a string or a minimum version. |
+| File or folder | A file or folder exists, or its version compared with a value. |
+| Registry | A key or value exists, or its value compared with a string or a version. |
 | PowerShell script | A `.ps1` detection script saved as UTF-8 (with or without BOM; UTF-16 and ANSI are rejected), up to 200 KB, optionally run as 32-bit and with signature check. |
+
+A version can be equal to, not equal to, greater than, greater than or equal to, less than, or less than or equal to the value; a string can be equal or not equal to it.
+
+To change a rule, select it in the list: it opens in the editor below. Change it and click **Update rule**; **Add rule** adds it as a new rule instead. For a script rule, leave the script file empty to keep the current script. Rules the editor cannot show, such as those kept from Intune or a file size check, can only be removed.
 
 For the version used by file rules, see [Get-IntuneFileVersion](./detection-helpers.md#get-intunefileversion).
 
